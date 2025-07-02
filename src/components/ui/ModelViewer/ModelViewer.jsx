@@ -66,10 +66,10 @@ const DesktopControls = ({ pivot, min, max, zoomEnabled }) => {
 
     // Check if zoom has changed
     if (Math.abs(lastZoom.current - camera.position.z) > 0.01) {
-      console.log("Current Zoom:", {
-        cameraZ: camera.position.z.toFixed(2),
-        zoomFactor: (1 / camera.position.z).toFixed(2),
-      });
+      // console.log("Current Zoom:", {
+      //   cameraZ: camera.position.z.toFixed(2),
+      //   zoomFactor: (1 / camera.position.z).toFixed(2),
+      // });
       lastZoom.current = camera.position.z;
       invalidate();
     }
@@ -227,13 +227,13 @@ const ModelInner = ({
       vel.current = { x: dx * ROTATE_SPEED, y: dy * ROTATE_SPEED };
 
       // Add logging when manually rotating
-      console.log("Manual Rotation Updated:", {
-        rotationX: outer.current.rotation.x.toFixed(3),
-        rotationY: outer.current.rotation.y.toFixed(3),
-        rotationZ: outer.current.rotation.z.toFixed(3),
-        degX: THREE.MathUtils.radToDeg(outer.current.rotation.x).toFixed(1),
-        degY: THREE.MathUtils.radToDeg(outer.current.rotation.y).toFixed(1),
-      });
+      // console.log("Manual Rotation Updated:", {
+      //   rotationX: outer.current.rotation.x.toFixed(3),
+      //   rotationY: outer.current.rotation.y.toFixed(3),
+      //   rotationZ: outer.current.rotation.z.toFixed(3),
+      //   degX: THREE.MathUtils.radToDeg(outer.current.rotation.x).toFixed(1),
+      //   degY: THREE.MathUtils.radToDeg(outer.current.rotation.y).toFixed(1),
+      // });
 
       invalidate();
     };
@@ -320,10 +320,10 @@ const ModelInner = ({
         camera.position.z = newZoom;
 
         // Add zoom logging
-        console.log("Current Zoom:", {
-          cameraZ: newZoom.toFixed(2),
-          zoomFactor: (1 / newZoom).toFixed(2),
-        });
+        // console.log("Current Zoom:", {
+        //   cameraZ: newZoom.toFixed(2),
+        //   zoomFactor: (1 / newZoom).toFixed(2),
+        // });
 
         invalidate();
       }
@@ -455,17 +455,17 @@ const ModelViewer = ({
     Math.max(defaultZoom, minZoomDistance),
     maxZoomDistance
   );
-  console.log("Model Viewer Initial Settings:", {
-    defaultRotationX,
-    defaultRotationY,
-    initYawRadians: initYaw,
-    initPitchRadians: initPitch,
-    defaultZoom,
-    calculatedCamZ: camZ,
-    modelXOffset,
-    modelYOffset,
-    zoomFactor: (1 / camZ).toFixed(2), // Added zoom factor
-  });
+  // console.log("Model Viewer Initial Settings:", {
+  //   defaultRotationX,
+  //   defaultRotationY,
+  //   initYawRadians: initYaw,
+  //   initPitchRadians: initPitch,
+  //   defaultZoom,
+  //   calculatedCamZ: camZ,
+  //   modelXOffset,
+  //   modelYOffset,
+  //   zoomFactor: (1 / camZ).toFixed(2), // Added zoom factor
+  // });
 
   const capture = () => {
     const g = rendererRef.current,

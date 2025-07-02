@@ -129,9 +129,12 @@ const HalfHeightSection = ({
   children,
   animationProps,
   background,
+  className,
 }) => {
   return (
-    <div className="h-[50vh] w-full flex items-center justify-center relative overflow-hidden">
+    <div
+      className={`h-[50vh] w-full flex items-center justify-center relative overflow-hidden ${className}`}
+    >
       {background && <div className="absolute inset-0 z-0">{background}</div>}
       <div className="z-10 relative">
         <AnimatePresence mode="wait">
@@ -355,7 +358,7 @@ function App() {
               setLoadingProgress(percentage);
               resolve();
             };
-          } 
+          }
           // else if (url.endsWith(".glb")) {
           //   // Preload 3D model
           //   import("three/examples/jsm/loaders/GLTFLoader")
@@ -404,7 +407,7 @@ function App() {
           //       );
           //       resolve();
           //     });
-          // } 
+          // }
           else {
             // Just resolve for other resource types
             setTimeout(() => {
@@ -799,10 +802,11 @@ function App() {
                   />
                 </motion.div>
               </HalfHeightSection>
-{/* 
+
               <HalfHeightSection
                 isVisible={showFifthScreen}
                 animationProps={fifthScreenAnimation}
+                className="border-2 border-amber-50 border-dashed mx-6 overflow-visible"
               >
                 <motion.div
                   variants={container}
@@ -813,15 +817,14 @@ function App() {
                 >
                   <motion.h2
                     variants={item}
-                    className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white"
-                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                    className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white border-2 border-black dark:border-white
+                    px-[20vw] py-[10vh] rounded-2xl border-dotted"
+                    style={{ fontFamily: "monospace" }}
                   >
-                    Bold by Design
+                    Under Construction
                   </motion.h2>
-
-                 
                 </motion.div>
-              </HalfHeightSection> */}
+              </HalfHeightSection>
             </div>
           </motion.div>
         )}
