@@ -5,6 +5,7 @@ import BlurText from "./TextAnimations/BlurText/BlurText";
 import TextPressure from "./TextAnimations/TextPressure/TextPressure";
 import DotGrid from "./Backgrounds/DotGrid/DotGrid";
 import { motion, AnimatePresence } from "framer-motion";
+import ModelViewer from "./components/ui/ModelViewer/ModelViewer";
 
 // Enhanced loading animation with theme-aware colors
 const LoadingAnimation = ({ progress = 0 }) => {
@@ -70,17 +71,26 @@ const LoadingAnimation = ({ progress = 0 }) => {
             stepDuration={0.3}
           />
           {progress > 0 && (
-            <div className="w-64 h-2 bg-gray-200 dark:bg-gray-800 rounded-full mt-4 overflow-hidden">
-              <motion.div
-                className="h-full bg-black dark:bg-white rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{
-                  duration: 0.5,
-                  ease: "easeOut",
-                }}
-              />
-            </div>
+            <>
+              <div className="w-64 h-2 bg-gray-200 dark:bg-gray-800 rounded-full mt-4 overflow-hidden">
+                <motion.div
+                  className="h-full bg-black dark:bg-white rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{
+                    duration: 0.5,
+                    ease: "easeOut",
+                  }}
+                />
+              </div>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-xs mt-2 text-gray-600 dark:text-gray-400"
+              >
+                Loading skills and 3D models...
+              </motion.p>
+            </>
           )}
         </motion.div>
       </motion.div>
@@ -113,6 +123,36 @@ const Section = ({ isVisible, children, animationProps, background }) => {
   );
 };
 
+// New HalfHeightSection component
+const HalfHeightSection = ({
+  isVisible,
+  children,
+  animationProps,
+  background,
+}) => {
+  return (
+    <div className="h-[50vh] w-full flex items-center justify-center relative">
+      {background && <div className="absolute inset-0 z-0">{background}</div>}
+      <div className="z-10 relative">
+        <AnimatePresence mode="wait">
+          {isVisible && (
+            <motion.div
+              key={animationProps.key}
+              initial={animationProps.initial}
+              animate={animationProps.animate}
+              exit={animationProps.exit}
+              transition={animationProps.transition}
+              className="flex items-center justify-center h-64 w-[80vw] md:h-96 md:w-[90vw]"
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};
+
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -120,6 +160,7 @@ function App() {
   const [showSecondScreen, setShowSecondScreen] = useState(false);
   const [showThirdScreen, setShowThirdScreen] = useState(false);
   const [showFourthScreen, setShowFourthScreen] = useState(false);
+  const [showFifthScreen, setShowFifthScreen] = useState(false);
   const firstScreenRef = useRef(null);
   // Skills data with images
   // Update the skills array with all your technologies
@@ -255,20 +296,31 @@ function App() {
     }
 
     // Fourth screen visibility
-    if (scrollPosition >= windowHeight * 2.7) {
+    if (
+      scrollPosition >= windowHeight * 2.7 &&
+      scrollPosition <= windowHeight * 3.3
+    ) {
       setShowFourthScreen(true);
     } else {
       setShowFourthScreen(false);
     }
+
+    // Fifth screen visibility
+    if (scrollPosition >= windowHeight * 3.0) {
+      setShowFifthScreen(true);
+    } else {
+      setShowFifthScreen(false);
+    }
   }, []);
 
   useEffect(() => {
-    // Function to preload all images
-    const preloadImages = async () => {
+    // Function to preload all images and 3D model
+    const preloadResources = async () => {
       const imagesToLoad = skills.map((skill) => skill.image);
+      const modelUrl = "/3d_models/plane.glb";
       let loadedCount = 0;
 
-      const allResources = [...imagesToLoad];
+      const allResources = [...imagesToLoad, modelUrl];
       const totalResources = allResources.length;
 
       // Reset loading progress at start
@@ -286,7 +338,6 @@ function App() {
             img.src = url;
             img.onload = () => {
               loadedCount++;
-              // Calculate percentage with Math.min to ensure it never exceeds 100
               const percentage = Math.min(
                 Math.round((loadedCount / totalResources) * 100),
                 100
@@ -303,6 +354,48 @@ function App() {
               setLoadingProgress(percentage);
               resolve();
             };
+          } else if (url.endsWith(".glb")) {
+            // Preload 3D model
+            import("three/examples/jsm/loaders/GLTFLoader").then(({ GLTFLoader }) => {
+              const loader = new GLTFLoader();
+              loader.load(
+                url,
+                () => {
+                  loadedCount++;
+                  const percentage = Math.min(
+                    Math.round((loadedCount / totalResources) * 100),
+                    100
+                  );
+                  setLoadingProgress(percentage);
+                  console.log("3D model preloaded successfully");
+                  resolve();
+                },
+                // Progress callback
+                (xhr) => {
+                  const modelProgress = Math.floor((xhr.loaded / xhr.total) * 100);
+                  console.log(`Model loading: ${modelProgress}%`);
+                },
+                // Error callback
+                (error) => {
+                  console.error("Error loading 3D model:", error);
+                  loadedCount++;
+                  const percentage = Math.min(
+                    Math.round((loadedCount / totalResources) * 100),
+                    100
+                  );
+                  setLoadingProgress(percentage);
+                  resolve();
+                }
+              );
+            }).catch(error => {
+              console.error("Error importing GLTFLoader:", error);
+              loadedCount++;
+              setLoadingProgress(Math.min(
+                Math.round((loadedCount / totalResources) * 100),
+                100
+              ));
+              resolve();
+            });
           } else {
             // Just resolve for other resource types
             setTimeout(() => {
@@ -337,7 +430,7 @@ function App() {
       }
     };
 
-    preloadImages();
+    preloadResources(); // Changed from preloadImages to preloadResources
 
     // Throttled scroll handler for better performance
     let ticking = false;
@@ -437,6 +530,15 @@ function App() {
     transition: { duration: 0.8 },
   };
 
+  // New fifth screen animation properties
+  const fifthScreenAnimation = {
+    key: "fifth-screen",
+    initial: { opacity: 0, y: 50 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 50 },
+    transition: { duration: 0.8 },
+  };
+
   // Staggered animation for children elements
   const container = {
     hidden: { opacity: 0 },
@@ -499,7 +601,7 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="min-h-[400vh] w-full relative bg-white dark:bg-black"
+            className="min-h-[450vh] w-full relative bg-white dark:bg-black"
           >
             <div className="absolute inset-0 flex flex-col items-center">
               <Section
@@ -629,6 +731,47 @@ function App() {
                   </motion.div>
                 </motion.div>
               </Section>
+
+              <HalfHeightSection
+                isVisible={showFifthScreen}
+                animationProps={fifthScreenAnimation}
+              >
+                <motion.div
+                  variants={container}
+                  initial="hidden"
+                  animate="show"
+                  exit="exit"
+                  className="flex flex-row items-center flex-wrap justify-center"
+                >
+                  <motion.h2
+                    variants={item}
+                    className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white"
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    Bold by Design
+                  </motion.h2>
+
+                  <ModelViewer
+                    url="/3d_models/plane.glb"
+                    width={800}
+                    height={300}
+                    enableMouseParallax={false}
+                    enableManualRotation={false}
+                    enableHoverRotation={false}
+                    fadeIn={false}
+                    
+                    environmentPreset="sunset"
+                    keyLightIntensity={2.0}
+                    placeholderSrc="/nihesh.png"
+                    defaultRotationX={-20.8} // Updated from 32.1 to match new degY value
+                    defaultRotationY={10.8} // Updated from 27.4 to match new degX value
+                    defaultZoom={2}
+                    onModelLoaded={() =>
+                      console.log("Model loaded successfully")
+                    }
+                  />
+                </motion.div>
+              </HalfHeightSection>
             </div>
           </motion.div>
         )}
