@@ -517,7 +517,7 @@ function App() {
                   />
                   <BlurText
                     text="Peep"
-                    className="text-9xl font-bold text-green-500"
+                    className="text-9xl font-bold text-green-500 italic"
                     direction="top"
                     animateBy="words"
                     stepDuration={1}
