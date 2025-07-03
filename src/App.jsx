@@ -6,6 +6,7 @@ import TextPressure from "./TextAnimations/TextPressure/TextPressure";
 import DotGrid from "./Backgrounds/DotGrid/DotGrid";
 import { motion, AnimatePresence } from "framer-motion";
 import ModelViewer from "./components/ui/ModelViewer/ModelViewer";
+import Masonry from "./components/ui/Masonry/Masonry";
 
 // Enhanced loading animation with theme-aware colors
 const LoadingAnimation = ({ progress = 0 }) => {
@@ -156,6 +157,65 @@ const HalfHeightSection = ({
   );
 };
 
+const HalfUnderConstruction = ({ isVisible, animationProps, className }) => {
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+    exit: {
+      opacity: 0,
+      transition: {
+        staggerChildren: 0.1,
+        staggerDirection: -1,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    show: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        damping: 15,
+      },
+    },
+    exit: {
+      y: -20,
+      opacity: 0,
+    },
+  };
+  return (
+    <HalfHeightSection
+      isVisible={isVisible}
+      animationProps={animationProps}
+      className="border-2 border-amber-50 border-dashed  overflow-visible"
+    >
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        exit="exit"
+        className="flex flex-row items-center flex-wrap justify-center"
+      >
+        <motion.h2
+          variants={item}
+          className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white border-2 border-black dark:border-white
+                    px-[20vw] py-[10vh] rounded-2xl border-dotted"
+          style={{ fontFamily: "monospace" }}
+        >
+          Under Construction
+        </motion.h2>
+      </motion.div>
+    </HalfHeightSection>
+  );
+};
+
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -164,6 +224,7 @@ function App() {
   const [showThirdScreen, setShowThirdScreen] = useState(false);
   const [showFourthScreen, setShowFourthScreen] = useState(false);
   const [showFifthScreen, setShowFifthScreen] = useState(false);
+  const [showSixthScreen, setShowSixthScreen] = useState(false);
   const [modelLoaded, setModelLoaded] = useState(false);
   const firstScreenRef = useRef(null);
   // Skills data with images
@@ -268,6 +329,63 @@ function App() {
     },
   ];
 
+  const items = [
+    {
+      id: "1",
+      img: "/photography/1.JPG",
+      url: "https://vsco.co/niheshr/",
+      height: 750,
+    },
+    {
+      id: "2",
+      img: "/photography/2.JPG",
+      url: "https://vsco.co/niheshr/",
+      height: 120,
+    },
+    {
+      id: "3",
+      img: "/photography/3.PNG",
+      url: "https://vsco.co/niheshr/",
+      height: 300,
+    },
+    {
+      id: "4",
+      img: "/photography/4.JPG",
+      url: "https://vsco.co/niheshr/",
+      height: 200,
+    },
+    {
+      id: "5",
+      img: "/photography/5.JPG",
+      url: "https://vsco.co/niheshr/",
+      height: 90,
+    },
+    {
+      id: "6",
+      img: "/photography/6.JPG",
+      url: "https://vsco.co/niheshr/",
+      height: 600,
+    },
+    {
+      id: "7",
+      img: "/photography/7.JPG",
+      url: "https://vsco.co/niheshr/",
+      height: 500,
+    },
+    {
+      id: "8",
+      img: "/photography/8.JPG",
+      url: "https://vsco.co/niheshr/",
+      height: 400,
+    },
+    {
+      id: "9",
+      img: "/photography/9.JPG",
+      url: "https://vsco.co/niheshr/",
+      height: 400,
+    },
+  ];
+
   const handleScroll = useCallback(() => {
     const windowHeight = window.innerHeight;
     const scrollPosition = window.scrollY;
@@ -315,6 +433,12 @@ function App() {
     } else {
       setShowFifthScreen(false);
     }
+
+    if (scrollPosition >= windowHeight * 4.7) {
+      setShowSixthScreen(true);
+    } else {
+      setShowSixthScreen(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -336,7 +460,8 @@ function App() {
             url.endsWith(".svg") ||
             url.endsWith(".png") ||
             url.endsWith(".jpg") ||
-            url.endsWith(".jpeg")
+            url.endsWith(".jpeg") ||
+            url.endsWith(".JPG")
           ) {
             const img = new Image();
             img.src = url;
@@ -631,7 +756,7 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="min-h-[500vh] w-full relative bg-white dark:bg-black"
+            className="min-h-[600vh] w-full relative bg-white dark:bg-black"
           >
             <div className="absolute inset-0 flex flex-col items-center">
               <Section
@@ -802,28 +927,38 @@ function App() {
                   />
                 </motion.div>
               </HalfHeightSection>
+              {/* {
+                <HalfUnderConstruction
+                  isVisible={showFifthScreen}
+                  animationProps={fifthScreenAnimation}
+                  className=""
+                />
+              } */}
 
               <HalfHeightSection
                 isVisible={showFifthScreen}
                 animationProps={fifthScreenAnimation}
-                className="border-2 border-amber-50 border-dashed mx-6 overflow-visible"
+                className=""
               >
-                <motion.div
+                {/* <motion.div
                   variants={container}
                   initial="hidden"
                   animate="show"
                   exit="exit"
-                  className="flex flex-row items-center flex-wrap justify-center"
-                >
-                  <motion.h2
-                    variants={item}
-                    className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white border-2 border-black dark:border-white
-                    px-[20vw] py-[10vh] rounded-2xl border-dotted"
-                    style={{ fontFamily: "monospace" }}
-                  >
-                    Under Construction
-                  </motion.h2>
-                </motion.div>
+                  className="flex flex-row items-center flex-wrap justify-center "
+                > */}
+                <Masonry
+                  items={items}
+                  ease="power3.out"
+                  duration={0.6}
+                  stagger={0.05}
+                  animateFrom="bottom"
+                  scaleOnHover={true}
+                  hoverScale={0.95}
+                  blurToFocus={true}
+                  colorShiftOnHover={false}
+                />
+                {/* </motion.div> */}
               </HalfHeightSection>
             </div>
           </motion.div>
