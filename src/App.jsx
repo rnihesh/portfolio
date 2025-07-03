@@ -7,6 +7,10 @@ import DotGrid from "./Backgrounds/DotGrid/DotGrid";
 import { motion, AnimatePresence } from "framer-motion";
 import ModelViewer from "./components/ui/ModelViewer/ModelViewer";
 import Masonry from "./components/ui/Masonry/Masonry";
+import ExpandableCard from "./components/ui/ExpandableCards/ExpandableCards";
+import { TypeWrite } from "./components/ui/TypeWrite/TypeWrite";
+import { p } from "framer-motion/client";
+import HandDrawnUnderline from "./components/my-creation/HandDrawnUnderline/HandDrawnUnderline";
 
 // Enhanced loading animation with theme-aware colors
 const LoadingAnimation = ({ progress = 0 }) => {
@@ -100,9 +104,17 @@ const LoadingAnimation = ({ progress = 0 }) => {
 };
 
 // Reusable section component
-const Section = ({ isVisible, children, animationProps, background }) => {
+const Section = ({
+  isVisible,
+  children,
+  animationProps,
+  background,
+  className,
+}) => {
   return (
-    <div className="h-screen w-full flex items-center justify-center relative">
+    <div
+      className={`h-screen w-full flex items-center justify-center relative ${className}`}
+    >
       {background && <div className="absolute inset-0 z-0">{background}</div>}
       <div className="z-10 relative">
         <AnimatePresence mode="wait">
@@ -383,6 +395,17 @@ function App() {
       img: "/photography/9.JPG",
       url: "https://vsco.co/niheshr/",
       height: 400,
+    },
+  ];
+
+  const words = [
+    {
+      text: "My",
+      className: "text-black-500",
+    },
+    {
+      text: "Projects ",
+      className: "text-black-500",
     },
   ];
 
@@ -667,8 +690,15 @@ function App() {
     transition: { duration: 0.8 },
   };
 
-  // New fifth screen animation properties
   const fifthScreenAnimation = {
+    key: "fifth-screen",
+    initial: { opacity: 0, y: 50 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 50 },
+    transition: { duration: 0.8 },
+  };
+
+  const SixthScreenAnimation = {
     key: "fifth-screen",
     initial: { opacity: 0, y: 50 },
     animate: { opacity: 1, y: 0 },
@@ -727,6 +757,204 @@ function App() {
     },
   };
 
+  const cards = [
+    {
+      description: "A Blog App",
+      title: "Logly",
+      src: "/projects/logly.jpeg",
+      ctaText: "Visit",
+      ctaLink: "https://logly.vercel.app/",
+      github: "https://github.com/rnihesh/logly/",
+      logo: "/projects/logos/logly.svg",
+      content: () => {
+        return (
+          <>
+            <p>
+              Logly is a MERN-stack powered blogging platform with clerk,
+              role-based access, and responsive design — built for seamless
+              writing, sharing, and content management.
+            </p>
+            <div className="flex g-2 flex-wrap overflow-ellipsis">
+              {[
+                "ReactJS",
+                "NodeJs",
+                "Bootstrap",
+                "Express",
+                "MongoDB",
+                "Auth",
+              ].map((skill, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
+                  style={{ fontFamily: "JetBrains Mono" }}
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </>
+        );
+      },
+    },
+    {
+      description: "A Vehicle Pooling App",
+      title: "RideShare",
+      src: "/projects/rideshare.jpeg",
+      ctaText: "Visit",
+      ctaLink: "https://nihesh-ride-share.vercel.app/",
+      github: "https://github.com/rnihesh/car_pooling/",
+      logo: "/projects/logos/rideshare.png",
+      content: () => {
+        return (
+          <>
+            <p>
+              A MERN-based vehicle pooling app using MongoDB aggregation
+              pipelines and geo-coordinates for efficient driver-passenger
+              matching, location-based queries, with secure authentication with
+              clerk.
+            </p>
+            <div className="flex g-2 flex-wrap overflow-ellipsis">
+              {[
+                "ReactJS",
+                "NodeJs",
+                "MongoDB",
+                "Aggregation Pipelines",
+                "Leaflet",
+                "Bootstrap",
+                "Express",
+                "Auth",
+              ].map((skill, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
+                  style={{ fontFamily: "JetBrains Mono" }}
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </>
+        );
+      },
+    },
+
+    {
+      description: "A Gamified Habit Tracker",
+      title: "Habify",
+      src: "/projects/habify.jpeg",
+      ctaText: "Visit",
+      ctaLink: "https://habify-red.vercel.app/",
+      github: "https://github.com/rnihesh/gamified_habit_tracker/",
+      logo: "/projects/logos/habify.webp",
+      content: () => {
+        return (
+          <>
+            <p>
+              HabiFy is a gamified habit tracker built with MERN stack, using
+              MongoDB for progress tracking, dynamic scoring, level systems, and
+              responsive dashboards & leaderboards with secure user auth and
+              role control.
+            </p>
+            <div className="flex g-2 flex-wrap overflow-ellipsis">
+              {[
+                "ReactJS",
+                "NodeJs",
+                "Cron",
+                "MongoDB",
+                "Bootstrap",
+                "Express",
+                "Auth",
+              ].map((skill, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
+                  style={{ fontFamily: "JetBrains Mono" }}
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </>
+        );
+      },
+    },
+    {
+      description: "A Modern Seller Portal",
+      title: "Nihesh's Seller Portal",
+      src: "/projects/nihesh_s_seller_portal.jpeg",
+      ctaText: "Visit",
+      ctaLink: "https://nihesh-seller-portal.vercel.app/",
+      github: "https://github.com/rnihesh/nihesh-s-seller-portal/",
+      logo: "/projects/logos/nihesh_s_seller_portal.png",
+      content: () => {
+        return (
+          <>
+            <p>
+              A MERN stack app, integrated with Cloudinary for media management
+              and Gemini AI for smart content generation, enabling seamless
+              product uploads, edits, and seller analytics.
+            </p>
+            <div className="flex g-2 flex-wrap overflow-ellipsis">
+              {[
+                "ReactJS",
+                "NodeJs",
+                "MongoDB",
+                "Bootstrap",
+                "Gemini AI",
+                "Cloudinary",
+                "Express",
+                "Auth",
+              ].map((skill, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
+                  style={{ fontFamily: "JetBrains Mono" }}
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </>
+        );
+      },
+    },
+    {
+      description: "A WebSocket Example",
+      title: "Live Cursors",
+      src: "/projects/live_cursors.jpeg",
+      ctaText: "Visit",
+      ctaLink: "https://nihesh-cursors.vercel.app/",
+      github: "https://github.com/rnihesh/live-cursors-app/",
+      logo: "/projects/logos/cursor.png",
+      logoClassName: "dark:invert",
+      content: () => {
+        return (
+          <>
+            <p>
+              A real-time collaborative web app using WebSockets where users
+              join with a name and see each other's cursor movements live,
+              enabling shared interaction through minimal input and seamless
+              syncing.
+            </p>
+            <div className="flex g-2 flex-wrap overflow-ellipsis">
+              {["ReactJS", "NodeJs", "WebSockets", "Express", "ws"].map(
+                (skill, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
+                    style={{ fontFamily: "JetBrains Mono" }}
+                  >
+                    {skill}
+                  </span>
+                )
+              )}
+            </div>
+          </>
+        );
+      },
+    },
+  ];
+
   // useEffect(() => {
   //   // Only preload the model if it hasn't been loaded yet
   //   if (!modelLoaded) {
@@ -746,7 +974,7 @@ function App() {
   // }, [modelLoaded]);
 
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-hidden scrollbar-hide">
       <AnimatePresence mode="wait">
         {!isLoaded ? (
           <LoadingAnimation key="loading" progress={loadingProgress} />
@@ -960,6 +1188,55 @@ function App() {
                 />
                 {/* </motion.div> */}
               </HalfHeightSection>
+
+              <Section
+                isVisible={showSixthScreen}
+                animationProps={SixthScreenAnimation}
+                className="overflow-hidden relative" // Added overflow-hidden
+              >
+                <motion.div
+                  variants={container}
+                  initial="hidden"
+                  animate="show"
+                  exit="exit"
+                  className="flex flex-col items-center w-full"
+                >
+                  <div
+                    className="sticky top-0 w-full h-[20vh] flex items-center justify-center bg-white dark:bg-black z-[9]"
+                    style={{
+                      position: "sticky",
+                      top: 0,
+                    }}
+                  >
+                    <HandDrawnUnderline
+                      strokeColor="#27ae60"
+                      strokeWidth={1.5}
+                      wobbleIntensityX={0.2}
+                      wobbleIntensityY={1.5}
+                      // segmentLength={15}
+                      style={{
+                        fontSize: "2em",
+                        fontWeight: "normal",
+                        color: "#34495e",
+                      }}
+                    >
+                      <TypeWrite words={words} />
+                    </HandDrawnUnderline>
+                  </div>
+
+                  <div
+                    className="h-[80vh] w-full overflow-y-scroll scrollbar-hide"
+                    style={{
+                      scrollBehavior: "smooth",
+                      WebkitOverflowScrolling: "touch",
+                      msOverflowStyle: "none",
+                      scrollbarWidth: "none",
+                    }}
+                  >
+                    <ExpandableCard cards={cards} />
+                  </div>
+                </motion.div>
+              </Section>
             </div>
           </motion.div>
         )}
