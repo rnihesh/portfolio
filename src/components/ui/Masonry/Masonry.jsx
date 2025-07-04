@@ -4,6 +4,7 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
+import { isResourceLoaded } from "../../../utils/resourcePreloader";
 
 const useMedia = (queries, values, defaultValue) => {
   const get = () =>
@@ -16,7 +17,7 @@ const useMedia = (queries, values, defaultValue) => {
     queries.forEach((q) => matchMedia(q).addEventListener("change", handler));
     return () =>
       queries.forEach((q) =>
-        matchMedia(q).removeEventListener("change", handler),
+        matchMedia(q).removeEventListener("change", handler)
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queries]);
@@ -41,17 +42,22 @@ const useMeasure = () => {
   return [ref, size];
 };
 
-const preloadImages = async (urls) => {
-  await Promise.all(
-    urls.map(
-      (src) =>
-        new Promise((resolve) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = img.onerror = () => resolve();
-        }),
-    ),
+const preloadVisibleImages = (items, setImagesReady) => {
+  // Only check if the first few images are ready
+  const firstFewImages = items.slice(0, 5);
+  const allFirstImagesReady = firstFewImages.every((item) =>
+    isResourceLoaded(item.img)
   );
+
+  if (allFirstImagesReady) {
+    setImagesReady(true);
+    return;
+  }
+
+  // Otherwise wait a bit and set ready anyway
+  setTimeout(() => {
+    setImagesReady(true);
+  }, 1000);
 };
 
 const Masonry = ({
@@ -73,7 +79,7 @@ const Masonry = ({
       "(min-width:400px)",
     ],
     [5, 4, 3, 2],
-    1,
+    1
   );
 
   const [containerRef, { width }] = useMeasure();
@@ -109,7 +115,7 @@ const Masonry = ({
   };
 
   useEffect(() => {
-    preloadImages(items.map((i) => i.img)).then(() => setImagesReady(true));
+    preloadVisibleImages(items, setImagesReady);
   }, [items]);
 
   const grid = useMemo(() => {
@@ -158,7 +164,7 @@ const Masonry = ({
             duration: 0.8,
             ease: "power3.out",
             delay: index * stagger,
-          },
+          }
         );
       } else {
         gsap.to(selector, {

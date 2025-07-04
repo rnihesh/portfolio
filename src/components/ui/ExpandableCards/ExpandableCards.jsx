@@ -1,6 +1,7 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "../../../hooks/useOutsideClick";
+import { isResourceLoaded } from "../../../utils/resourcePreloader";
 
 const CloseIcon = () => {
   return (
@@ -125,9 +126,17 @@ export default function ExpandableCard({ cards }) {
                       exit={{ opacity: 0 }}
                       href={active.github}
                       target="_blank"
-                      className="mx-2 "
+                      className="mx-2"
                     >
-                      <img src="/github/github-mark.svg" alt="" className="w-[30px] dark:invert " />
+                      <img
+                        src="/github/github-mark.svg"
+                        alt="GitHub"
+                        className={`w-[30px] dark:invert ${
+                          !isResourceLoaded("/github/github-mark.svg")
+                            ? "opacity-0"
+                            : "opacity-100"
+                        }`}
+                      />
                     </motion.a>
                     <motion.a
                       layout

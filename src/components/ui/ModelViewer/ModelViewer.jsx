@@ -4,7 +4,14 @@
 
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/no-unknown-property */
-import { Suspense, useRef, useLayoutEffect, useEffect, useMemo } from "react";
+import {
+  Suspense,
+  useRef,
+  useLayoutEffect,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   Canvas,
   useFrame,
@@ -66,10 +73,10 @@ const DesktopControls = ({ pivot, min, max, zoomEnabled }) => {
 
     // Check if zoom has changed
     if (Math.abs(lastZoom.current - camera.position.z) > 0.01) {
-      // console.log("Current Zoom:", {
-      //   cameraZ: camera.position.z.toFixed(2),
-      //   zoomFactor: (1 / camera.position.z).toFixed(2),
-      // });
+      console.log("Current Zoom:", {
+        cameraZ: camera.position.z.toFixed(2),
+        zoomFactor: (1 / camera.position.z).toFixed(2),
+      });
       lastZoom.current = camera.position.z;
       invalidate();
     }
@@ -119,7 +126,7 @@ const ModelInner = ({
   const cHov = useRef({ x: 0, y: 0 });
 
   const ext = useMemo(() => url.split(".").pop().toLowerCase(), [url]);
-  const gltf = useGLTF(url);
+  const gltf = useGLTF(url, true); // The second parameter forces it to use the cache
   const content = useMemo(() => {
     if (ext === "glb" || ext === "gltf") return gltf.scene.clone();
     if (ext === "fbx") return useFBX(url).clone();
@@ -227,13 +234,13 @@ const ModelInner = ({
       vel.current = { x: dx * ROTATE_SPEED, y: dy * ROTATE_SPEED };
 
       // Add logging when manually rotating
-      // console.log("Manual Rotation Updated:", {
-      //   rotationX: outer.current.rotation.x.toFixed(3),
-      //   rotationY: outer.current.rotation.y.toFixed(3),
-      //   rotationZ: outer.current.rotation.z.toFixed(3),
-      //   degX: THREE.MathUtils.radToDeg(outer.current.rotation.x).toFixed(1),
-      //   degY: THREE.MathUtils.radToDeg(outer.current.rotation.y).toFixed(1),
-      // });
+      console.log("Manual Rotation Updated:", {
+        rotationX: outer.current.rotation.x.toFixed(3),
+        rotationY: outer.current.rotation.y.toFixed(3),
+        rotationZ: outer.current.rotation.z.toFixed(3),
+        degX: THREE.MathUtils.radToDeg(outer.current.rotation.x).toFixed(1),
+        degY: THREE.MathUtils.radToDeg(outer.current.rotation.y).toFixed(1),
+      });
 
       invalidate();
     };
@@ -312,18 +319,14 @@ const ModelInner = ({
         const [p1, p2] = [...pts.values()];
         const d = Math.hypot(p1.x - p2.x, p1.y - p2.y);
         const ratio = startDist / d;
-        const newZoom = THREE.MathUtils.clamp(
-          startZ * ratio,
-          minZoom,
-          maxZoom
-        );
+        const newZoom = THREE.MathUtils.clamp(startZ * ratio, minZoom, maxZoom);
         camera.position.z = newZoom;
 
         // Add zoom logging
-        // console.log("Current Zoom:", {
-        //   cameraZ: newZoom.toFixed(2),
-        //   zoomFactor: (1 / newZoom).toFixed(2),
-        // });
+        console.log("Current Zoom:", {
+          cameraZ: newZoom.toFixed(2),
+          zoomFactor: (1 / newZoom).toFixed(2),
+        });
 
         invalidate();
       }
@@ -419,10 +422,10 @@ const ModelViewer = ({
   width = 400,
   height = 400,
   modelXOffset = 0,
-  modelYOffset = -0.5,
+  modelYOffset = 0.5,
   defaultRotationX = -50,
   defaultRotationY = 20,
-  defaultZoom = 0.5,
+  defaultZoom = 0.25,
   minZoomDistance = 0.5,
   maxZoomDistance = 10,
   enableMouseParallax = true,
@@ -440,9 +443,17 @@ const ModelViewer = ({
   fadeIn = false,
   autoRotate = false,
   autoRotateSpeed = 0.35,
+  isPreloaded = false, // Add isPreloaded to the props
   onModelLoaded,
 }) => {
-  useEffect(() => void useGLTF.preload(url), [url]);
+  // Only preload if not already preloaded by the resource preloader
+  useEffect(() => {
+    console.log("from modelviewer: ispreloaded: ", isPreloaded);
+    if (!isPreloaded) {
+      useGLTF.preload(url);
+    }
+  }, [url, isPreloaded]);
+
   const pivot = useRef(new THREE.Vector3()).current;
   const contactRef = useRef(null);
   const rendererRef = useRef(null);
@@ -451,21 +462,41 @@ const ModelViewer = ({
 
   const initYaw = deg2rad(defaultRotationX);
   const initPitch = deg2rad(defaultRotationY);
-  const camZ = Math.min(
-    Math.max(defaultZoom, minZoomDistance),
-    maxZoomDistance
-  );
-  // console.log("Model Viewer Initial Settings:", {
-  //   defaultRotationX,
-  //   defaultRotationY,
-  //   initYawRadians: initYaw,
-  //   initPitchRadians: initPitch,
-  //   defaultZoom,
-  //   calculatedCamZ: camZ,
-  //   modelXOffset,
-  //   modelYOffset,
-  //   zoomFactor: (1 / camZ).toFixed(2), // Added zoom factor
-  // });
+  // const camZ = Math.min(
+  //   Math.max(defaultZoom, minZoomDistance),
+  //   maxZoomDistance
+  // );
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 768); // Adjust breakpoint as needed
+    };
+
+    // Initial check
+    checkScreenSize();
+
+    // Add resize listener
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  const responsiveZoom = isSmallScreen ? 0.001 : defaultZoom;
+  const responsiveYOffset = isSmallScreen ? modelYOffset - 0.1 : modelYOffset;
+
+  const camZ = responsiveZoom; // Use the responsive zoom value
+
+  console.log("Model Viewer Initial Settings:", {
+    defaultRotationX,
+    defaultRotationY,
+    initYawRadians: initYaw,
+    initPitchRadians: initPitch,
+    defaultZoom,
+    calculatedCamZ: camZ,
+    modelXOffset,
+    modelYOffset,
+    zoomFactor: (1 / camZ).toFixed(2), // Added zoom factor
+  });
 
   const capture = () => {
     const g = rendererRef.current,
@@ -522,7 +553,12 @@ const ModelViewer = ({
           gl.toneMapping = THREE.ACESFilmicToneMapping;
           gl.outputColorSpace = THREE.SRGBColorSpace;
         }}
-        camera={{ fov: 50, position: [0, 0, camZ], near: 0.01, far: 100 }}
+        camera={{
+          fov: isSmallScreen ? 15 : 20, // Wider FOV on small screens
+          position: [0, 0, camZ],
+          near: 0.0001,
+          far: 100,
+        }}
         style={{ touchAction: "pan-y pinch-zoom" }}
       >
         {environmentPreset !== "none" && (
@@ -553,7 +589,9 @@ const ModelViewer = ({
           <ModelInner
             url={url}
             xOff={modelXOffset}
-            yOff={modelYOffset}
+            yOff={
+              responsiveYOffset // Use responsive Y offset
+            }
             pivot={pivot}
             initYaw={initYaw}
             initPitch={initPitch}
@@ -563,7 +601,7 @@ const ModelViewer = ({
             enableManualRotation={enableManualRotation}
             enableHoverRotation={enableHoverRotation}
             enableManualZoom={enableManualZoom}
-            autoFrame={autoFrame}
+            autoFrame={isSmallScreen ? true : autoFrame} // Auto-frame on small screens
             fadeIn={fadeIn}
             autoRotate={autoRotate}
             autoRotateSpeed={autoRotateSpeed}
