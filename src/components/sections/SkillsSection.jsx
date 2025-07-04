@@ -4,7 +4,7 @@ import Section from "../layout/Section";
 import DotGrid from "../../Backgrounds/DotGrid/DotGrid";
 import { skills } from "../../data/skills";
 
-function SkillsSection({ isVisible, animationProps }) {
+function SkillsSection({id, isVisible, animationProps }) {
   // staggered animation for children
   const container = {
     hidden: { opacity: 0 },
@@ -58,6 +58,7 @@ function SkillsSection({ isVisible, animationProps }) {
 
   return (
     <Section
+    id={id}
       isVisible={isVisible}
       animationProps={animationProps}
       background={

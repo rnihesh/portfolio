@@ -6,7 +6,7 @@ import HandDrawnUnderline from "../my-creation/HandDrawnUnderline/HandDrawnUnder
 import ExpandableCard from "../ui/ExpandableCards/ExpandableCards";
 import { projects } from "../../data/projects";
 
-function ProjectsSection({ isVisible, animationProps }) {
+function ProjectsSection({ id, isVisible, animationProps }) {
   // staggered animation for children
   const container = {
     hidden: { opacity: 0 },
@@ -69,6 +69,7 @@ function ProjectsSection({ isVisible, animationProps }) {
   ];
   return (
     <Section
+      id={id}
       isVisible={isVisible}
       animationProps={animationProps}
       className="overflow-hidden relative" // Added overflow-hidden

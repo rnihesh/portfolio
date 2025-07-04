@@ -5,7 +5,7 @@ import ModelViewer from "../ui/ModelViewer/ModelViewer";
 import { models } from "../../data/models";
 import { isResourceLoaded } from "../../utils/resourcePreloader";
 
-function ModelSection({ isVisible, animationProps }) {
+function ModelSection({ id, isVisible, animationProps }) {
   // Get the current model to display
   const currentModel = models.plane; // You can change this to any model in your config
 
@@ -63,7 +63,11 @@ function ModelSection({ isVisible, animationProps }) {
     },
   };
   return (
-    <HalfHeightSection isVisible={isVisible} animationProps={animationProps}>
+    <HalfHeightSection
+      id={id}
+      isVisible={isVisible}
+      animationProps={animationProps}
+    >
       <motion.div
         variants={container}
         initial="hidden"

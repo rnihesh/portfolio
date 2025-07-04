@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Section from "../layout/Section";
 import BlurText from "../../TextAnimations/BlurText/BlurText";
 
-function IntroSection({ isVisible, animationProps }) {
+function IntroSection({id, isVisible, animationProps }) {
   // staggered animation for children
   const container = {
     hidden: { opacity: 0 },
@@ -58,6 +58,7 @@ function IntroSection({ isVisible, animationProps }) {
   return (
     <Section
       // ref={firstScreenRef}
+      id={id}
       isVisible={isVisible}
       animationProps={animationProps}
     >

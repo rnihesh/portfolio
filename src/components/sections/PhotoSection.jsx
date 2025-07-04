@@ -3,9 +3,10 @@ import HalfHeightSection from "../layout/HalfHeightSection";
 import Masonry from "../ui/Masonry/Masonry";
 import { photoItems } from "../../data/photos";
 
-function PhotoSection({ isVisible, animationProps }) {
+function PhotoSection({ id, isVisible, animationProps }) {
   return (
     <HalfHeightSection
+      id={id}
       isVisible={isVisible}
       animationProps={animationProps}
       className=""

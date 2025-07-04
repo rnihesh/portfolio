@@ -1,7 +1,8 @@
-import React from 'react'
-import {motion, AnimatePresence} from "framer-motion"
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const HalfHeightSection = ({
+  id,
   isVisible,
   children,
   animationProps,
@@ -10,6 +11,7 @@ const HalfHeightSection = ({
 }) => {
   return (
     <div
+      id={id}
       className={`h-[50vh] w-full flex items-center justify-center relative overflow-hidden ${className}`}
     >
       {background && <div className="absolute inset-0 z-0">{background}</div>}
@@ -33,4 +35,4 @@ const HalfHeightSection = ({
   );
 };
 
-export default HalfHeightSection
+export default HalfHeightSection;

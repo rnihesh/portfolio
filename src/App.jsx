@@ -15,6 +15,9 @@ import ModelSection from "./components/sections/ModelSection";
 import PhotoSection from "./components/sections/PhotoSection";
 import ProjectsSection from "./components/sections/ProjectsSection";
 
+// command toolbar
+import CommandToolbar from "./components/my-creation/CommandToolbar/CommandToolbar";
+
 // Animation properties for each section
 const firstScreenAnimation = {
   key: "first-screen",
@@ -144,39 +147,47 @@ function App() {
             transition={{ duration: 0.8 }}
             className="min-h-[600vh] w-full relative bg-white dark:bg-black"
           >
+            <CommandToolbar />
             <div className="absolute inset-0 flex flex-col items-center">
               <IntroSection
+                id="intro"
                 ref={firstScreenRef}
                 isVisible={showFirstScreen}
                 animationProps={firstScreenAnimation}
               />
 
               <NameSection
+                id="name"
                 isVisible={showSecondScreen}
                 animationProps={secondScreenAnimation}
               />
-              
+
               <WhatAmISection
+                id="whatami"
                 isVisible={showThirdScreen}
                 animationProps={thirdScreenAnimation}
               />
 
               <SkillsSection
+                id="skills"
                 isVisible={showFourthScreen}
                 animationProps={fourthScreenAnimation}
               />
 
               <ModelSection
+                id="model"
                 isVisible={showFifthScreen}
                 animationProps={fifthScreenAnimation}
               />
 
               <PhotoSection
+                id="photos"
                 isVisible={showFifthScreen}
                 animationProps={fifthScreenAnimation}
               />
 
               <ProjectsSection
+                id="projects"
                 isVisible={showSixthScreen}
                 animationProps={sixthScreenAnimation}
               />

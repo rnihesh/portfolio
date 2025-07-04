@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Section from "../layout/Section";
-import TextPressure from "../../TextAnimations/TextPressure/TextPressure"
+import TextPressure from "../../TextAnimations/TextPressure/TextPressure";
 
-function NameSection({ isVisible, animationProps }) {
+function NameSection({ id, isVisible, animationProps }) {
   // staggered animation for children
   const container = {
     hidden: { opacity: 0 },
@@ -55,10 +55,7 @@ function NameSection({ isVisible, animationProps }) {
     },
   };
   return (
-    <Section
-      isVisible={isVisible}
-      animationProps={animationProps}
-    >
+    <Section id={id} isVisible={isVisible} animationProps={animationProps}>
       <TextPressure
         text="I'm ‎  Nihesh"
         fontFamily="Figtree"

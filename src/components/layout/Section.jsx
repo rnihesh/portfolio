@@ -1,7 +1,8 @@
-import React from 'react'
-import {motion, AnimatePresence} from "framer-motion"
- 
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
 const Section = ({
+  id,
   isVisible,
   children,
   animationProps,
@@ -10,6 +11,7 @@ const Section = ({
 }) => {
   return (
     <div
+      id={id}
       className={`h-screen w-full flex items-center justify-center relative ${className}`}
     >
       {background && <div className="absolute inset-0 z-0">{background}</div>}
@@ -33,4 +35,4 @@ const Section = ({
   );
 };
 
-export default Section
+export default Section;

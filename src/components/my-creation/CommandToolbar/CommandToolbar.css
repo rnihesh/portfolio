@@ -1,0 +1,81 @@
+.command-toolbar {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  padding: 0.75rem 1rem;
+  font-size: 0.8rem;
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Themes */
+.command-toolbar.light {
+  background: rgba(255, 255, 255, 0.8);
+  color: black;
+}
+
+.command-toolbar.dark {
+  background: rgba(24, 24, 27, 0.85);
+  color: white;
+}
+
+/* Animate out */
+.command-toolbar.shrinking {
+  animation: shrinkToArrow 0.3s forwards;
+}
+
+/* Animate in */
+.command-toolbar.expanding {
+  animation: expandFromArrow 0.3s forwards;
+}
+
+/* After animation ends, apply stable compact style */
+.command-toolbar.compact {
+  transform: translateX(160px);
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+@keyframes shrinkToArrow {
+  0% {
+    transform: translateX(0);
+    width: 220px;
+    height: auto;
+    border-radius: 12px;
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(160px);
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    opacity: 0.9;
+  }
+}
+
+@keyframes expandFromArrow {
+  0% {
+    transform: translateX(160px);
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(0);
+    width: 220px;
+    height: auto;
+    border-radius: 12px;
+    opacity: 1;
+  }
+}
