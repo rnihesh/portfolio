@@ -5,10 +5,10 @@
 import { useEffect, useRef, useState } from "react";
 
 const TextPressure = ({
-  text = "Compressa",
-  fontFamily = "Compressa VF",
+  text = "Fira Code",
+  fontFamily = "JetBrains Mono",
   // This font is just an example, you should not use it in commercial projects.
-  fontUrl = "https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2",
+  fontUrl = "https://fonts.gstatic.com/s/jetbrainsmono/v23/tDbV2o-flEEny0FZhsfKu5WU4xD7OwGtT0rU.woff2",
 
   width = true,
   weight = true,
@@ -159,6 +159,7 @@ const TextPressure = ({
           font-family: '${fontFamily}';
           src: url('${fontUrl}');
           font-style: normal;
+          font-weight: 100 900;
         }
         .stroke span {
           position: relative;
