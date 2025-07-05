@@ -8,6 +8,7 @@ const shortcuts = [
   { key: "5", label: "Model", sectionId: "model" },
   { key: "6", label: "Photos", sectionId: "photos" },
   { key: "7", label: "Projects", sectionId: "projects" },
+  { key: "8", label: "Vibes", sectionId: "vibe" },
 ];
 
 const CommandToolbar = () => {

@@ -8,6 +8,7 @@ const Section = ({
   animationProps,
   background,
   className,
+  innerClassName
 }) => {
   return (
     <div
@@ -24,7 +25,7 @@ const Section = ({
               animate={animationProps.animate}
               exit={animationProps.exit}
               transition={animationProps.transition}
-              className="flex items-center justify-center h-64 w-[80vw] md:h-96 md:w-[90vw] overflow"
+              className={`flex items-center justify-center h-64 w-[80vw] md:h-96 md:w-[90vw] overflow ${innerClassName}`}
             >
               {children}
             </motion.div>

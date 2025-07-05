@@ -14,6 +14,7 @@ import SkillsSection from "./components/sections/SkillsSection";
 import ModelSection from "./components/sections/ModelSection";
 import PhotoSection from "./components/sections/PhotoSection";
 import ProjectsSection from "./components/sections/ProjectsSection";
+import VibeSection from "./components/sections/VibeSection";
 
 // command toolbar
 import CommandToolbar from "./components/my-creation/CommandToolbar/CommandToolbar";
@@ -67,6 +68,14 @@ const sixthScreenAnimation = {
   transition: { duration: 0.8 },
 };
 
+const seventhScreenAnimation = {
+  key: "fifth-screen",
+  initial: { opacity: 0, y: 50 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: 50 },
+  transition: { duration: 0.8 },
+};
+
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -79,6 +88,7 @@ function App() {
     showFourthScreen,
     showFifthScreen,
     showSixthScreen,
+    showSeventhScreen,
   } = useVisibilityOnScroll();
 
   useEffect(() => {
@@ -145,7 +155,7 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="min-h-[600vh] w-full relative bg-white dark:bg-black"
+            className="min-h-[700vh] w-full relative bg-white dark:bg-black"
           >
             <CommandToolbar />
             <div className="absolute inset-0 flex flex-col items-center">
@@ -190,6 +200,12 @@ function App() {
                 id="projects"
                 isVisible={showSixthScreen}
                 animationProps={sixthScreenAnimation}
+              />
+
+              <VibeSection
+                id="vibe"
+                isVisible={showSeventhScreen}
+                animationProps={seventhScreenAnimation}
               />
             </div>
           </motion.div>

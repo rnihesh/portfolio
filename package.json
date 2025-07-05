@@ -18,6 +18,8 @@
     "matter-js": "^0.20.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "rough-notation": "^0.5.1",
+    "roughjs": "^4.6.6",
     "tailwindcss": "^4.1.11",
     "three": "^0.167.1"
   },
