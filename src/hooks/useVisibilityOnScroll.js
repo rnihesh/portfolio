@@ -8,6 +8,7 @@ export default function useVisibilityOnScroll() {
   const [showFifthScreen, setShowFifthScreen] = useState(false);
   const [showSixthScreen, setShowSixthScreen] = useState(false);
   const [showSeventhScreen, setShowSeventhScreen] = useState(false);
+  const [showEighthScreen, setShowEighthScreen] = useState(false);
   const handleScroll = useCallback(() => {
     const windowHeight = window.innerHeight;
     const scrollPosition = window.scrollY;
@@ -61,10 +62,15 @@ export default function useVisibilityOnScroll() {
     } else {
       setShowSixthScreen(false);
     }
-    if (scrollPosition >= windowHeight * 4.7) {
+    if (scrollPosition >= windowHeight * 5.7) {
       setShowSeventhScreen(true);
     } else {
       setShowSeventhScreen(false);
+    }
+    if (scrollPosition >= windowHeight * 6.7) {
+      setShowEighthScreen(true);
+    } else {
+      setShowEighthScreen(false);
     }
   }, []);
 
@@ -92,6 +98,7 @@ export default function useVisibilityOnScroll() {
     showFourthScreen,
     showFifthScreen,
     showSixthScreen,
-    showSeventhScreen
+    showSeventhScreen,
+    showEighthScreen
   };
 }

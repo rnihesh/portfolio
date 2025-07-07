@@ -18,6 +18,7 @@ import VibeSection from "./components/sections/VibeSection";
 
 // command toolbar
 import CommandToolbar from "./components/my-creation/CommandToolbar/CommandToolbar";
+import AcadAchieSection from "./components/sections/AcadAchieSection";
 
 // Animation properties for each section
 const firstScreenAnimation = {
@@ -61,7 +62,7 @@ const fifthScreenAnimation = {
 };
 
 const sixthScreenAnimation = {
-  key: "fifth-screen",
+  key: "sixth-screen",
   initial: { opacity: 0, y: 50 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: 50 },
@@ -69,7 +70,15 @@ const sixthScreenAnimation = {
 };
 
 const seventhScreenAnimation = {
-  key: "fifth-screen",
+  key: "seventh-screen",
+  initial: { opacity: 0, y: 50 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: 50 },
+  transition: { duration: 0.8 },
+};
+
+const eighthScreenAnimation = {
+  key: "eighth-screen",
   initial: { opacity: 0, y: 50 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: 50 },
@@ -89,6 +98,7 @@ function App() {
     showFifthScreen,
     showSixthScreen,
     showSeventhScreen,
+    showEighthScreen,
   } = useVisibilityOnScroll();
 
   useEffect(() => {
@@ -155,7 +165,7 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="min-h-[700vh] w-full relative bg-white dark:bg-black"
+            className="min-h-[800vh] w-full relative bg-white dark:bg-black"
           >
             <CommandToolbar />
             <div className="absolute inset-0 flex flex-col items-center">
@@ -206,6 +216,12 @@ function App() {
                 id="vibe"
                 isVisible={showSeventhScreen}
                 animationProps={seventhScreenAnimation}
+              />
+
+              <AcadAchieSection
+                id="acad-achie"
+                isVisible={showEighthScreen}
+                animationProps={eighthScreenAnimation}
               />
             </div>
           </motion.div>
