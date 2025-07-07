@@ -1,81 +1,47 @@
-.command-toolbar {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 9999;
-  padding: 0.75rem 1rem;
-  font-size: 0.8rem;
-  border-radius: 12px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: all 0.3s ease-in-out;
+.closing-toolbar {
+  animation: closeToolbar 3s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+  animation-delay: 3s;
 }
 
-/* Themes */
-.command-toolbar.light {
-  background: rgba(255, 255, 255, 0.8);
-  color: black;
+.closing-toolbar:hover {
+  /* animation-direction: reverse; */
+  /* animation-play-state: running; */
+  animation-play-state: paused;
 }
 
-.command-toolbar.dark {
-  background: rgba(24, 24, 27, 0.85);
-  color: white;
-}
-
-/* Animate out */
-.command-toolbar.shrinking {
-  animation: shrinkToArrow 0.3s forwards;
-}
-
-/* Animate in */
-.command-toolbar.expanding {
-  animation: expandFromArrow 0.3s forwards;
-}
-
-/* After animation ends, apply stable compact style */
-.command-toolbar.compact {
-  transform: translateX(160px);
-  width: 48px;
-  height: 48px;
-  border-radius: 999px;
-  opacity: 0.9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-@keyframes shrinkToArrow {
+@keyframes closeToolbar {
   0% {
-    transform: translateX(0);
-    width: 220px;
-    height: auto;
-    border-radius: 12px;
     opacity: 1;
+    transform: scale(1) translateY(0);
+    border-radius: 0.5rem;
+    visibility: visible;
   }
+  /* 25% {
+    opacity: 0.85;
+    transform: scale(0.9) translateY(15px) translateX(15px);
+    border-radius: 1rem;
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.7) translateY(40px) translateX(40px);
+    width: 200px;
+    height: 200px;
+    text-overflow: ellipsis;
+    border-radius: 50%;
+  }
+  75% {
+    opacity: 0.3;
+    transform: scale(0.4) translateY(70px) translateX(70px);
+    border-radius: 50%;
+    right: 2px;
+    bottom: 2px;
+  } */
   100% {
-    transform: translateX(160px);
-    width: 48px;
-    height: 48px;
-    border-radius: 999px;
-    opacity: 0.9;
-  }
-}
-
-@keyframes expandFromArrow {
-  0% {
-    transform: translateX(160px);
-    width: 48px;
-    height: 48px;
-    border-radius: 999px;
-    opacity: 0.9;
-  }
-  100% {
-    transform: translateX(0);
-    width: 220px;
-    height: auto;
-    border-radius: 12px;
-    opacity: 1;
+    opacity: 0;
+    transform: scale(0) translateY(250px) translateX(140px);
+    border-radius: 50%;
+    visibility: hidden;
+    right: 0px;
+    bottom: 0px;
   }
 }

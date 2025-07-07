@@ -1,0 +1,10 @@
+export const shortcuts = [
+  { key: "1", label: "Intro", sectionId: "intro" },
+  { key: "2", label: "Name", sectionId: "name" },
+  { key: "3", label: "WhatAmI", sectionId: "whatami" },
+  { key: "4", label: "Skills", sectionId: "skills" },
+  { key: "5", label: "Model", sectionId: "model" },
+  { key: "6", label: "Photos", sectionId: "photos" },
+  { key: "7", label: "Projects", sectionId: "projects" },
+  { key: "8", label: "Vibes", sectionId: "vibe" },
+];

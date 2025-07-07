@@ -1,15 +1,7 @@
 import { useEffect, useState } from "react";
+import { shortcuts } from "../../../data/shortcuts";
+import "./CommandToolbar.css"
 
-const shortcuts = [
-  { key: "1", label: "Intro", sectionId: "intro" },
-  { key: "2", label: "Name", sectionId: "name" },
-  { key: "3", label: "WhatAmI", sectionId: "whatami" },
-  { key: "4", label: "Skills", sectionId: "skills" },
-  { key: "5", label: "Model", sectionId: "model" },
-  { key: "6", label: "Photos", sectionId: "photos" },
-  { key: "7", label: "Projects", sectionId: "projects" },
-  { key: "8", label: "Vibes", sectionId: "vibe" },
-];
 
 const CommandToolbar = () => {
   const [isMac, setIsMac] = useState(false);
@@ -35,8 +27,8 @@ const CommandToolbar = () => {
 
   return (
     <div
-      className="fixed top-4 right-4 bg-black text-white dark:text-black text-sm p-3 rounded-lg z-50 hidden md:block backdrop-blur-4xl opacity-60 dark:bg-white"
-      style={{ fontFamily: "Red Rose" }}
+      className="fixed bottom-4 right-4 bg-black/50 text-white dark:text-black text-sm p-3 rounded-lg z-50 hidden md:block backdrop-blur-lg  dark:bg-white/50 pb-13 rounded-br-4xl closing-toolbar"
+      style={{ fontFamily: "Red Rose" , backdropFilter: "blur(4px)"}}
     >
       {shortcuts.map((s) => (
         <div key={s.key}>

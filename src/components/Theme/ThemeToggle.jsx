@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { shortcuts } from "../../data/shortcuts";
 
 const ThemeToggle = () => {
   const [isDark, setIsDark] = useState(false);
@@ -32,7 +33,7 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="fixed bottom-5 right-5 p-3 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-white shadow-lg transition-all duration-300 hover:scale-110 z-50"
+      className="fixed bottom-5 right-5 p-3 rounded-full bg-gray-200/20 dark:bg-gray-800/20 text-gray-800 dark:text-white shadow-lg transition-all duration-300 hover:scale-110 z-50 backdrop-blur-xl"
       aria-label="Toggle dark mode"
     >
       {isDark ? (
