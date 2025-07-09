@@ -1,22 +1,55 @@
+name: Deploy to GitHub Pages
+
 on:
   push:
     branches:
       - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      # Step 1: Get your code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: "22"
-      - run: npm ci
-      - run: npm run build
-      - name: Configure Git
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+          node-version: "18"
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 4: Build your project
+      - name: Build project
+        run: npm run build
+
+      # Step 5: Deploy manually to GitHub Pages
       - name: Deploy to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx gh-pages -d dist -u "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+        run: |
+          # Configure git identity
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+          # Create/checkout gh-pages branch
+          git checkout --orphan gh-pages
+
+          # Remove existing files
+          git rm -rf .
+
+          # Copy build files to root
+          cp -r dist/* .
+
+          # Add all files
+          git add .
+
+          # Commit changes
+          git commit -m "Deploy to GitHub Pages"
+
+          # Push to gh-pages branch, force because history is different
+          git push origin gh-pages --force
