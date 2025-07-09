@@ -36,6 +36,10 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
+          # Save the build output
+          mkdir -p /tmp/dist
+          cp -r dist/* /tmp/dist/
+
           # Check if gh-pages branch exists
           if git ls-remote --heads origin gh-pages | grep -q 'gh-pages'; then
             # Branch exists - fetch and check it out
@@ -53,8 +57,8 @@ jobs:
           # Clean the working directory (but keep .git folder)
           find . -maxdepth 1 ! -name .git ! -name . -exec rm -rf {} \;
 
-          # Copy build files to root
-          cp -r ../dist/* .
+          # Copy build files to root (from saved location)
+          cp -r /tmp/dist/* .
 
           # Add all files
           git add .
