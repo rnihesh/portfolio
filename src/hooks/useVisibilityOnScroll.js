@@ -9,6 +9,7 @@ export default function useVisibilityOnScroll() {
   const [showSixthScreen, setShowSixthScreen] = useState(false);
   const [showSeventhScreen, setShowSeventhScreen] = useState(false);
   const [showEighthScreen, setShowEighthScreen] = useState(false);
+  const [showNinthScreen, setShowNinthScreen] = useState(false);
   const handleScroll = useCallback(() => {
     const windowHeight = window.innerHeight;
     const scrollPosition = window.scrollY;
@@ -51,26 +52,35 @@ export default function useVisibilityOnScroll() {
     }
 
     // Fifth screen visibility
-    if (scrollPosition >= windowHeight * 3.3) {
+    if (scrollPosition >= windowHeight * 3.3&&
+      scrollPosition <= windowHeight * 4.3) {
       setShowFifthScreen(true);
     } else {
       setShowFifthScreen(false);
     }
 
-    if (scrollPosition >= windowHeight * 4.7) {
+    if (scrollPosition >= windowHeight * 4.7&&
+      scrollPosition <= windowHeight * 5.3) {
       setShowSixthScreen(true);
     } else {
       setShowSixthScreen(false);
     }
-    if (scrollPosition >= windowHeight * 5.7) {
+    if (scrollPosition >= windowHeight * 5.7&&
+      scrollPosition <= windowHeight * 6.3) {
       setShowSeventhScreen(true);
     } else {
       setShowSeventhScreen(false);
     }
-    if (scrollPosition >= windowHeight * 6.7) {
+    if (scrollPosition >= windowHeight * 6.7&&
+      scrollPosition <= windowHeight * 7.3) {
       setShowEighthScreen(true);
     } else {
       setShowEighthScreen(false);
+    }
+    if (scrollPosition >= windowHeight * 7.7) {
+      setShowNinthScreen(true);
+    } else {
+      setShowNinthScreen(false);
     }
   }, []);
 
@@ -99,6 +109,7 @@ export default function useVisibilityOnScroll() {
     showFifthScreen,
     showSixthScreen,
     showSeventhScreen,
-    showEighthScreen
+    showEighthScreen,
+    showNinthScreen
   };
 }

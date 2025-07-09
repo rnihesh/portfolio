@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
 import ThemeToggle from "./components/Theme/ThemeToggle";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, scale } from "framer-motion";
 import useVisibilityOnScroll from "./hooks/useVisibilityOnScroll";
 import { preloadResources } from "./utils/resourcePreloader";
 
@@ -15,10 +15,11 @@ import ModelSection from "./components/sections/ModelSection";
 import PhotoSection from "./components/sections/PhotoSection";
 import ProjectsSection from "./components/sections/ProjectsSection";
 import VibeSection from "./components/sections/VibeSection";
+import AcadAchieSection from "./components/sections/AcadAchieSection";
+import ConnectSection from "./components/sections/ConnectSection";
 
 // command toolbar
 import CommandToolbar from "./components/my-creation/CommandToolbar/CommandToolbar";
-import AcadAchieSection from "./components/sections/AcadAchieSection";
 
 // Animation properties for each section
 const firstScreenAnimation = {
@@ -81,6 +82,14 @@ const eighthScreenAnimation = {
   key: "eighth-screen",
   initial: { opacity: 0, y: 50 },
   animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, scale: 0.8},
+  transition: { duration: 0.8 },
+};
+
+const ninthScreenAnimation = {
+  key: "ninth-screen",
+  initial: { opacity: 0, y: 50 },
+  animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: 50 },
   transition: { duration: 0.8 },
 };
@@ -99,6 +108,7 @@ function App() {
     showSixthScreen,
     showSeventhScreen,
     showEighthScreen,
+    showNinthScreen
   } = useVisibilityOnScroll();
 
   useEffect(() => {
@@ -165,7 +175,7 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="min-h-[800vh] w-full relative bg-white dark:bg-black"
+            className="min-h-[900vh] w-full relative bg-white dark:bg-black"
           >
             <CommandToolbar />
             <div className="absolute inset-0 flex flex-col items-center">
@@ -223,6 +233,13 @@ function App() {
                 isVisible={showEighthScreen}
                 animationProps={eighthScreenAnimation}
               />
+
+            <ConnectSection
+              id="connect"
+              isVisible={showNinthScreen}
+              animationProps={ninthScreenAnimation}
+            />
+
             </div>
           </motion.div>
         )}
