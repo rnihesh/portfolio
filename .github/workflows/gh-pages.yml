@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "22"
 
       # Step 3: Install dependencies
       - name: Install dependencies
@@ -29,27 +29,38 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # Step 5: Deploy manually to GitHub Pages
+      # Step 5: Deploy to GitHub Pages (with history)
       - name: Deploy to GitHub Pages
         run: |
           # Configure git identity
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-          # Create/checkout gh-pages branch
-          git checkout --orphan gh-pages
+          # Check if gh-pages branch exists
+          if git ls-remote --heads origin gh-pages | grep -q 'gh-pages'; then
+            # Branch exists - fetch and check it out
+            git fetch origin gh-pages
+            git checkout gh-pages
+          else
+            # First time - create the branch
+            git checkout --orphan gh-pages
+            git reset --hard
+            git commit --allow-empty -m "Initial gh-pages branch"
+            git push origin gh-pages
+            git checkout gh-pages
+          fi
 
-          # Remove existing files
-          git rm -rf .
+          # Clean the working directory (but keep .git folder)
+          find . -maxdepth 1 ! -name .git ! -name . -exec rm -rf {} \;
 
           # Copy build files to root
-          cp -r dist/* .
+          cp -r ../dist/* .
 
           # Add all files
           git add .
 
-          # Commit changes
-          git commit -m "Deploy to GitHub Pages"
+          # Commit with timestamp
+          git commit -m "Deploy to GitHub Pages - $(date +'%Y-%m-%d %H:%M:%S')"
 
-          # Push to gh-pages branch, force because history is different
-          git push origin gh-pages --force
+          # Push to gh-pages branch (no force)
+          git push origin gh-pages
