@@ -97,7 +97,7 @@ function ModelSection({ id, isVisible, animationProps }) {
           fadeIn={false}
           environmentPreset="sunset"
           keyLightIntensity={2.0}
-          placeholderSrc="/nihesh.png"
+          placeholderSrc="nihesh.png"
           defaultRotationX={currentModel.defaultRotationX}
           defaultRotationY={currentModel.defaultRotationY}
           defaultZoom={currentModel.defaultZoom || 0.25}

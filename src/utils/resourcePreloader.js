@@ -21,7 +21,7 @@ export const preloadResources = async (setLoadingProgress, setIsLoaded) => {
   ]);
 
   // Add GitHub mark logo to critical resources
-  const githubLogo = "/github/github-mark.svg";
+  const githubLogo = "github/github-mark.svg";
 
   // Get model URLs from centralized config
   const modelUrls = getAllModelUrls();

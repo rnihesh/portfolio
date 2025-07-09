@@ -2,37 +2,37 @@ export const skills = [
   // Frontend
   {
     name: "React.js",
-    image: "/images/react.svg",
+    image: "images/react.svg",
     font: "'Cascadia Code', monospace",
     category: "Frontend",
   },
   {
     name: "HTML5",
-    image: "/images/HTML5.svg",
+    image: "images/HTML5.svg",
     font: "'Cascadia Code', monospace",
     category: "Frontend",
   },
   {
     name: "CSS3",
-    image: "/images/css3.svg",
+    image: "images/css3.svg",
     font: "'Cascadia Code', monospace",
     category: "Frontend",
   },
   {
     name: "JavaScript",
-    image: "/images/javascript.svg",
+    image: "images/javascript.svg",
     font: "'Cascadia Code', monospace",
     category: "Frontend",
   },
   {
     name: "Bootstrap",
-    image: "/images/bootstrap.svg",
+    image: "images/bootstrap.svg",
     font: "'Cascadia Code', monospace",
     category: "Frontend",
   },
   {
     name: "Tailwind CSS",
-    image: "/images/tailwindcss.svg",
+    image: "images/tailwindcss.svg",
     font: "'Cascadia Code', monospace",
     category: "Frontend",
   },
@@ -40,13 +40,13 @@ export const skills = [
   // Backend
   {
     name: "Node.js",
-    image: "/images/nodejs.svg",
+    image: "images/nodejs.svg",
     font: "'Cascadia Code', monospace",
     category: "Backend",
   },
   {
     name: "Express.js",
-    image: "/images/express.png",
+    image: "images/express.png",
     font: "'Cascadia Code', monospace",
     category: "Backend",
   },
@@ -54,25 +54,25 @@ export const skills = [
   // Database
   {
     name: "MongoDB",
-    image: "/images/mongodb.svg",
+    image: "images/mongodb.svg",
     font: "'Cascadia Code', monospace",
     category: "Database",
   },
   {
     name: "MySQL",
-    image: "/images/mysql.png",
+    image: "images/mysql.png",
     font: "'Cascadia Code', monospace",
     category: "Database",
   },
   {
     name: "SQLite",
-    image: "/images/sqlite.svg",
+    image: "images/sqlite.svg",
     font: "'Cascadia Code', monospace",
     category: "Database",
   },
   {
     name: "Firebase",
-    image: "/images/firebase.svg",
+    image: "images/firebase.svg",
     font: "'Cascadia Code', monospace",
     category: "Database",
   },
@@ -80,19 +80,19 @@ export const skills = [
   // Other Tools
   {
     name: "Git",
-    image: "/images/git.svg",
+    image: "images/git.svg",
     font: "'Cascadia Code', monospace",
     category: "Tools",
   },
   {
     name: "AWS",
-    image: "/images/aws.svg",
+    image: "images/aws.svg",
     font: "'Cascadia Code', monospace",
     category: "Cloud",
   },
   {
     name: "Vercel",
-    image: "/images/vercel.svg",
+    image: "images/vercel.svg",
     font: "'Cascadia Code', monospace",
     category: "Deployment",
   },

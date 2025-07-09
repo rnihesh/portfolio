@@ -1144,7 +1144,7 @@ function App() {
                     fadeIn={false}
                     environmentPreset="sunset"
                     keyLightIntensity={2.0}
-                    placeholderSrc="/nihesh.png"
+                    placeholderSrc="nihesh.png"
                     defaultRotationX={-20.8} // Updated from 32.1 to match new degY value
                     defaultRotationY={10.8} // Updated from 27.4 to match new degX value
                     defaultZoom={2}

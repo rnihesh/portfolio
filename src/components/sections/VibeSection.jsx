@@ -181,7 +181,7 @@ function VibeSection({ id, isVisible, animationProps }) {
           </h2>
 
           <img
-            src="/vibe/battrix.png"
+            src="vibe/battrix.png"
             alt="battrix"
             className="rounded object-cover object-top h-40 w-50  hidden lg:block"
           />
@@ -204,7 +204,7 @@ function VibeSection({ id, isVisible, animationProps }) {
             </p>
             <a href="https://github.com/rnihesh/battrix" className="ml-3">
               <img
-                src="/github/github-mark-white.svg"
+                src="github/github-mark-white.svg"
                 alt=""
                 width="40px"
                 className="invert  hover:scale-110 transition"
@@ -241,7 +241,7 @@ function VibeSection({ id, isVisible, animationProps }) {
           </h2>
 
           <img
-            src="/vibe/myftpserver.jpg"
+            src="vibe/myftpserver.jpg"
             alt="battrix"
             className="rounded object-cover object-top h-40 w-50 hidden lg:block"
           />
@@ -264,7 +264,7 @@ function VibeSection({ id, isVisible, animationProps }) {
             </p>
             <a href="https://github.com/rnihesh/MyFtpServer" className="ml-3">
               <img
-                src="/github/github-mark-white.svg"
+                src="github/github-mark-white.svg"
                 alt=""
                 width="40px"
                 className="invert  hover:scale-110 transition"

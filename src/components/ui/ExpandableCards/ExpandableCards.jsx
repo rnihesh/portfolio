@@ -170,10 +170,10 @@ export default function ExpandableCard({ cards }) {
                         className="mx-2"
                       >
                         <img
-                          src="/github/github-mark.svg"
+                          src="github/github-mark.svg"
                           alt="GitHub"
                           className={`w-[30px] dark:invert ${
-                            !isResourceLoaded("/github/github-mark.svg")
+                            !isResourceLoaded("github/github-mark.svg")
                               ? "opacity-0"
                               : "opacity-100"
                           }`}

@@ -15,5 +15,5 @@ export default defineConfig({
       brotliSize: true,
     }),
   ],
-  base: "/",
+  base: "./",
 });

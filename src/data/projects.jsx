@@ -4,11 +4,11 @@ export const projects = [
   {
     description: "A Blog App",
     title: "Logly",
-    src: "/projects/logly.jpeg",
+    src: "projects/logly.jpeg",
     ctaText: "Visit",
     ctaLink: "https://logly.vercel.app/",
     github: "https://github.com/rnihesh/logly/",
-    logo: "/projects/logos/logly.svg",
+    logo: "projects/logos/logly.svg",
     content: () => {
       return (
         <>
@@ -42,11 +42,11 @@ export const projects = [
   {
     description: "A Vehicle Pooling App",
     title: "RideShare",
-    src: "/projects/rideshare.jpeg",
+    src: "projects/rideshare.jpeg",
     ctaText: "Visit",
     ctaLink: "https://nihesh-ride-share.vercel.app/",
     github: "https://github.com/rnihesh/car_pooling/",
-    logo: "/projects/logos/rideshare.png",
+    logo: "projects/logos/rideshare.png",
     content: () => {
       return (
         <>
@@ -82,11 +82,11 @@ export const projects = [
   {
     description: "A Gamified Habit Tracker",
     title: "Habify",
-    src: "/projects/habify.jpeg",
+    src: "projects/habify.jpeg",
     ctaText: "Visit",
     ctaLink: "https://habify-red.vercel.app/",
     github: "https://github.com/rnihesh/gamified_habit_tracker/",
-    logo: "/projects/logos/habify.webp",
+    logo: "projects/logos/habify.webp",
     content: () => {
       return (
         <>
@@ -122,11 +122,11 @@ export const projects = [
   {
     description: "A Modern Seller Portal",
     title: "Nihesh's Seller Portal",
-    src: "/projects/nihesh_s_seller_portal.jpeg",
+    src: "projects/nihesh_s_seller_portal.jpeg",
     ctaText: "Visit",
     ctaLink: "https://nihesh-seller-portal.vercel.app/",
     github: "https://github.com/rnihesh/nihesh-s-seller-portal/",
-    logo: "/projects/logos/nihesh_s_seller_portal.png",
+    logo: "projects/logos/nihesh_s_seller_portal.png",
     content: () => {
       return (
         <>
@@ -162,11 +162,11 @@ export const projects = [
   {
     description: "A WebSocket Example",
     title: "Live Cursors",
-    src: "/projects/live_cursors.jpeg",
+    src: "projects/live_cursors.jpeg",
     ctaText: "Visit",
     ctaLink: "https://nihesh-cursors.vercel.app/",
     github: "https://github.com/rnihesh/live-cursors-app/",
-    logo: "/projects/logos/cursor.png",
+    logo: "projects/logos/cursor.png",
     logoClassName: "dark:invert",
     content: () => {
       return (
