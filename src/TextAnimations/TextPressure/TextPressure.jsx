@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 const TextPressure = ({
   text = "Fira Code",
   fontFamily = "JetBrains Mono",
-  // This font is just an example, you should not use it in commercial projects.
   fontUrl = "https://fonts.gstatic.com/s/jetbrainsmono/v23/tDbV2o-flEEny0FZhsfKu5WU4xD7OwGtT0rU.woff2",
 
   width = true,
@@ -25,6 +24,8 @@ const TextPressure = ({
   className = "",
 
   minFontSize = 24,
+
+  span_class = "",
 }) => {
   const containerRef = useRef(null);
   const titleRef = useRef(null);
@@ -198,7 +199,7 @@ const TextPressure = ({
             key={i}
             ref={(el) => (spansRef.current[i] = el)}
             data-char={char}
-            className="inline-block text-black dark:text-white"
+            className={`inline-block text-black  ${span_class}`}
           >
             {char}
           </span>

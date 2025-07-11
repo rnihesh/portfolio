@@ -82,7 +82,7 @@ const eighthScreenAnimation = {
   key: "eighth-screen",
   initial: { opacity: 0, y: 50 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, scale: 0.8},
+  exit: { opacity: 0, scale: 0.8 },
   transition: { duration: 0.8 },
 };
 
@@ -108,7 +108,7 @@ function App() {
     showSixthScreen,
     showSeventhScreen,
     showEighthScreen,
-    showNinthScreen
+    showNinthScreen,
   } = useVisibilityOnScroll();
 
   useEffect(() => {
@@ -234,12 +234,11 @@ function App() {
                 animationProps={eighthScreenAnimation}
               />
 
-            <ConnectSection
-              id="connect"
-              isVisible={showNinthScreen}
-              animationProps={ninthScreenAnimation}
-            />
-
+              <ConnectSection
+                id="connect"
+                isVisible={showNinthScreen}
+                animationProps={ninthScreenAnimation}
+              />
             </div>
           </motion.div>
         )}

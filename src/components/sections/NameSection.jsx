@@ -64,6 +64,7 @@ function NameSection({ id, isVisible, animationProps }) {
         width={true}
         italic={true}
         className="text-black dark:text-white"
+        span_class="dark:text-white"
       />
     </Section>
   );

@@ -77,7 +77,8 @@ export default function useVisibilityOnScroll() {
     } else {
       setShowEighthScreen(false);
     }
-    if (scrollPosition >= windowHeight * 7.7) {
+    if (scrollPosition >= windowHeight * 7.7&&
+      scrollPosition <= windowHeight * 8.3) {
       setShowNinthScreen(true);
     } else {
       setShowNinthScreen(false);
