@@ -40,6 +40,9 @@ jobs:
           mkdir -p /tmp/dist
           cp -r dist/* /tmp/dist/
 
+          #cname
+          echo 'nihesh.codes' > /tmp/dist/CNAME
+
           # Check if gh-pages branch exists
           if git ls-remote --heads origin gh-pages | grep -q 'gh-pages'; then
             # Branch exists - fetch and check it out
