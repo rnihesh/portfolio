@@ -7,4 +7,7 @@ export const shortcuts = [
   { key: "6", label: "Photos", sectionId: "photos" },
   { key: "7", label: "Projects", sectionId: "projects" },
   { key: "8", label: "Vibes", sectionId: "vibe" },
+  { key: "8", label: "Work", sectionId: "acad-achie" },
+  { key: "8", label: "Connect", sectionId: "connect" },
+  
 ];
