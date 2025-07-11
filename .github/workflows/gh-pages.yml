@@ -40,7 +40,7 @@ jobs:
           mkdir -p /tmp/dist
           cp -r dist/* /tmp/dist/
 
-          #cname
+          # cname
           echo 'nihesh.codes' > /tmp/dist/CNAME
 
           # Check if gh-pages branch exists
