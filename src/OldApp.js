@@ -344,55 +344,55 @@ function App() {
   const items = [
     {
       id: "1",
-      img: "/photography/1.JPG",
+      img: "/photography/1.jpg",
       url: "https://vsco.co/niheshr/",
       height: 750,
     },
     {
       id: "2",
-      img: "/photography/2.JPG",
+      img: "/photography/2.jpg",
       url: "https://vsco.co/niheshr/",
       height: 120,
     },
     {
       id: "3",
-      img: "/photography/3.PNG",
+      img: "/photography/3.png",
       url: "https://vsco.co/niheshr/",
       height: 300,
     },
     {
       id: "4",
-      img: "/photography/4.JPG",
+      img: "/photography/4.jpg",
       url: "https://vsco.co/niheshr/",
       height: 200,
     },
     {
       id: "5",
-      img: "/photography/5.JPG",
+      img: "/photography/5.jpg",
       url: "https://vsco.co/niheshr/",
       height: 90,
     },
     {
       id: "6",
-      img: "/photography/6.JPG",
+      img: "/photography/6.jpg",
       url: "https://vsco.co/niheshr/",
       height: 600,
     },
     {
       id: "7",
-      img: "/photography/7.JPG",
+      img: "/photography/7.jpg",
       url: "https://vsco.co/niheshr/",
       height: 500,
     },
     {
       id: "8",
-      img: "/photography/8.JPG",
+      img: "/photography/8.jpg",
       url: "https://vsco.co/niheshr/",
       height: 400,
     },
     {
       id: "9",
-      img: "/photography/9.JPG",
+      img: "/photography/9.jpg",
       url: "https://vsco.co/niheshr/",
       height: 400,
     },
@@ -484,7 +484,7 @@ function App() {
             url.endsWith(".png") ||
             url.endsWith(".jpg") ||
             url.endsWith(".jpeg") ||
-            url.endsWith(".JPG")
+            url.endsWith(".jpg")
           ) {
             const img = new Image();
             img.src = url;

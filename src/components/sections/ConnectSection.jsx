@@ -88,7 +88,7 @@ function ConnectSection({ id, isVisible, animationProps }) {
         >
           {" "}
           <img
-            src="memoji/memoji.PNG"
+            src="memoji/memoji.png"
             alt=""
             className="w-[60px] md:w-[100px]"
           />
