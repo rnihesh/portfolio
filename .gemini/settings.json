@@ -1,0 +1,57 @@
+{
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "gallery": true,
+      "timeout": 30000,
+      "trust": true,
+      "headers": {
+        "Authorization": "Bearer ghp_9X1P7TESg0umK4bAeVuX1UsRFfaA1x4ZmsA3"
+      }
+    },
+    "markitdown": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["markitdown-mcp"],
+      "env": {
+        "API_KEY": "$MARKITDOWN_API_TOKEN"
+      },
+      "cwd": "./",
+      "timeout": 30000,
+      "trust": false,
+      "gallery": true
+    },
+    "sequentialthinking": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking@latest"],
+      "env": {
+        "API_KEY": "$SEQUENTIALTHINKING_API_TOKEN"
+      },
+      "cwd": "./",
+      "timeout": 30000,
+      "trust": false,
+      "gallery": true
+    },
+    "mongodb": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mongodb-mcp-server@latest"],
+      "env": {
+        "API_KEY": "$MONGODB_API_TOKEN"
+      },
+      "cwd": "./",
+      "timeout": 30000,
+      "trust": false,
+      "gallery": true
+    },
+    "figma": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/sse",
+      "timeout": 30000,
+      "trust": false,
+      "gallery": true
+    }
+  }
+}
