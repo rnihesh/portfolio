@@ -4,9 +4,9 @@ export const shortcuts = [
   { key: "3", label: "WhatAmI", sectionId: "whatami" },
   { key: "4", label: "Skills", sectionId: "skills" },
   { key: "5", label: "Model", sectionId: "model" },
-  { key: "6", label: "Photos", sectionId: "photos" },
-  { key: "7", label: "Projects", sectionId: "projects" },
-  { key: "8", label: "Vibes", sectionId: "vibe" },
+  { key: "5", label: "Photos", sectionId: "photos" },
+  { key: "6", label: "Projects", sectionId: "projects" },
+  { key: "7", label: "Vibes", sectionId: "vibe" },
   { key: "8", label: "Work", sectionId: "acad-achie" },
   { key: "9", label: "Connect", sectionId: "connect" },
   
