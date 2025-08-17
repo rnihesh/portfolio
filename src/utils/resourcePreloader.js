@@ -7,7 +7,36 @@ import { useGLTF } from "@react-three/drei";
 // Create a map to track which resources have been loaded
 const loadedResources = new Map();
 
+// Global flag to track if initial preloading is complete
+let preloadingCompleteFlag = false;
+let preloadingPromise = null;
+
 export const preloadResources = async (setLoadingProgress, setIsLoaded) => {
+  // If preloading is already complete, immediately set as loaded
+  if (preloadingCompleteFlag) {
+    setLoadingProgress(100);
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
+    return;
+  }
+
+  // If preloading is already in progress, wait for it
+  if (preloadingPromise) {
+    await preloadingPromise;
+    setLoadingProgress(100);
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
+    return;
+  }
+
+  // Start new preloading
+  preloadingPromise = performPreloading(setLoadingProgress, setIsLoaded);
+  await preloadingPromise;
+};
+
+const performPreloading = async (setLoadingProgress, setIsLoaded) => {
   // Get all images to preload
   const skillImages = skills.map((skill) => skill.image);
 
@@ -143,6 +172,9 @@ export const preloadResources = async (setLoadingProgress, setIsLoaded) => {
     // Ensure we reach 100% before transitioning
     setLoadingProgress(100);
 
+    // Mark preloading as complete
+    preloadingCompleteFlag = true;
+
     // Small delay after reaching 100%
     setTimeout(() => {
       setIsLoaded(true);
@@ -150,13 +182,29 @@ export const preloadResources = async (setLoadingProgress, setIsLoaded) => {
   } catch (error) {
     console.error("Error loading resources:", error);
     setLoadingProgress(100);
+
+    // Mark as complete even on error to prevent infinite loading
+    preloadingCompleteFlag = true;
+
     setTimeout(() => {
       setIsLoaded(true);
     }, 1000);
   }
 };
 
+// Export a function to check if preloading is complete
+export const isPreloadingComplete = () => {
+  return preloadingCompleteFlag;
+};
+
 // Export a function to check if a resource is loaded
 export const isResourceLoaded = (url) => {
   return loadedResources.has(url);
+};
+
+// Export a function to reset preloading state (for development/testing)
+export const resetPreloadingState = () => {
+  preloadingCompleteFlag = false;
+  preloadingPromise = null;
+  loadedResources.clear();
 };

@@ -7,6 +7,7 @@ import { LuLinkedin } from "react-icons/lu";
 import { LuGithub } from "react-icons/lu";
 import { LuMail } from "react-icons/lu";
 import { LuPhone } from "react-icons/lu";
+import { FaXTwitter } from "react-icons/fa6";
 import { TbBrandBluesky } from "react-icons/tb";
 
 function ConnectSection({ id, isVisible, animationProps }) {
@@ -169,29 +170,34 @@ function ConnectSection({ id, isVisible, animationProps }) {
             </motion.a>
             <div className="grid grid-rows-2 grid-cols-2 gap-4 mt-auto pt-4 w-full">
               {[
-                {
-                  icon: LuMail,
-                  href: "mailto:niheshr03+portfolio@gmail.com",
-                  label: "Email",
-                },
+                // {
+                //   icon: LuMail,
+                //   href: "mailto:niheshr03+portfolio@gmail.com",
+                //   label: "Email",
+                // },
                 { icon: LuPhone, href: "tel:+918328094810", label: "Call" },
                 // {
-                //   icon: TbBrandBluesky,
-                //   href: "https://bsky.app/profile/nihesh.codes",
-                //   label: "Bluesky",
-                // },
-                {
-                  icon: LuGithub,
-                  href: "https://github.com/rnihesh",
-                  label: "Github",
-                },
-
-                {
-                  icon: LuLinkedin,
-                  href: "https://www.linkedin.com/in/rachakonda-nihesh/",
-                  label: "LinkedIn",
-                },
-              ].map((item, index) => (
+                  //   icon: TbBrandBluesky,
+                  //   href: "https://bsky.app/profile/nihesh.codes",
+                  //   label: "Bluesky",
+                  // },
+                  {
+                    icon: FaXTwitter,
+                    href: "https://x.com/niheshr03",
+                    label: "X",
+                  },
+                  {
+                    icon: LuGithub,
+                    href: "https://github.com/rnihesh",
+                    label: "Github",
+                  },
+                  
+                  {
+                    icon: LuLinkedin,
+                    href: "https://www.linkedin.com/in/rachakonda-nihesh/",
+                    label: "LinkedIn",
+                  },
+                ].map((item, index) => (
                 <motion.a
                   key={index}
                   href={item.href}

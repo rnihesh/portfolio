@@ -11,13 +11,13 @@ function SkillsSection({ id, isVisible, animationProps }) {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.05,
       },
     },
     exit: {
       opacity: 0,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.03,
         staggerDirection: -1,
       },
     },
@@ -30,7 +30,8 @@ function SkillsSection({ id, isVisible, animationProps }) {
       opacity: 1,
       transition: {
         type: "spring",
-        damping: 15,
+        damping: 20,
+        duration: 0.4,
       },
     },
     exit: {
@@ -46,8 +47,9 @@ function SkillsSection({ id, isVisible, animationProps }) {
       opacity: 1,
       transition: {
         type: "spring",
-        stiffness: 260,
-        damping: 20,
+        stiffness: 400,
+        damping: 25,
+        duration: 0.3,
       },
     },
     exit: {

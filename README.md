@@ -1,12 +1,93 @@
-# React + Vite
+# Nihesh Rachakonda | Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, dual-experience portfolio website built with React, offering users the choice between two distinct viewing experiences.
 
-Currently, two official plugins are available:
+## 🌟 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Dual Experience Architecture
 
-## Expanding the ESLint configuration
+- **Minimal Experience** (`/minimal`): Clean, text-based portfolio with keyboard navigation
+- **Gooey Experience** (`/gooey`): Interactive 3D animations, custom motion effects, and immersive UI
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Tech Stack
+
+- **Frontend**: React 19, Framer Motion, Tailwind CSS
+- **3D Graphics**: Three.js, @react-three/fiber, @react-three/drei
+- **Routing**: React Router DOM
+- **Animation**: GSAP, Rough Notation, Matter.js
+- **Build Tool**: Vite
+- **Deployment**: Vercel
+
+## 🚀 Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## 📱 Routes
+
+- `/` - Landing page with experience selection
+- `/minimal` - Clean, minimal portfolio experience
+- `/gooey` - Interactive 3D portfolio experience
+
+## 🎨 Experiences
+
+### Minimal Experience
+
+- Keyboard shortcuts (1-5 for sections, H for help, B/ESC for back)
+- Clean typography with Space Grotesk and JetBrains Mono
+- Scrollable single-page layout
+- Dark/light mode support
+- Accessible and fast loading
+
+### Gooey Experience
+
+- 3D model viewer with interactive controls
+- Custom text animations and motion effects
+- Scroll-based section reveals
+- Photo gallery with advanced interactions
+- Command toolbar with keyboard shortcuts
+- Optimized resource preloading
+
+## 🛠 Development
+
+### Project Structure
+
+```
+src/
+├── components/
+│   ├── sections/     # Page sections (Intro, Skills, Projects, etc.)
+│   ├── ui/          # Reusable UI components
+│   └── layout/      # Layout components
+├── data/            # Content data (skills, projects, photos)
+├── hooks/           # Custom React hooks
+├── pages/           # Route pages
+└── utils/           # Utility functions
+```
+
+### Key Features
+
+- Smart resource preloading (only for gooey experience)
+- Responsive design for all screen sizes
+- SEO optimized with structured data
+- Performance optimized with lazy loading
+
+## 📧 Contact
+
+- **Email**: niheshr03+portfolio@gmail.com
+- **LinkedIn**: [rachakonda-nihesh](https://www.linkedin.com/in/rachakonda-nihesh/)
+- **GitHub**: [rnihesh](https://github.com/rnihesh)
+
+## 📄 License
+
+This project is open source and available under the MIT License.

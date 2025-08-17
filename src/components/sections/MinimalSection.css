@@ -1,5 +1,12 @@
 /* Minimal Section Specific Styles */
 
+/* .bg-img{
+  background-image: url('/public/photography/me.jpeg');
+  background-size: cover;
+  background-position: center;
+  
+} */
+
 /* Smooth transitions for theme changes */
 .minimal-section * {
   transition: color 0.3s ease, background-color 0.3s ease,

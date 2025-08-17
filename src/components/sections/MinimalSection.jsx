@@ -14,7 +14,6 @@ import {
 import "./MinimalSection.css";
 
 function MinimalSection({ onBackToChoice }) {
-  const [activeSection, setActiveSection] = useState("about");
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
 
   const fadeInUp = {
@@ -50,9 +49,16 @@ function MinimalSection({ onBackToChoice }) {
     { id: "about", label: "About", key: "1" },
     { id: "skills", label: "Skills", key: "2" },
     { id: "projects", label: "Projects", key: "3" },
-    { id: "education", label: "Education", key: "4" },
-    { id: "contact", label: "Contact", key: "5" },
+    { id: "contact", label: "Contact", key: "4" },
   ];
+
+  // Scroll to section function
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   // Keyboard navigation
   useEffect(() => {
@@ -60,7 +66,7 @@ function MinimalSection({ onBackToChoice }) {
       // Numbers 1-5 for section navigation
       const sectionIndex = parseInt(e.key) - 1;
       if (sectionIndex >= 0 && sectionIndex < sections.length) {
-        setActiveSection(sections[sectionIndex].id);
+        scrollToSection(sections[sectionIndex].id);
         return;
       }
 
@@ -86,7 +92,7 @@ function MinimalSection({ onBackToChoice }) {
     {
       icon: LuMail,
       label: "Email",
-      value: "niheshr03+portfolio@gmail.com",
+      value: "niheshr03@gmail.com",
       href: "mailto:niheshr03+portfolio@gmail.com",
     },
     {
@@ -118,11 +124,86 @@ function MinimalSection({ onBackToChoice }) {
     return acc;
   }, {});
 
-  const renderContent = () => {
-    switch (activeSection) {
-      case "about":
-        return (
-          <motion.div
+  return (
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white minimal-section">
+      {/* Header */}
+      <motion.header
+        className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+          <h1
+            className="text-xl font-bold"
+            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+          >
+            Nihesh
+          </h1>
+
+          <nav className="hidden md:flex gap-8">
+            {sections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => scrollToSection(section.id)}
+                className="text-sm transition-colors text-gray-500 hover:text-black dark:hover:text-white"
+                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              >
+                <span className="text-xs opacity-50 mr-1">{section.key}</span>
+                {section.label}
+              </button>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowKeyboardHelp(!showKeyboardHelp)}
+              className="text-sm text-gray-500 hover:text-black dark:hover:text-white transition-colors"
+              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            >
+              <LuKeyboard size={16} className="inline mr-1" />
+              <span className="hidden lg:inline">H</span>
+            </button>
+
+            <button
+              onClick={onBackToChoice}
+              className="text-sm text-gray-500 hover:text-black dark:hover:text-white transition-colors"
+              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            >
+              <LuArrowUp size={16} className="inline mr-1" />
+              Back
+            </button>
+          </div>
+        </div>
+      </motion.header>
+
+      {/* Mobile Navigation */}
+      <motion.nav
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-black border-t border-gray-200 dark:border-gray-800 "
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+      >
+        <div className="flex justify-around py-3">
+          {sections.map((section) => (
+            <button
+              key={section.id}
+              onClick={() => scrollToSection(section.id)}
+              className="text-xs py-2 px-3 transition-colors text-gray-500 hover:text-black dark:hover:text-white"
+              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            >
+              {section.label}
+            </button>
+          ))}
+        </div>
+      </motion.nav>
+
+      {/* Main Content - All sections visible */}
+      <main className="pt-20 pb-20 md:pb-8 bg-img">
+        <div className="max-w-4xl mx-auto px-6 space-y-20">
+          {/* About Section */}
+          <motion.section
+            id="about"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
@@ -133,7 +214,7 @@ function MinimalSection({ onBackToChoice }) {
                 className="text-2xl font-bold text-black dark:text-white mb-4"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                Hi, I'm Nihesh Rachakonda
+                Hi, I'm Nihesh <span className="text-gray-500">Rachakonda</span>
               </h2>
               <div
                 className="text-gray-600 dark:text-gray-400 space-y-4"
@@ -174,17 +255,22 @@ function MinimalSection({ onBackToChoice }) {
                 <li>• Mobile Development with React Native</li>
               </ul>
             </motion.div>
-          </motion.div>
-        );
+          </motion.section>
 
-      case "skills":
-        return (
-          <motion.div
+          {/* Skills Section */}
+          <motion.section
+            id="skills"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
             className="space-y-8"
           >
+            <h2
+              className="text-2xl font-bold text-black dark:text-white mb-8"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Skills
+            </h2>
             {Object.entries(skillsByCategory).map(
               ([category, categorySkills]) => (
                 <motion.div key={category} variants={staggerItem}>
@@ -195,7 +281,7 @@ function MinimalSection({ onBackToChoice }) {
                     {category}
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                    {categorySkills.map((skill, index) => (
+                    {categorySkills.map((skill) => (
                       <motion.div
                         key={skill.name}
                         className="text-gray-600 dark:text-gray-400 text-sm"
@@ -212,18 +298,23 @@ function MinimalSection({ onBackToChoice }) {
                 </motion.div>
               )
             )}
-          </motion.div>
-        );
+          </motion.section>
 
-      case "projects":
-        return (
-          <motion.div
+          {/* Projects Section */}
+          <motion.section
+            id="projects"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
             className="space-y-8"
           >
-            {projects.map((project, index) => (
+            <h2
+              className="text-2xl font-bold text-black dark:text-white mb-8"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Projects
+            </h2>
+            {projects.map((project) => (
               <motion.div
                 key={project.title}
                 variants={staggerItem}
@@ -276,12 +367,11 @@ function MinimalSection({ onBackToChoice }) {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
-        );
+          </motion.section>
 
-      case "education":
-        return (
-          <motion.div
+          {/* Education Section */}
+          {/* <motion.section
+            id="education"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
@@ -339,12 +429,11 @@ function MinimalSection({ onBackToChoice }) {
                 </div>
               </div>
             </motion.div>
-          </motion.div>
-        );
+          </motion.section> */}
 
-      case "contact":
-        return (
-          <motion.div
+          {/* Contact Section */}
+          <motion.section
+            id="contact"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
@@ -400,110 +489,7 @@ function MinimalSection({ onBackToChoice }) {
                 </a>
               ))}
             </motion.div>
-          </motion.div>
-        );
-
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white minimal-section">
-      {/* Header */}
-      <motion.header
-        className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800"
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
-        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-          <h1
-            className="text-xl font-bold"
-            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-          >
-            Nihesh.R
-          </h1>
-
-          <nav className="hidden md:flex gap-8">
-            {sections.map((section) => (
-              <button
-                key={section.id}
-                onClick={() => setActiveSection(section.id)}
-                className={`text-sm transition-colors ${
-                  activeSection === section.id
-                    ? "text-black dark:text-white font-medium"
-                    : "text-gray-500 hover:text-black dark:hover:text-white"
-                }`}
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
-              >
-                <span className="text-xs opacity-50 mr-1">{section.key}</span>
-                {section.label}
-              </button>
-            ))}
-          </nav>
-
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setShowKeyboardHelp(!showKeyboardHelp)}
-              className="text-sm text-gray-500 hover:text-black dark:hover:text-white transition-colors"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}
-            >
-              <LuKeyboard size={16} className="inline mr-1" />
-              <span className="hidden lg:inline">H</span>
-            </button>
-
-            <button
-              onClick={onBackToChoice}
-              className="text-sm text-gray-500 hover:text-black dark:hover:text-white transition-colors"
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}
-            >
-              <LuArrowUp size={16} className="inline mr-1" />
-              Back
-            </button>
-          </div>
-        </div>
-      </motion.header>
-
-      {/* Mobile Navigation */}
-      <motion.nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-black border-t border-gray-200 dark:border-gray-800"
-        initial={{ y: 100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-      >
-        <div className="flex justify-around py-3">
-          {sections.map((section) => (
-            <button
-              key={section.id}
-              onClick={() => setActiveSection(section.id)}
-              className={`text-xs py-2 px-3 transition-colors ${
-                activeSection === section.id
-                  ? "text-black dark:text-white font-medium"
-                  : "text-gray-500 hover:text-black dark:hover:text-white"
-              }`}
-              style={{ fontFamily: "'JetBrains Mono', monospace" }}
-            >
-              {section.label}
-            </button>
-          ))}
-        </div>
-      </motion.nav>
-
-      {/* Main Content */}
-      <main className="pt-20 pb-20 md:pb-8 min-h-screen">
-        <div className="max-w-4xl mx-auto px-6">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSection}
-              initial="hidden"
-              animate="visible"
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              {renderContent()}
-            </motion.div>
-          </AnimatePresence>
+          </motion.section>
         </div>
       </main>
 
@@ -514,7 +500,7 @@ function MinimalSection({ onBackToChoice }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
+            className="fixed inset-0 bg-black/50 bg-opacity-50 backdrop-blur-xs z-50 flex items-center justify-center"
             onClick={() => setShowKeyboardHelp(false)}
           >
             <motion.div

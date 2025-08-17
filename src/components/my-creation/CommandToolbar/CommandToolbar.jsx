@@ -28,7 +28,7 @@ const CommandToolbar = ({ showKeyboardHelp = false }) => {
 
   return (
     <div
-      className="fixed bottom-4 right-4 bg-black/50 text-white dark:text-black text-sm p-3 rounded-lg z-50 backdrop-blur-lg dark:bg-white/50 pb-13 rounded-br-4xl closing-toolbar"
+      className="fixed top-4 right-4 bg-black/50 text-white dark:text-black text-sm p-3 rounded-lg z-50 backdrop-blur-lg dark:bg-white/50 "
       style={{ fontFamily: "Red Rose", backdropFilter: "blur(4px)" }}
     >
       {shortcuts.map((s) => (

@@ -37,17 +37,26 @@ function LandingChoiceSection({ onChoice }) {
     },
     hover: {
       scale: 1.05,
+      rotateX: -5,
       transition: {
         duration: 0.2,
+        ease: "easeOut",
       },
     },
     tap: {
-      scale: 0.95,
+      scale: 0.9,
+      rotateX: 5,
+      y: 8,
+      boxShadow: "0px 2px 8px rgba(0,0,0,0.2)",
+      transition: {
+        duration: 0.1,
+        ease: "easeInOut",
+      },
     },
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-white dark:bg-black">
+    <div className="min-h-screen w-full flex items-center justify-center bg-white dark:bg-black bg-[url('/photography/m.jpeg')] bg-cover bg-center">
       <motion.div
         className="text-center"
         variants={containerVariants}
@@ -76,8 +85,11 @@ function LandingChoiceSection({ onChoice }) {
         >
           <motion.button
             onClick={() => onChoice("minimal")}
-            className="px-8 py-4 border-2 border-black dark:border-white text-black dark:text-white bg-transparent hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 hover:rounded-xl"
-            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            className="px-8 py-4 border-2 border-black dark:border-white text-black dark:text-white bg-transparent hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 hover:rounded-xl shadow-lg hover:shadow-xl"
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              transformStyle: "preserve-3d",
+            }}
             variants={buttonVariants}
             whileHover="hover"
             whileTap="tap"
@@ -96,8 +108,11 @@ function LandingChoiceSection({ onChoice }) {
 
           <motion.button
             onClick={() => onChoice("gooey")}
-            className="px-8 py-4 border-2 border-black dark:border-white text-black dark:text-white bg-transparent hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 hover:rounded-xl"
-            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            className="px-8 py-4 border-2 border-black dark:border-white text-black dark:text-white bg-transparent hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 hover:rounded-xl shadow-lg hover:shadow-xl"
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              transformStyle: "preserve-3d",
+            }}
             variants={buttonVariants}
             whileHover="hover"
             whileTap="tap"

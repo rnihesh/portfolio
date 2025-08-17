@@ -5,7 +5,7 @@ import LandingChoiceSection from "../components/sections/LandingChoiceSection";
 
 function HomePage() {
   const navigate = useNavigate();
-  usePageTitle("Nihesh Rachakonda - Portfolio");
+  usePageTitle("", "home");
 
   const handleChoice = (choice) => {
     if (choice === "minimal") {

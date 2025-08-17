@@ -5,6 +5,8 @@ import useVisibilityOnScroll from "../hooks/useVisibilityOnScroll";
 import { preloadResources } from "../utils/resourcePreloader";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { LuArrowUp } from "react-icons/lu";
+import { HiOutlineCubeTransparent } from "react-icons/hi2";
+
 
 // section components
 import LoadingSection from "../components/sections/LoadingSection";
@@ -102,7 +104,7 @@ function GooeyPage() {
   const firstScreenRef = useRef(null);
   const navigate = useNavigate();
 
-  usePageTitle("Gooey Experience - Nihesh Rachakonda");
+  usePageTitle("", "gooey");
 
   const {
     showFirstScreen,
@@ -277,9 +279,9 @@ function GooeyPage() {
         className="fixed bottom-6 left-6 z-50 p-3 bg-white dark:bg-black border-2 border-gray-200 dark:border-gray-700 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 group"
         title="Back to Home (ESC, B, or Ctrl+H)"
       >
-        <LuArrowUp
+        <HiOutlineCubeTransparent
           size={20}
-          className="text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors"
+          className="text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-all hover:rotate-120 duration-300"
         />
       </motion.button>
     </div>

@@ -5,7 +5,7 @@ import MinimalSection from "../components/sections/MinimalSection";
 
 function MinimalPage() {
   const navigate = useNavigate();
-  usePageTitle("Minimal Portfolio - Nihesh Rachakonda");
+  usePageTitle("", "minimal");
 
   const handleBackToChoice = () => {
     navigate("/");
