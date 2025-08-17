@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://nihesh.codes/</loc>
-    <lastmod>2025-07-12T00:47:29+05:30</lastmod> <priority>1.0</priority>
+    <lastmod>2025-08-17T00:00:00+05:30</lastmod>
+    <priority>1.0</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://nihesh.codes/minimal</loc>
+    <lastmod>2025-08-17T00:00:00+05:30</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://nihesh.codes/gooey</loc>
+    <lastmod>2025-08-17T00:00:00+05:30</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
   </url>
 </urlset>

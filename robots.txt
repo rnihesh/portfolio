@@ -1,3 +1,10 @@
 User-agent: *
 Allow: /
+Allow: /minimal
+Allow: /gooey
+
+# Sitemap
 Sitemap: https://nihesh.codes/sitemap.xml
+
+# Crawl delay (optional)
+Crawl-delay: 1
