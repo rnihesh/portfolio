@@ -1,0 +1,167 @@
+/* Minimal Section Specific Styles */
+
+/* Smooth transitions for theme changes */
+.minimal-section * {
+  transition: color 0.3s ease, background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Custom scrollbar for minimal section */
+.minimal-section::-webkit-scrollbar {
+  width: 8px;
+}
+
+.minimal-section::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.minimal-section::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+.dark .minimal-section::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+.minimal-section::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.dark .minimal-section::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Typography enhancements */
+.minimal-section h1,
+.minimal-section h2,
+.minimal-section h3 {
+  letter-spacing: -0.025em;
+}
+
+.minimal-section p {
+  line-height: 1.7;
+}
+
+/* Link hover effects */
+.minimal-section a {
+  position: relative;
+  overflow: hidden;
+}
+
+.minimal-section a::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.minimal-section a:hover::before {
+  width: 100%;
+}
+
+/* Button interactions */
+.minimal-section button {
+  position: relative;
+  overflow: hidden;
+}
+
+.minimal-section button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.dark .minimal-section button::after {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.minimal-section button:active::after {
+  width: 100px;
+  height: 100px;
+}
+
+/* Focus states for accessibility */
+.minimal-section button:focus-visible,
+.minimal-section a:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+/* Custom selection styles */
+.minimal-section ::selection {
+  background: #10b981;
+  color: white;
+}
+
+/* Loading states */
+.minimal-loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #10b981;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .minimal-section {
+    font-size: 14px;
+  }
+
+  .minimal-section h1 {
+    font-size: 1.75rem;
+  }
+
+  .minimal-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .minimal-section h3 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .minimal-section {
+    background: white !important;
+    color: black !important;
+  }
+
+  .minimal-section nav,
+  .minimal-section button {
+    display: none !important;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .minimal-section * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

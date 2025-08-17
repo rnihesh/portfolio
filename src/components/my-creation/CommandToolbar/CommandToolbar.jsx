@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { shortcuts } from "../../../data/shortcuts";
-import "./CommandToolbar.css"
+import "./CommandToolbar.css";
 
-
-const CommandToolbar = () => {
+const CommandToolbar = ({ showKeyboardHelp = false }) => {
   const [isMac, setIsMac] = useState(false);
 
   useEffect(() => {
@@ -25,16 +24,22 @@ const CommandToolbar = () => {
     return () => window.removeEventListener("keydown", handler);
   }, [isMac]);
 
+  if (!showKeyboardHelp) return null;
+
   return (
     <div
-      className="fixed bottom-4 right-4 bg-black/50 text-white dark:text-black text-sm p-3 rounded-lg z-50 hidden md:block backdrop-blur-lg  dark:bg-white/50 pb-13 rounded-br-4xl closing-toolbar"
-      style={{ fontFamily: "Red Rose" , backdropFilter: "blur(4px)"}}
+      className="fixed bottom-4 right-4 bg-black/50 text-white dark:text-black text-sm p-3 rounded-lg z-50 backdrop-blur-lg dark:bg-white/50 pb-13 rounded-br-4xl closing-toolbar"
+      style={{ fontFamily: "Red Rose", backdropFilter: "blur(4px)" }}
     >
       {shortcuts.map((s) => (
         <div key={s.key}>
           {isMac ? `⌘ + ${s.key}` : `Ctrl + ${s.key}`} → {s.label}
         </div>
       ))}
+      <div className="border-t border-white/20 dark:border-black/20 pt-2 mt-2">
+        <div>H → Show/Hide Shortcuts</div>
+        <div>B / ESC → Back to Home</div>
+      </div>
     </div>
   );
 };
