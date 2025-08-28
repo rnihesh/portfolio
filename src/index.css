@@ -4,3 +4,8 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+
+/* iOS Safe Area Dark Mode Fix */
+html { background-color: white; }
+html.dark { background-color: #000000; }
+
