@@ -7,7 +7,6 @@ import { usePageTitle } from "../hooks/usePageTitle";
 import { LuArrowUp } from "react-icons/lu";
 import { HiOutlineCubeTransparent } from "react-icons/hi2";
 
-
 // section components
 import LoadingSection from "../components/sections/LoadingSection";
 import IntroSection from "../components/sections/IntroSection";
@@ -18,7 +17,7 @@ import ModelSection from "../components/sections/ModelSection";
 import PhotoSection from "../components/sections/PhotoSection";
 import ProjectsSection from "../components/sections/ProjectsSection";
 import VibeSection from "../components/sections/VibeSection";
-import AcadAchieSection from "../components/sections/AcadAchieSection";
+import ExperienceSection from "../components/sections/ExperienceSection";
 import ConnectSection from "../components/sections/ConnectSection";
 
 // command toolbar
@@ -254,7 +253,7 @@ function GooeyPage() {
                 animationProps={seventhScreenAnimation}
               />
 
-              <AcadAchieSection
+              <ExperienceSection
                 id="acad-achie"
                 isVisible={showEighthScreen}
                 animationProps={eighthScreenAnimation}

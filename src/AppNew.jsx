@@ -15,7 +15,7 @@ import ModelSection from "./components/sections/ModelSection";
 import PhotoSection from "./components/sections/PhotoSection";
 import ProjectsSection from "./components/sections/ProjectsSection";
 import VibeSection from "./components/sections/VibeSection";
-import AcadAchieSection from "./components/sections/AcadAchieSection";
+import ExperienceSection from "./components/sections/ExperienceSection";
 import ConnectSection from "./components/sections/ConnectSection";
 
 // minimal experience
@@ -248,7 +248,7 @@ function App() {
                 animationProps={seventhScreenAnimation}
               />
 
-              <AcadAchieSection
+              <ExperienceSection
                 id="acad-achie"
                 isVisible={showEighthScreen}
                 animationProps={eighthScreenAnimation}
