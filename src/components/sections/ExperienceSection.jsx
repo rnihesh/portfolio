@@ -66,7 +66,7 @@ function ExperienceSection({ id, isVisible, animationProps }) {
         // for mobile do flex col else row
         className="border-2 border-dotted border-gray-400 dark:border-gray-600 rounded-lg p-6 w-full flex flex-col md:flex-row justify-evenly gap-5 ">
           <motion.img
-            src="public/work/dattam_in_logo_nobg.png"
+            src="work/dattam_in_logo_nobg.png"
             alt="Work in Progress"
             className="rounded-2xl border-[0.1px] dark:border-white w-200"
           />
