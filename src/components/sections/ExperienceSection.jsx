@@ -63,25 +63,46 @@ function ExperienceSection({ id, isVisible, animationProps }) {
           Under Construction
         </motion.h2> */}
         <motion.div
-        // for mobile do flex col else row
-        className="border-2 border-dotted border-gray-400 dark:border-gray-600 rounded-lg p-6 w-full flex flex-col md:flex-row justify-evenly gap-5 ">
+          // for mobile do flex col else row
+          className="border-2 border-dotted border-gray-400 dark:border-gray-600 rounded-lg p-6 w-full flex flex-col md:flex-row justify-evenly gap-5 "
+        >
+          {/* on clicking this image send this to dattam.in with ref as the current window url */}
           <motion.img
             src="work/dattam_in_logo_nobg.png"
             alt="Work in Progress"
-            className="rounded-2xl border-[0.1px] dark:border-white w-200"
+            className="rounded-2xl border-[0.1px] dark:border-white w-200 cursor-pointer"
+            onClick={() => {
+              window.open(
+                `https://dattam.in?ref=nihesh`,
+                "_blank"
+              );
+            }}
           />
           <motion.div className="flex flex-col justify-center dark:text-white">
-            <motion.h1 className="font-extrabold text-5xl" style={{fontFamily: "Cascadia Code"}}>Dattam Labs</motion.h1>
-            <motion.div className="" >
-              <span style={{fontFamily: "Bodoni Moda"}} className="text-lg">Software Engineer Intern</span>
+            <motion.h1
+              className="font-extrabold text-5xl"
+              style={{ fontFamily: "Cascadia Code" }}
+            >
+              Dattam Labs
+            </motion.h1>
+            <motion.div className="">
+              <span style={{ fontFamily: "Bodoni Moda" }} className="text-lg">
+                Software Engineer Intern
+              </span>
               <span> | </span>
-              <span style={{fontFamily: "IBM Plex Mono"}} className="text-xs">Aug 2025 - Present</span>
+              <span style={{ fontFamily: "IBM Plex Mono" }} className="text-xs">
+                Aug 2025 - Present
+              </span>
             </motion.div>
             <motion.div>
-              <p className="mt-2" style={{fontFamily: "Space Grotesk"}}>Worked on developing a mobile application using React Native Expo for the frontend, ensuring a seamless user experience across devices. On the backend, utilized Python and AWS services to create robust and scalable solutions.</p>
+              <p className="mt-2" style={{ fontFamily: "Space Grotesk" }}>
+                Worked on developing a mobile application using React Native
+                Expo for the frontend, ensuring a seamless user experience
+                across devices. On the backend, utilized Python and AWS services
+                to create robust and scalable solutions.
+              </p>
             </motion.div>
           </motion.div>
-          
         </motion.div>
       </motion.div>
     </Section>
