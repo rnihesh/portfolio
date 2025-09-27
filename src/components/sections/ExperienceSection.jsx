@@ -63,7 +63,8 @@ function ExperienceSection({ id, isVisible, animationProps }) {
           Under Construction
         </motion.h2> */}
         <motion.div
-        className="border-2 border-dotted border-gray-400 dark:border-gray-600 rounded-lg p-6 w-full flex flex-row justify-evenly gap-5 ">
+        // for mobile do flex col else row
+        className="border-2 border-dotted border-gray-400 dark:border-gray-600 rounded-lg p-6 w-full flex flex-col md:flex-row justify-evenly gap-5 ">
           <motion.img
             src="public/work/dattam_in_logo_nobg.png"
             alt="Work in Progress"
