@@ -160,7 +160,7 @@ function GooeyPage() {
       };
 
       if (import.meta.env.MODE === "production") {
-        fetch("https://tra-7e6267.onrender.com/tra", {
+        fetch("https://6jwll7cmawwv7i5k4ugvckb5ii0dsxba.lambda-url.ap-south-1.on.aws/tra", {
           // fetch("http://localhost:3000/tra", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
