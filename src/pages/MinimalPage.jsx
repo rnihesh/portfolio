@@ -45,15 +45,12 @@ function MinimalPage() {
       };
 
       if (import.meta.env.MODE === "production") {
-        fetch(
-          "https://6jwll7cmawwv7i5k4ugvckb5ii0dsxba.lambda-url.ap-south-1.on.aws/tra",
-          {
-            // fetch("http://localhost:3000/tra", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          }
-        );
+        fetch("https://traana.vercel.app/tra", {
+          // fetch("http://localhost:3000/tra", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
       }
     })();
   }, []);
