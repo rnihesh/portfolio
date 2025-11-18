@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePageTitle } from "../hooks/usePageTitle";
+import useFullscreen from "../hooks/useFullscreen";
 import MinimalSection from "../components/sections/MinimalSection";
 
 function MinimalPage() {
   const navigate = useNavigate();
   usePageTitle("", "minimal");
+  useFullscreen(); // Enable fullscreen with 'f' key
   useEffect(() => {
     (async () => {
       const conn = navigator.connection || {};

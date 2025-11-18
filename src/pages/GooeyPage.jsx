@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import useVisibilityOnScroll from "../hooks/useVisibilityOnScroll";
 import { preloadResources } from "../utils/resourcePreloader";
 import { usePageTitle } from "../hooks/usePageTitle";
+import useFullscreen from "../hooks/useFullscreen";
 import { LuArrowUp } from "react-icons/lu";
 import { HiOutlineCubeTransparent } from "react-icons/hi2";
 
@@ -104,6 +105,7 @@ function GooeyPage() {
   const navigate = useNavigate();
 
   usePageTitle("", "gooey");
+  useFullscreen(); // Enable fullscreen with 'f' key
 
   const {
     showFirstScreen,

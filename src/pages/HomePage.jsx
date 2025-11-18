@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePageTitle } from "../hooks/usePageTitle";
+import useFullscreen from "../hooks/useFullscreen";
 import LandingChoiceSection from "../components/sections/LandingChoiceSection";
 
 function HomePage() {
   const navigate = useNavigate();
   usePageTitle("", "home");
+  useFullscreen(); // Enable fullscreen with 'f' key
   useEffect(() => {
     (async () => {
       const conn = navigator.connection || {};
@@ -45,15 +47,12 @@ function HomePage() {
       };
 
       if (import.meta.env.MODE === "production") {
-        fetch(
-          "https://traana.vercel.app/tra",
-          {
-            // fetch("http://localhost:3000/tra", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          }
-        );
+        fetch("https://traana.vercel.app/tra", {
+          // fetch("http://localhost:3000/tra", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
       }
     })();
   }, []);

@@ -13,7 +13,7 @@ const CommandToolbar = ({ showKeyboardHelp = false }) => {
       if (!mod) return;
 
       const match = shortcuts.find((s) => s.key === e.key);
-      if (match) {
+      if (match && match.sectionId) {
         e.preventDefault();
         const el = document.getElementById(match.sectionId);
         if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -31,9 +31,17 @@ const CommandToolbar = ({ showKeyboardHelp = false }) => {
       className="fixed top-4 right-4 bg-black/50 text-white dark:text-black text-sm p-3 rounded-lg z-50 backdrop-blur-lg dark:bg-white/50 "
       style={{ fontFamily: "Red Rose", backdropFilter: "blur(4px)" }}
     >
-      {shortcuts.map((s) => (
-        <div key={s.key}>
-          {isMac ? `⌘ + ${s.key}` : `Ctrl + ${s.key}`} → {s.label}
+      {shortcuts.map((s, index) => (
+        <div key={`${s.key}-${index}`}>
+          {s.sectionId ? (
+            <>
+              {isMac ? `⌘ + ${s.key}` : `Ctrl + ${s.key}`} → {s.label}
+            </>
+          ) : (
+            <>
+              {s.key} → {s.label}
+            </>
+          )}
         </div>
       ))}
       <div className="border-t border-white/20 dark:border-black/20 pt-2 mt-2">
