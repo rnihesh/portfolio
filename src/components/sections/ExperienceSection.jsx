@@ -23,7 +23,7 @@ function ExperienceSection({ id, isVisible, animationProps }) {
       },
     },
   };
-  
+
   const itemVariant = {
     hidden: { x: -20, opacity: 0 },
     show: {
@@ -49,7 +49,7 @@ function ExperienceSection({ id, isVisible, animationProps }) {
     <Section id={id} isVisible={isVisible} animationProps={animationProps}>
       <div className="flex flex-col items-center w-full max-w-4xl mx-auto px-4 h-[80vh] overflow-y-auto scrollbar-hide">
         <div className="mb-12 text-center sticky top-0 bg-white/80 dark:bg-black/80 backdrop-blur-sm z-10 py-4 w-full">
-           <HandDrawnUnderline
+          <HandDrawnUnderline
             strokeColor="#27ae60"
             strokeWidth={1.5}
             wobbleIntensityX={0.2}
@@ -78,17 +78,17 @@ function ExperienceSection({ id, isVisible, animationProps }) {
               className="relative pl-8 md:pl-12"
             >
               {/* Timeline Dot */}
-              <span className="absolute -left-[9px] top-0 h-5 w-5 rounded-full border-4 border-white dark:border-gray-900 bg-blue-500 dark:bg-blue-400" />
+              <span className="absolute -left-[11px] top-2 h-5 w-5 rounded-full border-4 border-white dark:border-gray-900 bg-blue-500 dark:bg-blue-400" />
 
-              <div className="flex flex-col sm:flex-row gap-4 sm:items-start group">
+              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-start group">
                 {/* Logo */}
-                <div 
+                <div
                   className="shrink-0 p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer transition-transform hover:scale-105"
                   onClick={() => window.open(job.link, "_blank")}
                 >
-                  <img 
-                    src={job.logo} 
-                    alt={job.company} 
+                  <img
+                    src={job.logo}
+                    alt={job.company}
                     className="w-16 h-16 object-contain"
                   />
                 </div>
@@ -96,31 +96,33 @@ function ExperienceSection({ id, isVisible, animationProps }) {
                 {/* Content */}
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white flex flex-wrap items-center gap-2">
-                    <span style={{ fontFamily: "Cascadia Code" }}>{job.company}</span>
-                    <span 
+                    <span style={{ fontFamily: "Cascadia Code" }}>
+                      {job.company}
+                    </span>
+                    <span
                       className="text-sm font-normal text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full"
                       style={{ fontFamily: "IBM Plex Mono" }}
                     >
                       {job.period}
                     </span>
                   </h3>
-                  <p 
+                  <p
                     className="text-lg font-medium text-blue-600 dark:text-blue-400 mb-2"
                     style={{ fontFamily: "Bodoni Moda" }}
                   >
                     {job.role}
                   </p>
-                  <p 
+                  <p
                     className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed font-light"
                     style={{ fontFamily: "Space Grotesk" }}
                   >
                     {job.description}
                   </p>
-                  
+
                   {/* Skills */}
                   <div className="flex flex-wrap gap-2">
                     {job.skills.map((skill, idx) => (
-                      <span 
+                      <span
                         key={idx}
                         className="px-3 py-1 text-xs font-medium rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 border border-blue-100 dark:border-blue-800"
                         style={{ fontFamily: "JetBrains Mono" }}
