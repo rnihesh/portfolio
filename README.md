@@ -68,19 +68,54 @@ src/
 ├── components/
 │   ├── sections/     # Page sections (Intro, Skills, Projects, etc.)
 │   ├── ui/          # Reusable UI components
-│   └── layout/      # Layout components
+│   ├── layout/      # Layout components
+│   ├── Theme/       # Theme toggle component
+│   └── ErrorBoundary.jsx  # Error boundary for error handling
 ├── data/            # Content data (skills, projects, photos)
 ├── hooks/           # Custom React hooks
-├── pages/           # Route pages
-└── utils/           # Utility functions
+├── pages/           # Route pages (lazy loaded for code splitting)
+├── utils/           # Utility functions (telemetry, resource preloader)
+├── TextAnimations/  # Custom text animation components
+├── Animations/      # Custom animation components
+└── Backgrounds/     # Background components (e.g., DotGrid)
 ```
 
 ### Key Features
 
-- Smart resource preloading (only for gooey experience)
-- Responsive design for all screen sizes
-- SEO optimized with structured data
-- Performance optimized with lazy loading
+- **Code Splitting**: Pages are lazy loaded for optimal performance
+- **Smart Resource Preloading**: Only for gooey experience to load 3D models
+- **Responsive Design**: Works seamlessly across all screen sizes
+- **SEO Optimized**: Comprehensive meta tags and structured data
+- **Accessibility**: ARIA labels, semantic HTML, keyboard navigation
+- **Error Handling**: Error boundary for graceful error recovery
+- **Dark Mode**: System preference detection with manual toggle
+- **Telemetry**: Anonymous analytics in production (privacy-friendly)
+
+### Performance
+
+Bundle sizes after code splitting:
+- HomePage: ~3 KB (landing page)
+- MinimalPage: ~13 KB (lightweight experience)
+- GooeyPage: ~1.2 MB (includes Three.js for 3D)
+- Initial load: ~230 KB (core React + routing)
+
+## 🔧 Code Quality
+
+The project follows best practices:
+- ESLint for code linting
+- React Hooks exhaustive deps
+- Consistent code formatting
+- Component-based architecture
+- Separation of concerns
+
+## 🚀 Recent Improvements
+
+- **Code Splitting**: Implemented lazy loading to reduce initial bundle size by 85%
+- **Error Boundary**: Added graceful error handling
+- **Accessibility**: Enhanced with ARIA labels and semantic HTML
+- **SEO**: Comprehensive meta tags and structured data
+- **Performance**: Optimized with lazy loading and resource preloading
+- **Code Quality**: Refactored to remove 2400+ lines of unused code
 
 ## 📧 Contact
 

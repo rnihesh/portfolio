@@ -99,8 +99,9 @@ function SkillsSection({ id, isVisible, animationProps }) {
               <div className="w-16 h-16 md:w-20 md:h-20 bg-white dark:bg-gray-50 rounded-xl p-2 flex items-center justify-center mb-2 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <img
                   src={skill.image}
-                  alt={skill.name}
+                  alt={`${skill.name} logo`}
                   className="w-10 h-10 md:w-12 md:h-12 object-contain"
+                  loading="lazy"
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = `https://placehold.co/100x100/10b981/ffffff?text=${skill.name[0]}`;
