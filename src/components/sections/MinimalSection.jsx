@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { skills } from "../../data/skills";
 import { projects } from "../../data/projects";
+import { experience } from "../../data/experience";
 import {
   LuMail,
   LuPhone,
@@ -48,8 +49,9 @@ function MinimalSection({ onBackToChoice }) {
   const sections = [
     { id: "about", label: "About", key: "1" },
     { id: "skills", label: "Skills", key: "2" },
-    { id: "projects", label: "Projects", key: "3" },
-    { id: "contact", label: "Contact", key: "4" },
+    { id: "experience", label: "Experience", key: "3" },
+    { id: "projects", label: "Projects", key: "4" },
+    { id: "contact", label: "Contact", key: "5" },
   ];
 
   // Scroll to section function
@@ -298,6 +300,71 @@ function MinimalSection({ onBackToChoice }) {
                 </motion.div>
               )
             )}
+          </motion.section>
+
+          {/* Experience Section */}
+          <motion.section
+            id="experience"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="space-y-8"
+          >
+            <h2
+              className="text-2xl font-bold text-black dark:text-white mb-8"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Experience
+            </h2>
+            {experience.map((job, index) => (
+              <motion.div
+                key={index}
+                variants={staggerItem}
+                className="border-b border-gray-200 dark:border-gray-700 pb-6 last:border-b-0"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3
+                      className="text-xl font-semibold text-black dark:text-white"
+                      style={{ fontFamily: "'Cascadia Code', monospace" }}
+                    >
+                      {job.company}
+                    </h3>
+                    <p
+                      className="text-blue-600 dark:text-blue-400 font-medium"
+                      style={{ fontFamily: "'Bodoni Moda', serif" }}
+                    >
+                      {job.role}
+                    </p>
+                  </div>
+                  <span
+                    className="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
+                    style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+                  >
+                    {job.period}
+                  </span>
+                </div>
+
+                <p
+                  className="text-gray-600 dark:text-gray-400 text-sm mb-3 leading-relaxed"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  {job.description}
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  {job.skills.map((skill, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2 py-1 text-xs border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400"
+                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
           </motion.section>
 
           {/* Projects Section */}
