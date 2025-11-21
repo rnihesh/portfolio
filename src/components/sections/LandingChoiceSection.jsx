@@ -93,6 +93,7 @@ function LandingChoiceSection({ onChoice }) {
             variants={buttonVariants}
             whileHover="hover"
             whileTap="tap"
+            aria-label="Choose minimal experience - clean and simple portfolio view"
             title="Navigate to /minimal"
           >
             MINIMAL
@@ -102,6 +103,7 @@ function LandingChoiceSection({ onChoice }) {
           <motion.div
             className="text-gray-400 dark:text-gray-600"
             variants={itemVariants}
+            aria-hidden="true"
           >
             or
           </motion.div>
@@ -116,6 +118,7 @@ function LandingChoiceSection({ onChoice }) {
             variants={buttonVariants}
             whileHover="hover"
             whileTap="tap"
+            aria-label="Choose gooey experience - interactive portfolio with 3D animations"
             title="Navigate to /gooey"
           >
             GOOEY

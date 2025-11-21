@@ -137,15 +137,16 @@ function MinimalSection({ onBackToChoice }) {
             Nihesh
           </h1>
 
-          <nav className="hidden md:flex gap-8">
+          <nav className="hidden md:flex gap-8" aria-label="Main navigation">
             {sections.map((section) => (
               <button
                 key={section.id}
                 onClick={() => scrollToSection(section.id)}
                 className="text-sm transition-colors text-gray-500 hover:text-black dark:hover:text-white"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                aria-label={`Navigate to ${section.label} section (keyboard shortcut: ${section.key})`}
               >
-                <span className="text-xs opacity-50 mr-1">{section.key}</span>
+                <span className="text-xs opacity-50 mr-1" aria-hidden="true">{section.key}</span>
                 {section.label}
               </button>
             ))}
@@ -156,8 +157,9 @@ function MinimalSection({ onBackToChoice }) {
               onClick={() => setShowKeyboardHelp(!showKeyboardHelp)}
               className="text-sm text-gray-500 hover:text-black dark:hover:text-white transition-colors"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              aria-label="Show keyboard shortcuts (press H)"
             >
-              <LuKeyboard size={16} className="inline mr-1" />
+              <LuKeyboard size={16} className="inline mr-1" aria-hidden="true" />
               <span className="hidden lg:inline">H</span>
             </button>
 
@@ -165,8 +167,9 @@ function MinimalSection({ onBackToChoice }) {
               onClick={onBackToChoice}
               className="text-sm text-gray-500 hover:text-black dark:hover:text-white transition-colors"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              aria-label="Back to home page"
             >
-              <LuArrowUp size={16} className="inline mr-1" />
+              <LuArrowUp size={16} className="inline mr-1" aria-hidden="true" />
               Back
             </button>
           </div>
@@ -179,6 +182,7 @@ function MinimalSection({ onBackToChoice }) {
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+        aria-label="Mobile navigation"
       >
         <div className="flex justify-around py-3">
           {sections.map((section) => (
@@ -187,6 +191,7 @@ function MinimalSection({ onBackToChoice }) {
               onClick={() => scrollToSection(section.id)}
               className="text-xs py-2 px-3 transition-colors text-gray-500 hover:text-black dark:hover:text-white"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              aria-label={`Navigate to ${section.label}`}
             >
               {section.label}
             </button>
