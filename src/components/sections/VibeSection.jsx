@@ -42,30 +42,9 @@ function VibeSection({ id, isVisible, animationProps }) {
     },
   };
 
-  const skillItem = {
-    hidden: { scale: 0.8, opacity: 0 },
-    show: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 260,
-        damping: 20,
-      },
-    },
-    exit: {
-      scale: 0.8,
-      opacity: 0,
-    },
-  };
-
   // Apply rough notation to headings when component becomes visible
   useEffect(() => {
     if (!isVisible || !battrixRef.current || !myftpRef.current) return;
-
-    // Check if dark mode is active
-    const isDarkMode = document.documentElement.classList.contains("dark");
-    const annotationColor = isDarkMode ? "#fff" : "#000";
 
     // Create annotations
     const battrixAnnotation = annotate(battrixRef.current, {

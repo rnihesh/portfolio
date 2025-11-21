@@ -25,38 +25,6 @@ function ProjectsSection({ id, isVisible, animationProps }) {
     },
   };
 
-  const item = {
-    hidden: { y: 20, opacity: 0 },
-    show: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        damping: 15,
-      },
-    },
-    exit: {
-      y: -20,
-      opacity: 0,
-    },
-  };
-
-  const skillItem = {
-    hidden: { scale: 0.8, opacity: 0 },
-    show: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 260,
-        damping: 20,
-      },
-    },
-    exit: {
-      scale: 0.8,
-      opacity: 0,
-    },
-  };
   const words = [
     {
       text: "My",

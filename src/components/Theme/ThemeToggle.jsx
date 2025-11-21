@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { shortcuts } from "../../data/shortcuts";
 
 const ThemeToggle = () => {
   const [isDark, setIsDark] = useState(false);

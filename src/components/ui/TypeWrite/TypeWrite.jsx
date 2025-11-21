@@ -1,6 +1,9 @@
 import { motion, useAnimate, useInView, stagger } from "framer-motion";
 import { useEffect } from "react";
 
+// Utility function to combine class names
+const cn = (...classes) => classes.filter(Boolean).join(" ");
+
 export const TypeWrite = ({ words, className = "", cursorClassName = "" }) => {
   const wordsArray = words.map((word) => {
     return {
