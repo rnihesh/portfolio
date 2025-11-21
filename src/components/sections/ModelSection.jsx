@@ -46,22 +46,6 @@ function ModelSection({ id, isVisible, animationProps }) {
     },
   };
 
-  const skillItem = {
-    hidden: { scale: 0.8, opacity: 0 },
-    show: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 260,
-        damping: 20,
-      },
-    },
-    exit: {
-      scale: 0.8,
-      opacity: 0,
-    },
-  };
   return (
     <HalfHeightSection
       id={id}

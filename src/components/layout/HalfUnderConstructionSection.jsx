@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const HalfUnderConstruction = ({ isVisible, animationProps, className }) => {
+const HalfUnderConstruction = ({ isVisible, animationProps }) => {
   const container = {
     hidden: { opacity: 0 },
     show: {

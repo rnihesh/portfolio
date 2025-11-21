@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { skills } from "../../data/skills";
 import { projects } from "../../data/projects";
@@ -16,15 +16,6 @@ import "./MinimalSection.css";
 
 function MinimalSection({ onBackToChoice }) {
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
-
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
@@ -46,13 +37,16 @@ function MinimalSection({ onBackToChoice }) {
     },
   };
 
-  const sections = [
-    { id: "about", label: "About", key: "1" },
-    { id: "skills", label: "Skills", key: "2" },
-    { id: "experience", label: "Experience", key: "3" },
-    { id: "projects", label: "Projects", key: "4" },
-    { id: "contact", label: "Contact", key: "5" },
-  ];
+  const sections = useMemo(
+    () => [
+      { id: "about", label: "About", key: "1" },
+      { id: "skills", label: "Skills", key: "2" },
+      { id: "experience", label: "Experience", key: "3" },
+      { id: "projects", label: "Projects", key: "4" },
+      { id: "contact", label: "Contact", key: "5" },
+    ],
+    []
+  );
 
   // Scroll to section function
   const scrollToSection = (sectionId) => {

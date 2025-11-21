@@ -22,14 +22,6 @@ const HandDrawnUnderline = ({
     if (!textRef.current || !containerRef.current) return;
 
     const textRect = textRef.current.getBoundingClientRect();
-    const computedStyle = window.getComputedStyle(textRef.current);
-
-    // Create temporary canvas to measure text metrics
-    const tempCanvas = document.createElement("canvas");
-    const tempCtx = tempCanvas.getContext("2d");
-    tempCtx.font = `${computedStyle.fontWeight} ${computedStyle.fontSize} ${computedStyle.fontFamily}`;
-    const textMetrics = tempCtx.measureText(textRef.current.textContent);
-
     // Calculate SVG dimensions
     const svgWidth = textRect.width;
     const svgHeight =
