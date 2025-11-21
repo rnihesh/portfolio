@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { skills } from "../../data/skills";
 import { projects } from "../../data/projects";
@@ -13,6 +13,15 @@ import {
   LuKeyboard,
 } from "react-icons/lu";
 import "./MinimalSection.css";
+
+// Navigation sections configuration
+const SECTIONS = [
+  { id: "about", label: "About", key: "1" },
+  { id: "skills", label: "Skills", key: "2" },
+  { id: "experience", label: "Experience", key: "3" },
+  { id: "projects", label: "Projects", key: "4" },
+  { id: "contact", label: "Contact", key: "5" },
+];
 
 function MinimalSection({ onBackToChoice }) {
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
@@ -37,17 +46,6 @@ function MinimalSection({ onBackToChoice }) {
     },
   };
 
-  const sections = useMemo(
-    () => [
-      { id: "about", label: "About", key: "1" },
-      { id: "skills", label: "Skills", key: "2" },
-      { id: "experience", label: "Experience", key: "3" },
-      { id: "projects", label: "Projects", key: "4" },
-      { id: "contact", label: "Contact", key: "5" },
-    ],
-    []
-  );
-
   // Scroll to section function
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -61,8 +59,8 @@ function MinimalSection({ onBackToChoice }) {
     const handleKeyPress = (e) => {
       // Numbers 1-5 for section navigation
       const sectionIndex = parseInt(e.key) - 1;
-      if (sectionIndex >= 0 && sectionIndex < sections.length) {
-        scrollToSection(sections[sectionIndex].id);
+      if (sectionIndex >= 0 && sectionIndex < SECTIONS.length) {
+        scrollToSection(SECTIONS[sectionIndex].id);
         return;
       }
 
@@ -82,7 +80,7 @@ function MinimalSection({ onBackToChoice }) {
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [showKeyboardHelp, onBackToChoice, sections]);
+  }, [showKeyboardHelp, onBackToChoice]);
 
   const contactInfo = [
     {
@@ -138,7 +136,7 @@ function MinimalSection({ onBackToChoice }) {
           </h1>
 
           <nav className="hidden md:flex gap-8" aria-label="Main navigation">
-            {sections.map((section) => (
+            {SECTIONS.map((section) => (
               <button
                 key={section.id}
                 onClick={() => scrollToSection(section.id)}
@@ -185,7 +183,7 @@ function MinimalSection({ onBackToChoice }) {
         aria-label="Mobile navigation"
       >
         <div className="flex justify-around py-3">
-          {sections.map((section) => (
+          {SECTIONS.map((section) => (
             <button
               key={section.id}
               onClick={() => scrollToSection(section.id)}
@@ -587,7 +585,7 @@ function MinimalSection({ onBackToChoice }) {
                 className="space-y-2 text-sm"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
-                {sections.map((section) => (
+                {SECTIONS.map((section) => (
                   <div key={section.id} className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400">
                       {section.label}
