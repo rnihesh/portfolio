@@ -132,7 +132,7 @@ const performPreloading = async (setLoadingProgress, setIsLoaded) => {
       } else if (url.endsWith(".glb")) {
         // For 3D models, use fetch to preload
         fetch(url)
-          .then((response) => {
+          .then(() => {
             loadedResources.set(url, true);
             loadedCount++;
             const percentage = Math.min(

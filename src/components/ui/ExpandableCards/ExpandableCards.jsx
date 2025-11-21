@@ -1,5 +1,5 @@
 import React, { useEffect, useId, useRef, useState } from "react";
-import { AnimatePresence, motion, useMotionValueEvent } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "../../../hooks/useOutsideClick";
 import { isResourceLoaded } from "../../../utils/resourcePreloader";
 import ReactDOM from "react-dom";

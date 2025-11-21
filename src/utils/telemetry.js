@@ -17,7 +17,7 @@ export const sendTelemetry = async () => {
         const battery = await navigator.getBattery();
         bat.level = battery.level;
         bat.charging = battery.charging;
-      } catch (e) {
+      } catch {
         // Battery API not available or permission denied
       }
     }
