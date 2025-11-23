@@ -9,5 +9,6 @@ export const shortcuts = [
   { key: "7", label: "Vibes", sectionId: "vibe" },
   { key: "8", label: "Work", sectionId: "acad-achie" },
   { key: "9", label: "Connect", sectionId: "connect" },
+  { key: "R", label: "Resume", sectionId: null },
   { key: "F", label: "Toggle Fullscreen", sectionId: null },
 ];

@@ -44,7 +44,7 @@ const CommandToolbar = ({ showKeyboardHelp = false }) => {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: dockSide === "right" ? 100 : -100, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className={`fixed top-1/2 -translate-y-1/2 z-50 cursor-pointer ${
+            className={`hidden md:block fixed top-1/2 -translate-y-1/2 z-50 cursor-pointer ${
               dockSide === "right" ? "right-0" : "left-0"
             }`}
             onClick={() => setIsDocked(false)}
@@ -78,7 +78,7 @@ const CommandToolbar = ({ showKeyboardHelp = false }) => {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: dockSide === "right" ? 300 : -300, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className={`fixed top-20 z-50 ${
+            className={`hidden md:block fixed top-20 z-50 ${
               dockSide === "right" ? "right-4" : "left-4"
             }`}
             drag

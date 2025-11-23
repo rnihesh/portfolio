@@ -310,12 +310,24 @@ function MinimalSection({ onBackToChoice }) {
             animate="visible"
             className="space-y-8"
           >
-            <h2
-              className="text-2xl font-bold text-black dark:text-white mb-8"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Experience
-            </h2>
+            <div className="mb-8">
+              <h2
+                className="text-2xl font-bold text-black dark:text-white"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                Experience
+              </h2>
+              <p
+                className="text-sm text-gray-500 dark:text-gray-400 mt-2"
+                style={{ fontFamily: "JetBrains Mono" }}
+              >
+                Hit{" "}
+                <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-xs font-semibold">
+                  R
+                </kbd>{" "}
+                to view resume
+              </p>
+            </div>
             {experience.map((job, index) => (
               <motion.div
                 key={index}
