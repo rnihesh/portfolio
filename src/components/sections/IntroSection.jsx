@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Section from "../layout/Section";
 import BlurText from "../../TextAnimations/BlurText/BlurText";
 
-function IntroSection({id, isVisible, animationProps }) {
+function IntroSection({id, isVisible, animationProps, modern }) {
   // staggered animation for children
   const container = {
     hidden: { opacity: 0 },
@@ -61,6 +61,7 @@ function IntroSection({id, isVisible, animationProps }) {
       id={id}
       isVisible={isVisible}
       animationProps={animationProps}
+      modern={modern}
     >
       <div className="flex gap-4 items-center flex-wrap">
         <BlurText

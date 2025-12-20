@@ -8,6 +8,8 @@ import useFullscreen from "../hooks/useFullscreen";
 import { LuArrowUp } from "react-icons/lu";
 import { HiOutlineCubeTransparent } from "react-icons/hi2";
 
+import ParticleBackground from "../components/backgrounds/ParticleBackground";
+
 // section components
 import LoadingSection from "../components/sections/LoadingSection";
 import IntroSection from "../components/sections/IntroSection";
@@ -204,6 +206,7 @@ function GooeyPage() {
             transition={{ duration: 0.8 }}
             className="min-h-[900vh] w-full relative bg-white dark:bg-black"
           >
+            <ParticleBackground />
             <CommandToolbar showKeyboardHelp={showKeyboardHelp} />
             <div className="absolute inset-0 flex flex-col items-center">
               <IntroSection

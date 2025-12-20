@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Section from "../layout/Section";
 
-function WhatAmISection({id, isVisible, animationProps }) {
+function WhatAmISection({ id, isVisible, animationProps, modern }) {
   // staggered animation for children
   const container = {
     hidden: { opacity: 0 },
@@ -55,7 +55,7 @@ function WhatAmISection({id, isVisible, animationProps }) {
   };
 
   return (
-    <Section id={id} isVisible={isVisible} animationProps={animationProps}>
+    <Section id={id} isVisible={isVisible} animationProps={animationProps} modern={modern}>
       <motion.div
         variants={container}
         initial="hidden"

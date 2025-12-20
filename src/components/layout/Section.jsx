@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import GlassCard from "../common/GlassCard";
 
 const Section = ({
   id,
@@ -28,7 +29,10 @@ const Section = ({
               transition={animationProps.transition}
               className={`flex items-center justify-center h-full w-[80vw] md:w-[90vw] overflow ${innerClassName}`}
             >
-              {children}
+              {/* Wrap content in GlassCard to satisfy "heavy glassmorphism" request while keeping layout */}
+              <GlassCard className="w-full h-full flex items-center justify-center p-8 relative">
+                 {children}
+              </GlassCard>
             </motion.div>
           )}
         </AnimatePresence>

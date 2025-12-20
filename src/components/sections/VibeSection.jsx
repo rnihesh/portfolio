@@ -4,7 +4,7 @@ import Section from "../layout/Section";
 import rough from "roughjs/bundled/rough.esm";
 import { annotate } from "rough-notation";
 
-function VibeSection({ id, isVisible, animationProps }) {
+function VibeSection({ id, isVisible, animationProps, modern }) {
   const svgRef = useRef(null);
   const battrixRef = useRef(null);
   const myftpRef = useRef(null);
@@ -161,6 +161,7 @@ function VibeSection({ id, isVisible, animationProps }) {
       id={id}
       isVisible={isVisible}
       animationProps={animationProps}
+      modern={modern}
       className="flex flex-col"
       innerClassName="flex-col g-10"
     >

@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import GlassCard from "../common/GlassCard";
 
 const HalfHeightSection = ({
   id,
@@ -26,7 +27,9 @@ const HalfHeightSection = ({
               transition={animationProps.transition}
               className="flex items-center justify-center h-64 w-[80vw] md:h-96 md:w-[90vw]"
             >
-              {children}
+              <GlassCard className="w-full h-full flex items-center justify-center p-6 relative">
+                 {children}
+              </GlassCard>
             </motion.div>
           )}
         </AnimatePresence>
