@@ -5,7 +5,7 @@ import { experience } from "../../data/experience";
 import { TypeWrite } from "../ui/TypeWrite/TypeWrite";
 import HandDrawnUnderline from "../my-creation/HandDrawnUnderline/HandDrawnUnderline";
 
-function ExperienceSection({ id, isVisible, animationProps }) {
+function ExperienceSection({ id, isVisible, animationProps, modern }) {
   // staggered animation for children
   const container = {
     hidden: { opacity: 0 },
@@ -46,7 +46,7 @@ function ExperienceSection({ id, isVisible, animationProps }) {
   ];
 
   return (
-    <Section id={id} isVisible={isVisible} animationProps={animationProps}>
+    <Section id={id} isVisible={isVisible} animationProps={animationProps} modern={modern}>
       <div className="flex flex-col items-center w-full max-w-4xl mx-auto px-4 h-[80vh] overflow-y-auto scrollbar-hide">
         <div className="mb-12 text-center sticky top-0 bg-white/80 dark:bg-black/80 backdrop-blur-sm z-10 py-4 w-full">
           <HandDrawnUnderline

@@ -10,7 +10,7 @@ import { LuPhone } from "react-icons/lu";
 import { FaXTwitter } from "react-icons/fa6";
 import { TbBrandBluesky } from "react-icons/tb";
 
-function ConnectSection({ id, isVisible, animationProps }) {
+function ConnectSection({ id, isVisible, animationProps, modern }) {
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -48,6 +48,7 @@ function ConnectSection({ id, isVisible, animationProps }) {
       id={id}
       isVisible={isVisible}
       animationProps={animationProps}
+      modern={modern}
       className="connect-back flex items-center justify-center w-full h-full "
       background={
         <motion.div

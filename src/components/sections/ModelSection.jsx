@@ -5,7 +5,7 @@ import ModelViewer from "../ui/ModelViewer/ModelViewer";
 import { models } from "../../data/models";
 import { isResourceLoaded } from "../../utils/resourcePreloader";
 
-function ModelSection({ id, isVisible, animationProps }) {
+function ModelSection({ id, isVisible, animationProps, modern }) {
   // Get the current model to display
   const currentModel = models.plane; // You can change this to any model in your config
 
@@ -67,6 +67,7 @@ function ModelSection({ id, isVisible, animationProps }) {
       id={id}
       isVisible={isVisible}
       animationProps={animationProps}
+      modern={modern}
     >
       <motion.div
         variants={container}
