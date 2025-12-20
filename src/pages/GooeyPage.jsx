@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import useVisibilityOnScroll from "../hooks/useVisibilityOnScroll";
 import { preloadResources } from "../utils/resourcePreloader";
 import { usePageTitle } from "../hooks/usePageTitle";
 import useFullscreen from "../hooks/useFullscreen";
+import { LuArrowUp } from "react-icons/lu";
 import { HiOutlineCubeTransparent } from "react-icons/hi2";
 
-// New Modern Components
-import SmoothScroll from "../components/common/SmoothScroll";
 import ParticleBackground from "../components/backgrounds/ParticleBackground";
 
 // section components
@@ -26,14 +26,100 @@ import ConnectSection from "../components/sections/ConnectSection";
 // command toolbar
 import CommandToolbar from "../components/my-creation/CommandToolbar/CommandToolbar";
 
+// Animation properties for each section
+const firstScreenAnimation = {
+  key: "first-screen",
+  initial: { opacity: 0, y: -100 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -50 },
+  transition: { duration: 1 },
+};
+
+const secondScreenAnimation = {
+  key: "second-screen",
+  initial: { opacity: 0, y: 100 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: 50 },
+  transition: { duration: 1 },
+};
+
+const thirdScreenAnimation = {
+  key: "third-screen",
+  initial: { opacity: 0, scale: 0.8 },
+  animate: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.9 },
+  transition: { duration: 0.8 },
+};
+
+const fourthScreenAnimation = {
+  key: "fourth-screen",
+  initial: { opacity: 0, scale: 0.9 },
+  animate: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.9 },
+  transition: { duration: 0.8 },
+};
+
+const fifthScreenAnimation = {
+  key: "fifth-screen",
+  initial: { opacity: 0, y: 50 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: 50 },
+  transition: { duration: 0.8 },
+};
+
+const sixthScreenAnimation = {
+  key: "sixth-screen",
+  initial: { opacity: 0, y: 50 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: 50 },
+  transition: { duration: 0.8 },
+};
+
+const seventhScreenAnimation = {
+  key: "seventh-screen",
+  initial: { opacity: 0, y: 50 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: 50 },
+  transition: { duration: 0.8 },
+};
+
+const eighthScreenAnimation = {
+  key: "eighth-screen",
+  initial: { opacity: 0, y: 50 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, scale: 0.8 },
+  transition: { duration: 0.8 },
+};
+
+const ninthScreenAnimation = {
+  key: "ninth-screen",
+  initial: { opacity: 0, y: 50 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: 50 },
+  transition: { duration: 0.8 },
+};
+
 function GooeyPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
+  const firstScreenRef = useRef(null);
   const navigate = useNavigate();
 
   usePageTitle("", "gooey");
-  useFullscreen();
+  useFullscreen(); // Enable fullscreen with 'f' key
+
+  const {
+    showFirstScreen,
+    showSecondScreen,
+    showThirdScreen,
+    showFourthScreen,
+    showFifthScreen,
+    showSixthScreen,
+    showSeventhScreen,
+    showEighthScreen,
+    showNinthScreen,
+  } = useVisibilityOnScroll();
 
   useEffect(() => {
     preloadResources(setLoadingProgress, setIsLoaded);
@@ -79,6 +165,7 @@ function GooeyPage() {
 
       if (import.meta.env.MODE === "production") {
         fetch("https://traana.vercel.app/tra", {
+          // fetch("http://localhost:3000/tra", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
@@ -87,6 +174,7 @@ function GooeyPage() {
     })();
   }, []);
 
+  // Add keyboard shortcuts
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (e.key.toLowerCase() === "h" && !e.ctrlKey) {
@@ -106,7 +194,7 @@ function GooeyPage() {
   }, [navigate, showKeyboardHelp]);
 
   return (
-    <div className="overflow-x-hidden scrollbar-hide bg-white dark:bg-black text-black dark:text-white">
+    <div className="overflow-x-hidden scrollbar-hide">
       <AnimatePresence mode="wait">
         {!isLoaded ? (
           <LoadingSection key="loading" progress={loadingProgress} />
@@ -116,29 +204,77 @@ function GooeyPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="w-full relative"
+            className="min-h-[900vh] w-full relative bg-white dark:bg-black"
           >
             <ParticleBackground />
-            <SmoothScroll>
-              <CommandToolbar showKeyboardHelp={showKeyboardHelp} />
+            <CommandToolbar showKeyboardHelp={showKeyboardHelp} />
+            <div className="absolute inset-0 flex flex-col items-center">
+              <IntroSection
+                id="intro"
+                ref={firstScreenRef}
+                isVisible={showFirstScreen}
+                animationProps={firstScreenAnimation}
+              />
 
-              <div className="relative z-10 flex flex-col items-center w-full pb-32">
-                <IntroSection id="intro" modern={true} />
-                <NameSection id="name" modern={true} />
-                <WhatAmISection id="whatami" modern={true} />
-                <SkillsSection id="skills" modern={true} />
-                <ModelSection id="model" modern={true} />
-                <PhotoSection id="photos" modern={true} />
-                <ProjectsSection id="projects" modern={true} />
-                <VibeSection id="vibe" modern={true} />
-                <ExperienceSection id="acad-achie" modern={true} />
-                <ConnectSection id="connect" modern={true} />
-              </div>
-            </SmoothScroll>
+              <NameSection
+                id="name"
+                isVisible={showSecondScreen}
+                animationProps={secondScreenAnimation}
+              />
+
+              <WhatAmISection
+                id="whatami"
+                isVisible={showThirdScreen}
+                animationProps={thirdScreenAnimation}
+              />
+
+              <SkillsSection
+                id="skills"
+                isVisible={showFourthScreen}
+                animationProps={fourthScreenAnimation}
+              />
+
+              <ModelSection
+                id="model"
+                isVisible={showFifthScreen}
+                animationProps={fifthScreenAnimation}
+              />
+
+              <PhotoSection
+                id="photos"
+                isVisible={showFifthScreen}
+                animationProps={fifthScreenAnimation}
+              />
+
+              <ProjectsSection
+                id="projects"
+                isVisible={showSixthScreen}
+                animationProps={sixthScreenAnimation}
+              />
+
+              <VibeSection
+                id="vibe"
+                isVisible={showSeventhScreen}
+                animationProps={seventhScreenAnimation}
+              />
+
+              <ExperienceSection
+                id="acad-achie"
+                isVisible={showEighthScreen}
+                animationProps={eighthScreenAnimation}
+              />
+
+              <ConnectSection
+                id="connect"
+                isVisible={showNinthScreen}
+                animationProps={ninthScreenAnimation}
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Floating Home Button */}
       <motion.button
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
