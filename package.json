@@ -11,12 +11,14 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "start": "vite preview --host 0.0.0.0 --port 8080"
+    "start": "vite preview --host 0.0.0.0 --port 8080",
+    "startCloud": "node server.js"
   },
   "dependencies": {
     "@react-three/drei": "^10.4.2",
     "@react-three/fiber": "^9.1.4",
     "@tailwindcss/vite": "^4.1.11",
+    "express": "^5.2.1",
     "framer-motion": "^12.20.2",
     "gsap": "^3.13.0",
     "matter-js": "^0.20.0",
