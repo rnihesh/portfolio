@@ -177,27 +177,27 @@ function ConnectSection({ id, isVisible, animationProps }) {
                 // },
                 { icon: LuPhone, href: "tel:+918328094810", label: "Call" },
                 // {
-                  //   icon: TbBrandBluesky,
-                  //   href: "https://bsky.app/profile/nihesh.codes",
-                  //   label: "Bluesky",
-                  // },
-                  {
-                    icon: FaXTwitter,
-                    href: "https://x.com/niheshr03",
-                    label: "X",
-                  },
-                  {
-                    icon: LuGithub,
-                    href: "https://github.com/rnihesh",
-                    label: "Github",
-                  },
-                  
-                  {
-                    icon: LuLinkedin,
-                    href: "https://www.linkedin.com/in/rachakonda-nihesh/",
-                    label: "LinkedIn",
-                  },
-                ].map((item, index) => (
+                //   icon: TbBrandBluesky,
+                //   href: "https://bsky.app/profile/niheshr.com",
+                //   label: "Bluesky",
+                // },
+                {
+                  icon: FaXTwitter,
+                  href: "https://x.com/niheshr03",
+                  label: "X",
+                },
+                {
+                  icon: LuGithub,
+                  href: "https://github.com/rnihesh",
+                  label: "Github",
+                },
+
+                {
+                  icon: LuLinkedin,
+                  href: "https://www.linkedin.com/in/rachakonda-nihesh/",
+                  label: "LinkedIn",
+                },
+              ].map((item, index) => (
                 <motion.a
                   key={index}
                   href={item.href}
@@ -216,7 +216,12 @@ function ConnectSection({ id, isVisible, animationProps }) {
                   >
                     <item.icon />
                   </motion.div>
-                  <span className="text-xs mt-1 opacity-70 dark:text-white" style={{fontFamily: "JetBrains Mono"}}>{item.label}</span>
+                  <span
+                    className="text-xs mt-1 opacity-70 dark:text-white"
+                    style={{ fontFamily: "JetBrains Mono" }}
+                  >
+                    {item.label}
+                  </span>
                 </motion.a>
               ))}
             </div>

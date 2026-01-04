@@ -4,7 +4,7 @@ Allow: /minimal
 Allow: /gooey
 
 # Sitemap
-Sitemap: https://nihesh.codes/sitemap.xml
+Sitemap: https://niheshr.com/sitemap.xml
 
 # Crawl delay (optional)
 Crawl-delay: 1

@@ -65,18 +65,18 @@ export const SEO_CONFIG = {
     title: "Nihesh Rachakonda | Portfolio - Choose Your Experience",
     description:
       "Choose your portfolio experience: Minimal clean interface or interactive 3D animations. Full Stack Developer portfolio by Nihesh Rachakonda.",
-    url: "https://nihesh.codes/",
+    url: "https://niheshr.com/",
   },
   minimal: {
     title: "Minimal Portfolio - Nihesh Rachakonda",
     description:
       "Clean, minimal portfolio experience showcasing Nihesh Rachakonda's skills, projects, and experience as a Full Stack Developer.",
-    url: "https://nihesh.codes/minimal",
+    url: "https://niheshr.com/minimal",
   },
   gooey: {
     title: "Gooey Experience - Nihesh Rachakonda",
     description:
       "Interactive 3D portfolio experience with custom animations, 3D models, and immersive interactions by Nihesh Rachakonda.",
-    url: "https://nihesh.codes/gooey",
+    url: "https://niheshr.com/gooey",
   },
 };
