@@ -2,19 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://niheshr.com/</loc>
-    <lastmod>2025-08-17T00:00:00+05:30</lastmod>
+    <lastmod>2026-01-05T00:00:00+00:00</lastmod>
     <priority>1.0</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://niheshr.com/minimal</loc>
-    <lastmod>2025-08-17T00:00:00+05:30</lastmod>
+    <lastmod>2026-01-05T00:00:00+00:00</lastmod>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://niheshr.com/gooey</loc>
-    <lastmod>2025-08-17T00:00:00+05:30</lastmod>
+    <lastmod>2026-01-05T00:00:00+00:00</lastmod>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
