@@ -36,64 +36,65 @@
     />
     <meta name="twitter:image" content="https://niheshr.com/nihesh.png" />
 
-    <!-- Structured Data: Person -->
+    <!-- Structured Data: Website -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Nihesh Rachakonda",
-        "jobTitle": "Full Stack Developer",
+        "@type": "WebSite",
+        "name": "Nihesh Rachakonda Portfolio",
         "url": "https://niheshr.com/",
-        "sameAs": [
-          "https://www.linkedin.com/in/rachakonda-nihesh/",
-          "https://github.com/rnihesh"
-        ],
-        "hasOccupation": {
-          "@type": "Occupation",
-          "name": "Full Stack Developer",
-          "occupationLocation": [
-            {
-              "@type": "City",
-              "name": "Hyderabad"
-            }
-          ],
-          "skills": "React, Node.js, MongoDB, Tailwind, Bootstrap, Git"
-        }
+        "description": "Full Stack Developer portfolio offering minimal and interactive experiences with React, Node.js, and 3D animations.",
+        "author": {
+          "@type": "Person",
+          "@id": "https://niheshr.com/#person"
+        },
+        "inLanguage": "en-US"
       }
     </script>
 
-    <!-- Structured Data: Project -->
+    <!-- Structured Data: Person & ProfilePage -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "CreativeWork",
-        "name": "Dual Experience Portfolio",
-        "description": "An innovative portfolio offering two distinct experiences: a minimal clean interface and an interactive 3D experience with animations built with React and Three.js.",
-        "creator": {
+        "@type": "ProfilePage",
+        "mainEntity": {
           "@type": "Person",
-          "name": "Nihesh Rachakonda"
-        },
-        "dateCreated": "2024-01-15",
-        "dateModified": "2025-08-17",
-        "url": "https://github.com/rnihesh/portfolio",
-        "about": {
-          "@type": "Thing",
-          "name": "Web Development"
-        },
-        "hasVariant": [
-          {
-            "@type": "CreativeWork",
-            "name": "Minimal Experience",
-            "url": "https://niheshr.com/minimal",
-            "description": "Clean, text-based portfolio experience"
-          },
-          {
-            "@type": "CreativeWork",
-            "name": "Gooey Experience",
-            "url": "https://niheshr.com/gooey",
-            "description": "Interactive portfolio with 3D animations and advanced interactions"
+          "@id": "https://niheshr.com/#person",
+          "name": "Nihesh Rachakonda",
+          "alternateName": "rnihesh",
+          "jobTitle": "Full Stack Developer",
+          "url": "https://niheshr.com/",
+          "image": "https://niheshr.com/nihesh.png",
+          "description": "Full Stack Developer specializing in React, Node.js, MongoDB, and interactive web experiences with 3D animations.",
+          "sameAs": [
+            "https://www.linkedin.com/in/rachakonda-nihesh/",
+            "https://github.com/rnihesh"
+          ],
+          "knowsAbout": [
+            { "@type": "Thing", "name": "React" },
+            { "@type": "Thing", "name": "Node.js" },
+            { "@type": "Thing", "name": "MongoDB" },
+            { "@type": "Thing", "name": "JavaScript" },
+            { "@type": "Thing", "name": "Three.js" },
+            { "@type": "Thing", "name": "Tailwind CSS" },
+            { "@type": "Thing", "name": "Full Stack Development" },
+            { "@type": "Thing", "name": "3D Web Animation" },
+            { "@type": "Thing", "name": "Web Development" }
+          ],
+          "hasOccupation": {
+            "@type": "Occupation",
+            "name": "Full Stack Developer",
+            "occupationLocation": {
+              "@type": "City",
+              "name": "Hyderabad",
+              "containedInPlace": {
+                "@type": "Country",
+                "name": "India"
+              }
+            },
+            "responsibilities": "React, Node.js, MongoDB, Express.js, JavaScript, Three.js, Framer Motion, Tailwind CSS, Bootstrap, Git, REST APIs"
           }
-        ]
+        }
       }
     </script>
 
