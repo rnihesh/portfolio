@@ -52,33 +52,43 @@ export default function useVisibilityOnScroll() {
     }
 
     // Fifth screen visibility
-    if (scrollPosition >= windowHeight * 3.3&&
-      scrollPosition <= windowHeight * 4.3) {
+    if (
+      scrollPosition >= windowHeight * 3.3 &&
+      scrollPosition <= windowHeight * 4.3
+    ) {
       setShowFifthScreen(true);
     } else {
       setShowFifthScreen(false);
     }
 
-    if (scrollPosition >= windowHeight * 4.7&&
-      scrollPosition <= windowHeight * 5.3) {
+    if (
+      scrollPosition >= windowHeight * 4.7 &&
+      scrollPosition <= windowHeight * 5.3
+    ) {
       setShowSixthScreen(true);
     } else {
       setShowSixthScreen(false);
     }
-    if (scrollPosition >= windowHeight * 5.7&&
-      scrollPosition <= windowHeight * 6.3) {
+    if (
+      scrollPosition >= windowHeight * 5.7 &&
+      scrollPosition <= windowHeight * 6.3
+    ) {
       setShowSeventhScreen(true);
     } else {
       setShowSeventhScreen(false);
     }
-    if (scrollPosition >= windowHeight * 6.7&&
-      scrollPosition <= windowHeight * 7.3) {
+    if (
+      scrollPosition >= windowHeight * 6.7 &&
+      scrollPosition <= windowHeight * 7.3
+    ) {
       setShowEighthScreen(true);
     } else {
       setShowEighthScreen(false);
     }
-    if (scrollPosition >= windowHeight * 7.7&&
-      scrollPosition <= windowHeight * 8.3) {
+    if (
+      scrollPosition >= windowHeight * 7.7 &&
+      scrollPosition <= windowHeight * 8.3
+    ) {
       setShowNinthScreen(true);
     } else {
       setShowNinthScreen(false);
@@ -111,6 +121,6 @@ export default function useVisibilityOnScroll() {
     showSixthScreen,
     showSeventhScreen,
     showEighthScreen,
-    showNinthScreen
+    showNinthScreen,
   };
 }

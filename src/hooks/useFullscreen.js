@@ -10,7 +10,7 @@ function useFullscreen() {
       // Enter fullscreen
       document.documentElement.requestFullscreen().catch((err) => {
         console.warn(
-          `Error attempting to enable fullscreen: ${err.message} (${err.name})`
+          `Error attempting to enable fullscreen: ${err.message} (${err.name})`,
         );
       });
     } else {

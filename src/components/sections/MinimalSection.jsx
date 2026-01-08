@@ -298,7 +298,7 @@ function MinimalSection({ onBackToChoice }) {
                     ))}
                   </div>
                 </motion.div>
-              )
+              ),
             )}
           </motion.section>
 

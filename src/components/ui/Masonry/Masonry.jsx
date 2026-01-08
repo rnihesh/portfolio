@@ -17,7 +17,7 @@ const useMedia = (queries, values, defaultValue) => {
     queries.forEach((q) => matchMedia(q).addEventListener("change", handler));
     return () =>
       queries.forEach((q) =>
-        matchMedia(q).removeEventListener("change", handler)
+        matchMedia(q).removeEventListener("change", handler),
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queries]);
@@ -46,7 +46,7 @@ const preloadVisibleImages = (items, setImagesReady) => {
   // Only check if the first few images are ready
   const firstFewImages = items.slice(0, 5);
   const allFirstImagesReady = firstFewImages.every((item) =>
-    isResourceLoaded(item.img)
+    isResourceLoaded(item.img),
   );
 
   if (allFirstImagesReady) {
@@ -79,7 +79,7 @@ const Masonry = ({
       "(min-width:400px)",
     ],
     [5, 4, 3, 2],
-    1
+    1,
   );
 
   const [containerRef, { width }] = useMeasure();
@@ -164,7 +164,7 @@ const Masonry = ({
             duration: 0.8,
             ease: "power3.out",
             delay: index * stagger,
-          }
+          },
         );
       } else {
         gsap.to(selector, {

@@ -8,7 +8,7 @@ export const updateMetaDescription = (description) => {
 
   // Also update Open Graph description
   const ogDescription = document.querySelector(
-    'meta[property="og:description"]'
+    'meta[property="og:description"]',
   );
   if (ogDescription) {
     ogDescription.setAttribute("content", description);
@@ -16,7 +16,7 @@ export const updateMetaDescription = (description) => {
 
   // Also update Twitter description
   const twitterDescription = document.querySelector(
-    'meta[name="twitter:description"]'
+    'meta[name="twitter:description"]',
   );
   if (twitterDescription) {
     twitterDescription.setAttribute("content", description);

@@ -180,7 +180,7 @@ const ModelInner = ({
       persp.position.set(
         pivotW.current.x,
         pivotW.current.y,
-        pivotW.current.z + d
+        pivotW.current.z + d,
       );
       persp.near = d / 10;
       persp.far = d * 10;

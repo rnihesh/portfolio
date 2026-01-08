@@ -9,7 +9,9 @@
 
 /* Smooth transitions for theme changes */
 .minimal-section * {
-  transition: color 0.3s ease, background-color 0.3s ease,
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
     border-color 0.3s ease;
 }
 
@@ -87,7 +89,9 @@
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.1);
   transform: translate(-50%, -50%);
-  transition: width 0.3s ease, height 0.3s ease;
+  transition:
+    width 0.3s ease,
+    height 0.3s ease;
 }
 
 .dark .minimal-section button::after {

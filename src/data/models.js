@@ -2,7 +2,7 @@ export const models = {
   plane: {
     url: "3d_models/plane.glb",
     defaultRotationX: -13.6,
-    defaultRotationY:-2.1,
+    defaultRotationY: -2.1,
     defaultZoom: 0.1,
   },
   // Add more models in the future

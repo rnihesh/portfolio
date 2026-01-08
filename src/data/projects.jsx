@@ -27,7 +27,7 @@ export const projects = [
                 >
                   {skill}
                 </span>
-              )
+              ),
             )}
           </div>
         </>
@@ -221,7 +221,7 @@ export const projects = [
                 >
                   {skill}
                 </span>
-              )
+              ),
             )}
           </div>
         </>

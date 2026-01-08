@@ -85,7 +85,7 @@ const performPreloading = async (setLoadingProgress, setIsLoaded) => {
       loadedCount++;
       const percentage = Math.min(
         Math.round((loadedCount / totalResources) * 100),
-        100
+        100,
       );
       setLoadingProgress(percentage);
       return Promise.resolve();
@@ -112,7 +112,7 @@ const performPreloading = async (setLoadingProgress, setIsLoaded) => {
           loadedResources.set(url, true);
           const percentage = Math.min(
             Math.round((loadedCount / totalResources) * 100),
-            100
+            100,
           );
           setLoadingProgress(percentage);
           resolve();
@@ -122,7 +122,7 @@ const performPreloading = async (setLoadingProgress, setIsLoaded) => {
           loadedCount++;
           const percentage = Math.min(
             Math.round((loadedCount / totalResources) * 100),
-            100
+            100,
           );
           setLoadingProgress(percentage);
           resolve();
@@ -137,7 +137,7 @@ const performPreloading = async (setLoadingProgress, setIsLoaded) => {
             loadedCount++;
             const percentage = Math.min(
               Math.round((loadedCount / totalResources) * 100),
-              100
+              100,
             );
             setLoadingProgress(percentage);
             resolve();
@@ -146,7 +146,7 @@ const performPreloading = async (setLoadingProgress, setIsLoaded) => {
             loadedCount++;
             const percentage = Math.min(
               Math.round((loadedCount / totalResources) * 100),
-              100
+              100,
             );
             setLoadingProgress(percentage);
             resolve();
@@ -157,7 +157,7 @@ const performPreloading = async (setLoadingProgress, setIsLoaded) => {
           loadedCount++;
           const percentage = Math.min(
             Math.round((loadedCount / totalResources) * 100),
-            100
+            100,
           );
           setLoadingProgress(percentage);
           resolve();

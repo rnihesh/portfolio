@@ -492,7 +492,7 @@ function App() {
               loadedCount++;
               const percentage = Math.min(
                 Math.round((loadedCount / totalResources) * 100),
-                100
+                100,
               );
               setLoadingProgress(percentage);
               resolve();
@@ -501,7 +501,7 @@ function App() {
               loadedCount++;
               const percentage = Math.min(
                 Math.round((loadedCount / totalResources) * 100),
-                100
+                100,
               );
               setLoadingProgress(percentage);
               resolve();
@@ -562,7 +562,7 @@ function App() {
               loadedCount++;
               const percentage = Math.min(
                 Math.round((loadedCount / totalResources) * 100),
-                100
+                100,
               );
               setLoadingProgress(percentage);
               resolve();
@@ -946,7 +946,7 @@ function App() {
                   >
                     {skill}
                   </span>
-                )
+                ),
               )}
             </div>
           </>

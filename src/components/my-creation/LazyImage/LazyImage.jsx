@@ -17,7 +17,7 @@ const LazyImage = ({ src, alt, className, style, ...props }) => {
           observer.disconnect();
         }
       },
-      { rootMargin: "200px" }
+      { rootMargin: "200px" },
     ); // Start loading when 200px away from viewport
 
     const imgElement = document.createElement("img");

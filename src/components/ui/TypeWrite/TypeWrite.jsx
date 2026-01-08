@@ -25,7 +25,7 @@ export const TypeWrite = ({ words, className = "", cursorClassName = "" }) => {
           duration: 0.3,
           delay: stagger(0.1),
           ease: "easeInOut",
-        }
+        },
       );
     }
   }, [isInView, animate]);
@@ -58,7 +58,7 @@ export const TypeWrite = ({ words, className = "", cursorClassName = "" }) => {
   return (
     <div
       className={`text-base sm:text-2xl md:text-3xl lg:text-5xl font-bold text-center ${className}`}
-      style={{fontFamily: "Space Grotesk"}}
+      style={{ fontFamily: "Space Grotesk" }}
     >
       {renderWords()}
       <motion.span
@@ -70,7 +70,7 @@ export const TypeWrite = ({ words, className = "", cursorClassName = "" }) => {
           repeatType: "reverse",
         }}
         className={`inline-block rounded-sm w-[4px] h-4 md:h-6 lg:h-8 bg-green-500 ${cursorClassName}  flex items-baseline translate-y-[2px] self-end`}
-        style={{verticalAlign: ""}}
+        style={{ verticalAlign: "" }}
       ></motion.span>
     </div>
   );
@@ -139,7 +139,7 @@ export const TypewriterEffectSmooth = ({
         }}
         className={cn(
           "block rounded-sm w-[4px] h-4 sm:h-6 xl:h-12 bg-blue-500",
-          cursorClassName
+          cursorClassName,
         )}
       ></motion.span>
     </div>

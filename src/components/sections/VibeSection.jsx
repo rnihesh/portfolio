@@ -135,7 +135,7 @@ function VibeSection({ id, isVisible, animationProps }) {
           strokeWidth: 2,
           fill: "rgba(255,0,200,0.5)",
           fillStyle: "solid",
-        }
+        },
       );
 
       // Circle at the bottom

@@ -9,14 +9,16 @@ const Section = ({
   background,
   className,
   innerClassName,
-  back_class
+  back_class,
 }) => {
   return (
     <div
       id={id}
       className={`h-screen w-full flex items-center justify-center relative ${className}`}
     >
-      {background && <div className={`absolute inset-0 z-0 ${back_class}`}>{background}</div>}
+      {background && (
+        <div className={`absolute inset-0 z-0 ${back_class}`}>{background}</div>
+      )}
       <div className="z-10 relative">
         <AnimatePresence mode="wait">
           {isVisible && (
