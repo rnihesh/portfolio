@@ -2,12 +2,45 @@ import React from "react";
 
 export const projects = [
   {
+    description: "My Personal Blog Platform",
+    title: "Nihesh's Blog",
+    src: "projects/niheshr-blog.jpeg",
+    ctaText: "Visit",
+    ctaLink: "https://blog.niheshr.com/?ref=niheshr.com",
+    github: "https://github.com/rnihesh/blog/?ref=niheshr.com",
+    logo: "projects/logos/blog.png",
+    content: () => {
+      return (
+        <>
+          <p>
+            A Next.js 16 powered blogging platform with markdown support, smart
+            search, and adaptive theming — built for seamless writing, fast
+            navigation, and an exceptional reading experience.
+          </p>
+          <div className="flex g-2 flex-wrap overflow-ellipsis">
+            {["NextJS", "ShadcnUI", "TailwindCSS", "MDX"].map(
+              (skill, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
+                  style={{ fontFamily: "JetBrains Mono" }}
+                >
+                  {skill}
+                </span>
+              )
+            )}
+          </div>
+        </>
+      );
+    },
+  },
+  {
     description: "A Blog App",
     title: "Logly",
     src: "projects/logly.jpeg",
     ctaText: "Visit",
-    ctaLink: "https://logly.vercel.app/",
-    github: "https://github.com/rnihesh/logly/",
+    ctaLink: "https://logly.niheshr.com/?ref=niheshr.com",
+    github: "https://github.com/rnihesh/logly/?ref=niheshr.com",
     logo: "projects/logos/logly.svg",
     content: () => {
       return (
@@ -44,8 +77,8 @@ export const projects = [
     title: "RideShare",
     src: "projects/rideshare.jpeg",
     ctaText: "Visit",
-    ctaLink: "https://nihesh-ride-share.vercel.app/",
-    github: "https://github.com/rnihesh/car_pooling/",
+    ctaLink: "https://ride-share.niheshr.com/?ref=niheshr.com",
+    github: "https://github.com/rnihesh/car_pooling/?ref=niheshr.com",
     logo: "projects/logos/rideshare.png",
     content: () => {
       return (
@@ -84,8 +117,9 @@ export const projects = [
     title: "Habify",
     src: "projects/habify.jpeg",
     ctaText: "Visit",
-    ctaLink: "https://habify-red.vercel.app/",
-    github: "https://github.com/rnihesh/gamified_habit_tracker/",
+    ctaLink: "https://habify.niheshr.com/?ref=niheshr.com",
+    github:
+      "https://github.com/rnihesh/gamified_habit_tracker/?ref=niheshr.com",
     logo: "projects/logos/habify.webp",
     content: () => {
       return (
@@ -124,8 +158,9 @@ export const projects = [
     title: "Nihesh's Seller Portal",
     src: "projects/nihesh_s_seller_portal.jpeg",
     ctaText: "Visit",
-    ctaLink: "https://nihesh-seller-portal.vercel.app/",
-    github: "https://github.com/rnihesh/nihesh-s-seller-portal/",
+    ctaLink: "https://seller-portal.niheshr.com/?ref=niheshr.com",
+    github:
+      "https://github.com/rnihesh/nihesh-s-seller-portal/?ref=niheshr.com",
     logo: "projects/logos/nihesh_s_seller_portal.png",
     content: () => {
       return (
@@ -164,8 +199,8 @@ export const projects = [
     title: "Live Cursors",
     src: "projects/live_cursors.jpeg",
     ctaText: "Visit",
-    ctaLink: "https://nihesh-cursors.vercel.app/",
-    github: "https://github.com/rnihesh/live-cursors-app/",
+    ctaLink: "https://nihesh-cursors.vercel.app/?ref=niheshr.com",
+    github: "https://github.com/rnihesh/live-cursors-app/?ref=niheshr.com",
     logo: "projects/logos/cursor.png",
     logoClassName: "dark:invert",
     content: () => {
