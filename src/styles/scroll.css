@@ -1,0 +1,956 @@
+/* ========================================
+   SCROLL PAGE - CINEMATIC EXPERIENCE
+   A dramatic, animation-rich portfolio
+   ======================================== */
+
+/* ========================================
+   GLOBAL FOUNDATIONS
+   ======================================== */
+
+/* Noise texture overlay - subtle film grain */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* Smooth text rendering */
+.smooth-text {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar,
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar,
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ========================================
+   SCROLL PROGRESS BAR
+   ======================================== */
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0.6) 100%);
+  transform-origin: left;
+  z-index: 10000;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3);
+}
+
+/* ========================================
+   TEXT STYLES
+   ======================================== */
+
+/* Outlined/stroke text */
+.stroke-text {
+  -webkit-text-stroke: 2px currentColor;
+  -webkit-text-fill-color: transparent;
+}
+
+.stroke-text-thin {
+  -webkit-text-stroke: 1px currentColor;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.6) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ========================================
+   BACKGROUND PATTERNS
+   ======================================== */
+
+/* Grid pattern background */
+.grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(128, 128, 128, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(128, 128, 128, 0.08) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* Dot matrix pattern */
+.dot-pattern {
+  background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Halftone dot pattern */
+.halftone-pattern {
+  background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+  background-size: 8px 8px;
+  opacity: 0.03;
+}
+
+/* Gradient mesh background */
+.gradient-mesh {
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+}
+
+/* ========================================
+   HORIZONTAL SCROLL CONTAINERS
+   ======================================== */
+
+.horizontal-scroll-container {
+  display: flex;
+  flex-wrap: nowrap;
+  width: fit-content;
+}
+
+/* Pin spacer fix for dark backgrounds */
+.pin-spacer {
+  background: inherit !important;
+}
+
+/* ========================================
+   SECTION TRANSITIONS
+   ======================================== */
+
+.section-dark {
+  background-color: #000;
+  color: #fff;
+}
+
+.section-light {
+  background-color: #fff;
+  color: #000;
+}
+
+/* ========================================
+   GEOMETRIC DECORATIONS
+   ======================================== */
+
+/* Accent lines */
+.accent-line {
+  position: absolute;
+  background: linear-gradient(to bottom, transparent, currentColor, transparent);
+  opacity: 0.15;
+}
+
+.accent-line-vertical {
+  width: 1px;
+  height: 100%;
+}
+
+.accent-line-horizontal {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, currentColor, transparent);
+}
+
+/* Corner brackets decoration */
+.corner-bracket::before,
+.corner-bracket::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: currentColor;
+  opacity: 0.25;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.corner-bracket::before {
+  top: 0;
+  left: 0;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+
+.corner-bracket::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
+.corner-bracket:hover::before,
+.corner-bracket:hover::after {
+  width: 32px;
+  height: 32px;
+  opacity: 0.5;
+}
+
+/* ========================================
+   ANIMATED UNDERLINE
+   ======================================== */
+
+.animated-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.animated-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animated-underline:hover::after {
+  width: 100%;
+}
+
+/* ========================================
+   TEXT SPLIT ANIMATION STYLES
+   ======================================== */
+
+.split-char,
+.split-word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.split-char {
+  white-space: pre;
+}
+
+/* ========================================
+   CLIP-PATH REVEAL ANIMATIONS
+   ======================================== */
+
+.clip-reveal {
+  clip-path: inset(0 100% 0 0);
+}
+
+.clip-reveal.revealed {
+  clip-path: inset(0 0% 0 0);
+}
+
+.clip-reveal-left {
+  clip-path: inset(0 0 0 100%);
+}
+
+.clip-reveal-left.revealed {
+  clip-path: inset(0 0 0 0%);
+}
+
+.clip-reveal-center {
+  clip-path: inset(0 50% 0 50%);
+}
+
+.clip-reveal-center.revealed {
+  clip-path: inset(0 0% 0 0%);
+}
+
+.clip-reveal-vertical {
+  clip-path: inset(0 0 100% 0);
+}
+
+.clip-reveal-vertical.revealed {
+  clip-path: inset(0 0 0% 0);
+}
+
+/* Diamond reveal */
+.clip-reveal-diamond {
+  clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+}
+
+.clip-reveal-diamond.revealed {
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+/* ========================================
+   MAGNETIC HOVER EFFECTS
+   ======================================== */
+
+.magnetic-area {
+  position: relative;
+  cursor: pointer;
+}
+
+.magnetic-area::before {
+  content: "";
+  position: absolute;
+  inset: -30px;
+  z-index: -1;
+}
+
+.magnetic-area-strong::before {
+  inset: -50px;
+}
+
+.magnetic-element {
+  will-change: transform;
+  transition: none;
+}
+
+/* ========================================
+   3D TILT EFFECT UTILITIES
+   ======================================== */
+
+.tilt-perspective {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.tilt-element {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tilt-element .tilt-counter {
+  transform: translateZ(30px);
+}
+
+/* ========================================
+   SCROLL VELOCITY EFFECTS
+   ======================================== */
+
+.velocity-blur {
+  filter: blur(calc(var(--scroll-velocity, 0) * 0.03px));
+  transition: filter 0.15s ease-out;
+}
+
+.velocity-scale {
+  transform: scale(calc(1 + var(--scroll-velocity, 0) * 0.00015));
+  transition: transform 0.15s ease-out;
+}
+
+.velocity-skew {
+  transform: skewY(calc(var(--scroll-velocity, 0) * 0.005deg));
+  transition: transform 0.1s ease-out;
+}
+
+/* ========================================
+   STAGGER ANIMATION UTILITIES
+   ======================================== */
+
+.stagger-item {
+  will-change: transform, opacity;
+}
+
+.stagger-center {
+  transform-origin: center center;
+}
+
+/* ========================================
+   IMAGE EFFECTS
+   ======================================== */
+
+/* Grayscale with smooth transition */
+.grayscale-img {
+  filter: grayscale(100%) contrast(1.1) brightness(0.95);
+  transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.grayscale-img:hover {
+  filter: grayscale(0%) contrast(1) brightness(1);
+}
+
+/* Image reveal mask */
+.img-reveal-mask {
+  overflow: hidden;
+}
+
+.img-reveal-mask img {
+  transform: scale(1.2);
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.img-reveal-mask.revealed img {
+  transform: scale(1);
+}
+
+/* ========================================
+   LOADING & SHIMMER EFFECTS
+   ======================================== */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite;
+}
+
+/* Pulse glow effect */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2), 0 0 60px rgba(255, 255, 255, 0.1);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* ========================================
+   BLEND MODES
+   ======================================== */
+
+.blend-difference {
+  mix-blend-mode: difference;
+}
+
+.blend-exclusion {
+  mix-blend-mode: exclusion;
+}
+
+.blend-overlay {
+  mix-blend-mode: overlay;
+}
+
+/* ========================================
+   PROJECTS SECTION - CINEMATIC
+   ======================================== */
+
+/* Project card container */
+.project-card {
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 1500px;
+}
+
+/* Large project number watermark */
+.project-number {
+  font-feature-settings: "tnum" on, "lnum" on;
+  text-shadow: 0 0 80px rgba(255, 255, 255, 0.1);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card:hover .project-number {
+  opacity: 0.15 !important;
+  transform: translateX(10px);
+}
+
+/* Project image container with cinematic frame */
+.project-image-container {
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+.project-image-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 2;
+  pointer-events: none;
+  transition: border-color 0.4s ease;
+}
+
+.project-image-container:hover::before {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Film-like vignette on images */
+.project-image-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity 0.4s ease;
+}
+
+.project-image-container:hover::after {
+  opacity: 0.2;
+}
+
+/* Project image with cinematic scale */
+.project-image {
+  transform: scale(1.05);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+  will-change: transform;
+}
+
+.project-card:hover .project-image {
+  transform: scale(1.1);
+}
+
+/* Project title with dramatic entrance */
+.project-title {
+  position: relative;
+}
+
+.project-title::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #fff 0%, transparent 100%);
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card:hover .project-title::after {
+  width: 60%;
+}
+
+/* Project divider line */
+.project-divider {
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, transparent 100%);
+}
+
+/* Tech tags with hover pop */
+.tech-tag {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(4px);
+}
+
+.tech-tag:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Project CTA buttons */
+.project-cta {
+  position: relative;
+  overflow: hidden;
+}
+
+.project-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  transform: translateX(-101%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-cta:hover::before {
+  transform: translateX(0);
+}
+
+.project-cta span {
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease;
+}
+
+.project-cta:hover span {
+  color: #000;
+}
+
+/* ========================================
+   HORIZONTAL SCROLL GALLERY
+   ======================================== */
+
+.horizontal-gallery {
+  display: flex;
+  gap: 4vw;
+  padding: 0 10vw;
+}
+
+.gallery-item {
+  flex-shrink: 0;
+  width: 70vw;
+  max-width: 1000px;
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .gallery-item {
+    width: 50vw;
+  }
+}
+
+/* ========================================
+   TIMELINE SECTION
+   ======================================== */
+
+.timeline-progress-dot {
+  will-change: transform, opacity;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.timeline-progress-dot.active {
+  box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-draw-line {
+  transform-origin: left center;
+  will-change: transform;
+  background: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.3) 100%);
+}
+
+/* ========================================
+   PHOTOS SECTION - MASONRY MAGIC
+   ======================================== */
+
+/* Film strip sprocket holes */
+.sprocket-hole {
+  will-change: transform;
+  transition: all 0.3s ease;
+}
+
+.sprocket-hole:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Photo item with cinematic hover */
+.photo-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%);
+  opacity: 0;
+  z-index: 1;
+  transition: opacity 0.4s ease;
+}
+
+.photo-item:hover::before {
+  opacity: 1;
+}
+
+/* Variable parallax depths */
+.parallax-depth-1 {
+  --parallax-speed: 15px;
+}
+
+.parallax-depth-2 {
+  --parallax-speed: 25px;
+}
+
+.parallax-depth-3 {
+  --parallax-speed: 35px;
+}
+
+/* ========================================
+   CONNECT SECTION
+   ======================================== */
+
+.char-stagger-center .split-char {
+  transform-origin: center bottom;
+}
+
+/* Social link with glow */
+.social-item {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.social-item:hover {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* ========================================
+   CURSOR EFFECTS
+   ======================================== */
+
+.custom-cursor-area {
+  cursor: none;
+}
+
+.cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+  transition: transform 0.15s ease;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transition: all 0.2s ease;
+}
+
+.cursor-ring.hover {
+  width: 60px;
+  height: 60px;
+  border-color: #fff;
+}
+
+/* ========================================
+   FLOATING ELEMENTS
+   ======================================== */
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.float-delayed {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+/* ========================================
+   GLITCH EFFECT
+   ======================================== */
+
+@keyframes glitch {
+  0% {
+    clip-path: inset(40% 0 61% 0);
+    transform: translate(-2px, 2px);
+  }
+  20% {
+    clip-path: inset(92% 0 1% 0);
+    transform: translate(2px, -2px);
+  }
+  40% {
+    clip-path: inset(43% 0 1% 0);
+    transform: translate(-2px, 2px);
+  }
+  60% {
+    clip-path: inset(25% 0 58% 0);
+    transform: translate(2px, -2px);
+  }
+  80% {
+    clip-path: inset(54% 0 7% 0);
+    transform: translate(-2px, 2px);
+  }
+  100% {
+    clip-path: inset(58% 0 43% 0);
+    transform: translate(2px, -2px);
+  }
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  color: #ff0000;
+  animation: glitch 0.3s infinite linear alternate-reverse;
+  opacity: 0;
+}
+
+.glitch::after {
+  color: #00ffff;
+  animation: glitch 0.3s infinite linear alternate-reverse;
+  animation-delay: 0.15s;
+  opacity: 0;
+}
+
+.glitch:hover::before,
+.glitch:hover::after {
+  opacity: 0.8;
+}
+
+/* ========================================
+   MARQUEE EFFECT
+   ======================================== */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-content {
+  display: inline-block;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused;
+}
+
+/* ========================================
+   GPU ACCELERATION & PERFORMANCE
+   ======================================== */
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.contain-layout {
+  contain: layout;
+}
+
+.contain-paint {
+  contain: paint;
+}
+
+.contain-strict {
+  contain: strict;
+}
+
+/* ========================================
+   PARALLAX LAYERS
+   ======================================== */
+
+.parallax-layer {
+  will-change: transform;
+}
+
+.parallax-slow {
+  --parallax-speed: 0.3;
+}
+
+.parallax-medium {
+  --parallax-speed: 0.6;
+}
+
+.parallax-fast {
+  --parallax-speed: 1;
+}
+
+/* ========================================
+   REDUCED MOTION SUPPORT
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .parallax-layer,
+  .stagger-item,
+  .split-char,
+  .split-word,
+  .magnetic-element,
+  .tilt-element,
+  .project-image,
+  .project-number {
+    will-change: auto !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .clip-reveal,
+  .clip-reveal-left,
+  .clip-reveal-center,
+  .clip-reveal-vertical,
+  .clip-reveal-diamond {
+    clip-path: none !important;
+  }
+
+  .velocity-blur {
+    filter: none !important;
+  }
+
+  .velocity-scale,
+  .velocity-skew {
+    transform: none !important;
+  }
+
+  .shimmer,
+  .pulse-glow,
+  .float,
+  .float-delayed,
+  .marquee-content {
+    animation: none !important;
+  }
+
+  .glitch::before,
+  .glitch::after {
+    display: none !important;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 767px) {
+  .noise-overlay {
+    opacity: 0.025;
+  }
+
+  .scroll-progress {
+    height: 2px;
+  }
+
+  .project-number {
+    display: none;
+  }
+
+  .project-image-container::after {
+    opacity: 0.3;
+  }
+
+  .grid-pattern {
+    background-size: 40px 40px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid-pattern {
+    background-size: 60px 60px;
+  }
+}
