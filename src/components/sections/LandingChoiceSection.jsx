@@ -1,7 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useHaptics } from "../../hooks/useHaptics";
 
 function LandingChoiceSection({ onChoice }) {
+  const { trigger } = useHaptics();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -84,7 +86,11 @@ function LandingChoiceSection({ onChoice }) {
           variants={itemVariants}
         >
           <motion.button
-            onClick={() => onChoice("minimal")}
+            onClick={() => {
+              trigger("heavy");
+              onChoice("minimal");
+            }}
+            onHoverStart={() => trigger("light")}
             className="px-8 py-4 border-2 border-black dark:border-white text-black dark:text-white bg-transparent hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 hover:rounded-xl shadow-lg hover:shadow-xl"
             style={{
               fontFamily: "'JetBrains Mono', monospace",
@@ -107,7 +113,11 @@ function LandingChoiceSection({ onChoice }) {
           </motion.div>
 
           <motion.button
-            onClick={() => onChoice("gooey")}
+            onClick={() => {
+              trigger("heavy");
+              onChoice("gooey");
+            }}
+            onHoverStart={() => trigger("light")}
             className="px-8 py-4 border-2 border-black dark:border-white text-black dark:text-white bg-transparent hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 hover:rounded-xl shadow-lg hover:shadow-xl"
             style={{
               fontFamily: "'JetBrains Mono', monospace",

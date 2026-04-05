@@ -2,6 +2,7 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent } from "framer-motion";
 import { useOutsideClick } from "../../../hooks/useOutsideClick";
 import { isResourceLoaded } from "../../../utils/resourcePreloader";
+import { useHaptics } from "../../../hooks/useHaptics";
 import ReactDOM from "react-dom";
 
 const CloseIcon = () => {
@@ -33,10 +34,12 @@ export default function ExpandableCard({ cards }) {
   const [active, setActive] = useState(null);
   const id = useId();
   const ref = useRef(null);
+  const { trigger } = useHaptics();
 
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.key === "Escape") {
+        trigger("light");
         setActive(false);
       }
     };
@@ -52,9 +55,12 @@ export default function ExpandableCard({ cards }) {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [active]);
+  }, [active, trigger]);
 
-  useOutsideClick(ref, () => setActive(null));
+  useOutsideClick(ref, () => {
+    trigger("light");
+    setActive(null);
+  });
 
   // Create a Portal component to render outside the containing div
   const ActiveCardPortal = ({ children }) => {
@@ -112,7 +118,10 @@ export default function ExpandableCard({ cards }) {
                 exit={{ opacity: 0, transition: { duration: 0.05 } }}
                 className="md:hidden flex absolute top-6 right-6 items-center justify-center
                 bg-black dark:bg-white hover:bg-gray-100 transition-colors rounded-full h-8 w-8 z-[2000]"
-                onClick={() => setActive(null)}
+                onClick={() => {
+                  trigger("light");
+                  setActive(null);
+                }}
               >
                 <CloseIcon />
               </motion.button>
@@ -168,6 +177,7 @@ export default function ExpandableCard({ cards }) {
                         href={active.github}
                         target="_blank"
                         className="mx-2"
+                        onClick={() => trigger("medium")}
                       >
                         <img
                           src="github/github-mark.svg"
@@ -187,6 +197,7 @@ export default function ExpandableCard({ cards }) {
                         href={active.ctaLink}
                         target="_blank"
                         className="px-3 py-2 text-sm rounded-full font-bold bg-green-500 text-white"
+                        onClick={() => trigger("medium")}
                       >
                         {active.ctaText}
                       </motion.a>
@@ -221,7 +232,11 @@ export default function ExpandableCard({ cards }) {
             <motion.div
               layoutId={`card-${card.title}-${id}`}
               key={card.title}
-              onClick={() => setActive(card)}
+              onClick={() => {
+                trigger("nudge");
+                setActive(card);
+              }}
+              onHoverStart={() => trigger("light")}
               className="flex flex-row md:flex-col items-center gap-4 p-4 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 rounded-xl cursor-pointer border border-neutral-100 dark:border-neutral-800 "
             >
               <motion.div

@@ -12,10 +12,12 @@ import {
   LuArrowUp,
   LuKeyboard,
 } from "react-icons/lu";
+import { useHaptics } from "../../hooks/useHaptics";
 import "./MinimalSection.css";
 
 function MinimalSection({ onBackToChoice }) {
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
+  const { trigger } = useHaptics();
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -56,6 +58,7 @@ function MinimalSection({ onBackToChoice }) {
 
   // Scroll to section function
   const scrollToSection = (sectionId) => {
+    trigger("light");
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -75,10 +78,12 @@ function MinimalSection({ onBackToChoice }) {
       // Other shortcuts
       switch (e.key.toLowerCase()) {
         case "h":
+          trigger("soft");
           setShowKeyboardHelp(!showKeyboardHelp);
           break;
         case "b":
         case "escape":
+          trigger("medium");
           onBackToChoice();
           break;
         default:
@@ -88,7 +93,8 @@ function MinimalSection({ onBackToChoice }) {
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [showKeyboardHelp, onBackToChoice, sections]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showKeyboardHelp, onBackToChoice, sections, trigger]);
 
   const contactInfo = [
     {
@@ -159,7 +165,10 @@ function MinimalSection({ onBackToChoice }) {
 
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setShowKeyboardHelp(!showKeyboardHelp)}
+              onClick={() => {
+                trigger("soft");
+                setShowKeyboardHelp(!showKeyboardHelp);
+              }}
               className="text-sm text-gray-500 hover:text-black dark:hover:text-white transition-colors"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
@@ -168,7 +177,10 @@ function MinimalSection({ onBackToChoice }) {
             </button>
 
             <button
-              onClick={onBackToChoice}
+              onClick={() => {
+                trigger("medium");
+                onBackToChoice();
+              }}
               className="text-sm text-gray-500 hover:text-black dark:hover:text-white transition-colors"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
@@ -292,6 +304,7 @@ function MinimalSection({ onBackToChoice }) {
                           color: "#000000",
                           transition: { duration: 0.2 },
                         }}
+                        onHoverStart={() => trigger("light")}
                       >
                         {skill.name}
                       </motion.div>
@@ -413,6 +426,7 @@ function MinimalSection({ onBackToChoice }) {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-gray-500 hover:text-black dark:hover:text-white transition-colors"
+                        onClick={() => trigger("medium")}
                       >
                         <LuExternalLink size={18} />
                       </a>
@@ -423,6 +437,7 @@ function MinimalSection({ onBackToChoice }) {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-gray-500 hover:text-black dark:hover:text-white transition-colors"
+                        onClick={() => trigger("medium")}
                       >
                         <LuGithub size={18} />
                       </a>
@@ -546,6 +561,7 @@ function MinimalSection({ onBackToChoice }) {
                       : undefined
                   }
                   className="flex items-center gap-4 p-3 border border-gray-200 dark:border-gray-700 hover:border-black dark:hover:border-white transition-colors group"
+                  onClick={() => trigger("medium")}
                 >
                   <item.icon
                     size={20}
@@ -580,7 +596,10 @@ function MinimalSection({ onBackToChoice }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 bg-opacity-50 backdrop-blur-xs z-50 flex items-center justify-center"
-            onClick={() => setShowKeyboardHelp(false)}
+            onClick={() => {
+              trigger("light");
+              setShowKeyboardHelp(false);
+            }}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -632,7 +651,10 @@ function MinimalSection({ onBackToChoice }) {
               </div>
 
               <button
-                onClick={() => setShowKeyboardHelp(false)}
+                onClick={() => {
+                  trigger("light");
+                  setShowKeyboardHelp(false);
+                }}
                 className="mt-4 w-full py-2 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >

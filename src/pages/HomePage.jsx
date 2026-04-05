@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePageTitle } from "../hooks/usePageTitle";
 import useFullscreen from "../hooks/useFullscreen";
+import { useTapHaptics } from "../hooks/useHaptics";
 import LandingChoiceSection from "../components/sections/LandingChoiceSection";
 
 function HomePage() {
   const navigate = useNavigate();
   usePageTitle("", "home");
   useFullscreen(); // Enable fullscreen with 'f' key
+  useTapHaptics();
   useEffect(() => {
     (async () => {
       const conn = navigator.connection || {};

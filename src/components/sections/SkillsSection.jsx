@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import Section from "../layout/Section";
 import DotGrid from "../../Backgrounds/DotGrid/DotGrid";
 import { skills } from "../../data/skills";
+import { useHaptics } from "../../hooks/useHaptics";
 
 function SkillsSection({ id, isVisible, animationProps }) {
+  const { trigger } = useHaptics();
   // staggered animation for children
   const container = {
     hidden: { opacity: 0 },
@@ -96,7 +98,10 @@ function SkillsSection({ id, isVisible, animationProps }) {
               variants={skillItem}
               className="flex flex-col items-center"
             >
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-white dark:bg-gray-50 rounded-xl p-2 flex items-center justify-center mb-2 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <div
+                className="w-16 h-16 md:w-20 md:h-20 bg-white dark:bg-gray-50 rounded-xl p-2 flex items-center justify-center mb-2 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+                onMouseEnter={() => trigger("light")}
+              >
                 <img
                   src={skill.image}
                   alt={skill.name}

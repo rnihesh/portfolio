@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import ThemeToggle from "./components/Theme/ThemeToggle";
+import { useHaptics } from "./hooks/useHaptics";
 
 // Pages
 import HomePage from "./pages/HomePage";
@@ -9,6 +10,8 @@ import MinimalPage from "./pages/MinimalPage";
 import GooeyPage from "./pages/GooeyPage";
 
 function App() {
+  const { trigger } = useHaptics();
+
   // Global keyboard handler for resume
   useEffect(() => {
     const handleGlobalKeyPress = (e) => {
@@ -24,13 +27,14 @@ function App() {
           return;
         }
         e.preventDefault();
+        trigger("medium");
         window.open("/resume/v1.pdf", "_blank");
       }
     };
 
     window.addEventListener("keydown", handleGlobalKeyPress);
     return () => window.removeEventListener("keydown", handleGlobalKeyPress);
-  }, []);
+  }, [trigger]);
 
   return (
     <Router>

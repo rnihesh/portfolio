@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { shortcuts } from "../../../data/shortcuts";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { useHaptics } from "../../../hooks/useHaptics";
 import "./CommandToolbar.css";
 
 const CommandToolbar = ({ showKeyboardHelp = false }) => {
   const [isMac, setIsMac] = useState(false);
   const [isDocked, setIsDocked] = useState(!showKeyboardHelp);
   const [dockSide, setDockSide] = useState("right"); // "left" or "right"
+  const { trigger } = useHaptics();
 
   useEffect(() => {
     setIsMac(navigator.platform.toUpperCase().includes("MAC"));
@@ -19,6 +21,7 @@ const CommandToolbar = ({ showKeyboardHelp = false }) => {
       const match = shortcuts.find((s) => s.key === e.key);
       if (match && match.sectionId) {
         e.preventDefault();
+        trigger("light");
         const el = document.getElementById(match.sectionId);
         if (el) el.scrollIntoView({ behavior: "smooth" });
       }
@@ -26,7 +29,7 @@ const CommandToolbar = ({ showKeyboardHelp = false }) => {
 
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [isMac]);
+  }, [isMac, trigger]);
 
   useEffect(() => {
     if (showKeyboardHelp) {
@@ -47,14 +50,22 @@ const CommandToolbar = ({ showKeyboardHelp = false }) => {
             className={`hidden md:block fixed top-1/2 -translate-y-1/2 z-50 cursor-pointer ${
               dockSide === "right" ? "right-0" : "left-0"
             }`}
-            onClick={() => setIsDocked(false)}
+            onClick={() => {
+              trigger("nudge");
+              setIsDocked(false);
+            }}
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.2}
             onDragEnd={(e, info) => {
-              if (dockSide === "right" && info.offset.x < -30)
+              if (dockSide === "right" && info.offset.x < -30) {
+                trigger("nudge");
                 setIsDocked(false);
-              if (dockSide === "left" && info.offset.x > 30) setIsDocked(false);
+              }
+              if (dockSide === "left" && info.offset.x > 30) {
+                trigger("nudge");
+                setIsDocked(false);
+              }
             }}
           >
             <div
@@ -103,11 +114,13 @@ const CommandToolbar = ({ showKeyboardHelp = false }) => {
 
               // Dock to right if dragged near right edge
               if (x > width - 100) {
+                trigger("nudge");
                 setDockSide("right");
                 setIsDocked(true);
               }
               // Dock to left if dragged near left edge
               else if (x < 100) {
+                trigger("nudge");
                 setDockSide("left");
                 setIsDocked(true);
               }
@@ -124,7 +137,10 @@ const CommandToolbar = ({ showKeyboardHelp = false }) => {
               >
                 <span className="font-bold text-lg">Shortcuts</span>
                 <button
-                  onClick={() => setIsDocked(true)}
+                  onClick={() => {
+                    trigger("nudge");
+                    setIsDocked(true);
+                  }}
                   className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
                 >
                   {dockSide === "right" ? (

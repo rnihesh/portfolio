@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useHaptics } from "./useHaptics";
 
 export default function useVisibilityOnScroll() {
   const [showFirstScreen, setShowFirstScreen] = useState(true);
@@ -10,6 +11,9 @@ export default function useVisibilityOnScroll() {
   const [showSeventhScreen, setShowSeventhScreen] = useState(false);
   const [showEighthScreen, setShowEighthScreen] = useState(false);
   const [showNinthScreen, setShowNinthScreen] = useState(false);
+  const { trigger } = useHaptics();
+  const lastVisibleScreen = useRef(1);
+
   const handleScroll = useCallback(() => {
     const windowHeight = window.innerHeight;
     const scrollPosition = window.scrollY;
@@ -93,7 +97,21 @@ export default function useVisibilityOnScroll() {
     } else {
       setShowNinthScreen(false);
     }
-  }, []);
+
+    // Determine current screen for haptic feedback
+    const screenThresholds = [0, 0.7, 1.7, 2.7, 3.3, 4.7, 5.7, 6.7, 7.7];
+    let currentScreen = 1;
+    for (let i = screenThresholds.length - 1; i >= 0; i--) {
+      if (scrollPosition >= windowHeight * screenThresholds[i]) {
+        currentScreen = i + 1;
+        break;
+      }
+    }
+    if (currentScreen !== lastVisibleScreen.current) {
+      lastVisibleScreen.current = currentScreen;
+      trigger("light");
+    }
+  }, [trigger]);
 
   useEffect(() => {
     // throttled scroll handler for better performance

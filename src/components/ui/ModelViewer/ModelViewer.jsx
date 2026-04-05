@@ -31,6 +31,7 @@ import {
 } from "@react-three/drei";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import * as THREE from "three";
+import { useHaptics } from "../../../hooks/useHaptics";
 
 const isTouch =
   typeof window !== "undefined" &&
@@ -114,6 +115,7 @@ const ModelInner = ({
   autoRotate,
   autoRotateSpeed,
   onLoaded,
+  hapticTrigger,
 }) => {
   const outer = useRef(null);
   const inner = useRef(null);
@@ -218,6 +220,7 @@ const ModelInner = ({
       drag = true;
       lx = e.clientX;
       ly = e.clientY;
+      hapticTrigger?.("light");
       window.addEventListener("pointerup", up);
     };
 
@@ -244,7 +247,10 @@ const ModelInner = ({
 
       invalidate();
     };
-    const up = () => (drag = false);
+    const up = () => {
+      if (drag) hapticTrigger?.("soft");
+      drag = false;
+    };
     el.addEventListener("pointerdown", down);
     el.addEventListener("pointermove", move);
     return () => {
@@ -252,6 +258,7 @@ const ModelInner = ({
       el.addEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gl, enableManualRotation]);
 
   useEffect(() => {
@@ -319,7 +326,9 @@ const ModelInner = ({
         const [p1, p2] = [...pts.values()];
         const d = Math.hypot(p1.x - p2.x, p1.y - p2.y);
         const ratio = startDist / d;
-        const newZoom = THREE.MathUtils.clamp(startZ * ratio, minZoom, maxZoom);
+        const rawZoom = startZ * ratio;
+        const newZoom = THREE.MathUtils.clamp(rawZoom, minZoom, maxZoom);
+        if (rawZoom !== newZoom) hapticTrigger?.("warning");
         camera.position.z = newZoom;
 
         // Add zoom logging
@@ -446,6 +455,8 @@ const ModelViewer = ({
   isPreloaded = false, // Add isPreloaded to the props
   onModelLoaded,
 }) => {
+  const { trigger: hapticTrigger } = useHaptics();
+
   // Only preload if not already preloaded by the resource preloader
   useEffect(() => {
     console.log("from modelviewer: ispreloaded: ", isPreloaded);
@@ -535,7 +546,10 @@ const ModelViewer = ({
     >
       {showScreenshotButton && (
         <button
-          onClick={capture}
+          onClick={() => {
+            hapticTrigger("success");
+            capture();
+          }}
           className="absolute top-4 right-4 z-10 cursor-pointer px-4 py-2 border border-white rounded-xl bg-transparent text-white hover:bg-white hover:text-black transition-colors"
         >
           Take Screenshot
@@ -606,6 +620,7 @@ const ModelViewer = ({
             autoRotate={autoRotate}
             autoRotateSpeed={autoRotateSpeed}
             onLoaded={onModelLoaded}
+            hapticTrigger={hapticTrigger}
           />
         </Suspense>
 

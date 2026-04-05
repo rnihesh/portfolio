@@ -1,11 +1,15 @@
 import { useEffect, useCallback } from "react";
+import { useHaptics } from "./useHaptics";
 
 /**
  * Custom hook to enable fullscreen toggle with 'f' key
  * Similar to YouTube's fullscreen behavior
  */
 function useFullscreen() {
+  const { trigger } = useHaptics();
+
   const toggleFullscreen = useCallback(() => {
+    trigger("rigid");
     if (!document.fullscreenElement) {
       // Enter fullscreen
       document.documentElement.requestFullscreen().catch((err) => {
@@ -19,7 +23,7 @@ function useFullscreen() {
         document.exitFullscreen();
       }
     }
-  }, []);
+  }, [trigger]);
 
   useEffect(() => {
     const handleKeyPress = (e) => {

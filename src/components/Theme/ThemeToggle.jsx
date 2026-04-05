@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { shortcuts } from "../../data/shortcuts";
+import { useHaptics } from "../../hooks/useHaptics";
 
 const ThemeToggle = () => {
   const [isDark, setIsDark] = useState(false);
+  const { trigger } = useHaptics();
 
   useEffect(() => {
     // Check for saved theme preference or use system preference
@@ -20,6 +22,7 @@ const ThemeToggle = () => {
   }, []);
 
   const toggleTheme = () => {
+    trigger("success");
     if (isDark) {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");

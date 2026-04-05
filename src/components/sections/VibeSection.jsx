@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import Section from "../layout/Section";
 import rough from "roughjs/bundled/rough.esm";
 import { annotate } from "rough-notation";
+import { useHaptics } from "../../hooks/useHaptics";
 
 function VibeSection({ id, isVisible, animationProps }) {
+  const { trigger } = useHaptics();
   const svgRef = useRef(null);
   const battrixRef = useRef(null);
   const myftpRef = useRef(null);
@@ -202,7 +204,12 @@ function VibeSection({ id, isVisible, animationProps }) {
             >
               Swift
             </p>
-            <a href="https://github.com/rnihesh/battrix" className="ml-3">
+            <a
+              href="https://github.com/rnihesh/battrix"
+              className="ml-3"
+              onClick={() => trigger("medium")}
+              onMouseEnter={() => trigger("light")}
+            >
               <img
                 src="github/github-mark-white.svg"
                 alt=""
@@ -262,7 +269,12 @@ function VibeSection({ id, isVisible, animationProps }) {
             >
               Kotlin
             </p>
-            <a href="https://github.com/rnihesh/MyFtpServer" className="ml-3">
+            <a
+              href="https://github.com/rnihesh/MyFtpServer"
+              className="ml-3"
+              onClick={() => trigger("medium")}
+              onMouseEnter={() => trigger("light")}
+            >
               <img
                 src="github/github-mark-white.svg"
                 alt=""

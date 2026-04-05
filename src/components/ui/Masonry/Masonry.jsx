@@ -5,6 +5,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { isResourceLoaded } from "../../../utils/resourcePreloader";
+import { useHaptics } from "../../../hooks/useHaptics";
 
 const useMedia = (queries, values, defaultValue) => {
   const get = () =>
@@ -71,6 +72,8 @@ const Masonry = ({
   blurToFocus = true,
   colorShiftOnHover = false,
 }) => {
+  const { trigger } = useHaptics();
+
   const columns = useMedia(
     [
       "(min-width:1500px)",
@@ -181,6 +184,7 @@ const Masonry = ({
   }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease]);
 
   const handleMouseEnter = (id, element) => {
+    trigger("light");
     if (scaleOnHover) {
       gsap.to(`[data-key="${id}"]`, {
         scale: hoverScale,
@@ -216,7 +220,10 @@ const Masonry = ({
           data-key={item.id}
           className="absolute box-content"
           style={{ willChange: "transform, width, height, opacity" }}
-          onClick={() => window.open(item.url, "_blank", "noopener")}
+          onClick={() => {
+            trigger("medium");
+            window.open(item.url, "_blank", "noopener");
+          }}
           onMouseEnter={(e) => handleMouseEnter(item.id, e.currentTarget)}
           onMouseLeave={(e) => handleMouseLeave(item.id, e.currentTarget)}
         >

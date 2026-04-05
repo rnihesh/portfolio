@@ -9,8 +9,10 @@ import { LuMail } from "react-icons/lu";
 import { LuPhone } from "react-icons/lu";
 import { FaXTwitter } from "react-icons/fa6";
 import { TbBrandBluesky } from "react-icons/tb";
+import { useHaptics } from "../../hooks/useHaptics";
 
 function ConnectSection({ id, isVisible, animationProps }) {
+  const { trigger } = useHaptics();
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -115,6 +117,8 @@ function ConnectSection({ id, isVisible, animationProps }) {
               style={{ fontFamily: "Space Grotesk" }}
               whileHover="hover"
               initial="initial"
+              onClick={() => trigger("heavy")}
+              onHoverStart={() => trigger("light")}
             >
               <div className="flex items-center justify-center w-full">
                 <motion.span
@@ -206,6 +210,8 @@ function ConnectSection({ id, isVisible, animationProps }) {
                   className="flex flex-col items-center justify-center p-1 rounded-lg transition-all hover:bg-black/5 dark:hover:bg-white/10"
                   whileHover={{ scale: 1.05, fontWeight: "Bolder" }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => trigger("heavy")}
+                  onHoverStart={() => trigger("light")}
                 >
                   <motion.div
                     className="text-xl md:text-xl text-black dark:text-gray-400"

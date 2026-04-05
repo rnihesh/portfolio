@@ -5,6 +5,7 @@ import useVisibilityOnScroll from "../hooks/useVisibilityOnScroll";
 import { preloadResources } from "../utils/resourcePreloader";
 import { usePageTitle } from "../hooks/usePageTitle";
 import useFullscreen from "../hooks/useFullscreen";
+import { useHaptics, useTapHaptics } from "../hooks/useHaptics";
 import { LuArrowUp } from "react-icons/lu";
 import { HiOutlineCubeTransparent } from "react-icons/hi2";
 
@@ -104,6 +105,8 @@ function GooeyPage() {
   const firstScreenRef = useRef(null);
   const navigate = useNavigate();
 
+  const { trigger } = useHaptics();
+  useTapHaptics();
   usePageTitle("", "gooey");
   useFullscreen(); // Enable fullscreen with 'f' key
 
@@ -177,19 +180,21 @@ function GooeyPage() {
     const handleKeyPress = (e) => {
       if (e.key.toLowerCase() === "h" && !e.ctrlKey) {
         e.preventDefault();
+        trigger("soft");
         setShowKeyboardHelp(!showKeyboardHelp);
       } else if (
         (e.key.toLowerCase() === "h" && e.ctrlKey) ||
         e.key.toLowerCase() === "escape" ||
         e.key.toLowerCase() === "b"
       ) {
+        trigger("medium");
         navigate("/");
       }
     };
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [navigate, showKeyboardHelp]);
+  }, [navigate, showKeyboardHelp, trigger]);
 
   return (
     <div className="overflow-x-hidden scrollbar-hide">
@@ -276,7 +281,11 @@ function GooeyPage() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 2, duration: 0.5 }}
-        onClick={() => navigate("/")}
+        onClick={() => {
+          trigger("medium");
+          navigate("/");
+        }}
+        onHoverStart={() => trigger("light")}
         className="fixed bottom-6 left-6 z-50 p-3 bg-white dark:bg-black border-2 border-gray-200 dark:border-gray-700 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 group"
         title="Back to Home (ESC, B, or Ctrl+H)"
       >

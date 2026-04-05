@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import { experience } from "../../data/experience";
 import { TypeWrite } from "../ui/TypeWrite/TypeWrite";
 import HandDrawnUnderline from "../my-creation/HandDrawnUnderline/HandDrawnUnderline";
+import { useHaptics } from "../../hooks/useHaptics";
 
 function ExperienceSection({ id, isVisible, animationProps }) {
+  const { trigger } = useHaptics();
   // staggered animation for children
   const container = {
     hidden: { opacity: 0 },
@@ -94,7 +96,11 @@ function ExperienceSection({ id, isVisible, animationProps }) {
                 {/* Logo */}
                 <div
                   className="shrink-0 p-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 cursor-pointer transition-transform hover:scale-105"
-                  onClick={() => window.open(job.link, "_blank")}
+                  onClick={() => {
+                    trigger("medium");
+                    window.open(job.link, "_blank");
+                  }}
+                  onMouseEnter={() => trigger("light")}
                 >
                   <img
                     src={job.logo}
