@@ -24,7 +24,7 @@ function App() {
           return;
         }
         e.preventDefault();
-        window.open("/resume/v1.pdf", "_blank");
+        window.open("/resume/v2.pdf", "_blank");
       }
     };
 
