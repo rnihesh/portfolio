@@ -34,44 +34,44 @@ export const projects = [
       );
     },
   },
-  {
-    description: "A Blog App",
-    title: "Logly",
-    src: "projects/logly.jpeg",
-    ctaText: "Visit",
-    ctaLink: "https://logly.niheshr.com/?ref=niheshr.com",
-    github: "https://github.com/rnihesh/logly/?ref=niheshr.com",
-    logo: "projects/logos/logly.svg",
-    content: () => {
-      return (
-        <>
-          <p>
-            Logly is a MERN-stack powered blogging platform with clerk,
-            role-based access, and responsive design — built for seamless
-            writing, sharing, and content management.
-          </p>
-          <div className="flex g-2 flex-wrap overflow-ellipsis">
-            {[
-              "ReactJS",
-              "NodeJs",
-              "Bootstrap",
-              "Express",
-              "MongoDB",
-              "Auth",
-            ].map((skill, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
-                style={{ fontFamily: "JetBrains Mono" }}
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-        </>
-      );
-    },
-  },
+  // {
+  //   description: "A Blog App",
+  //   title: "Logly",
+  //   src: "projects/logly.jpeg",
+  //   ctaText: "Visit",
+  //   ctaLink: "https://logly.niheshr.com/?ref=niheshr.com",
+  //   github: "https://github.com/rnihesh/logly/?ref=niheshr.com",
+  //   logo: "projects/logos/logly.svg",
+  //   content: () => {
+  //     return (
+  //       <>
+  //         <p>
+  //           Logly is a MERN-stack powered blogging platform with clerk,
+  //           role-based access, and responsive design — built for seamless
+  //           writing, sharing, and content management.
+  //         </p>
+  //         <div className="flex g-2 flex-wrap overflow-ellipsis">
+  //           {[
+  //             "ReactJS",
+  //             "NodeJs",
+  //             "Bootstrap",
+  //             "Express",
+  //             "MongoDB",
+  //             "Auth",
+  //           ].map((skill, index) => (
+  //             <span
+  //               key={index}
+  //               className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
+  //               style={{ fontFamily: "JetBrains Mono" }}
+  //             >
+  //               {skill}
+  //             </span>
+  //           ))}
+  //         </div>
+  //       </>
+  //     );
+  //   },
+  // },
   {
     description: "A Vehicle Pooling App",
     title: "RideShare",

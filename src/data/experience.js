@@ -2,7 +2,7 @@ export const experience = [
   {
     company: "Dattam Labs",
     role: "Software Engineer Intern",
-    period: "Aug 2025 - Present",
+    period: "Aug 2025 - Mar 2026",
     logo: "work/dattam_in_logo_nobg.png",
     description:
       "Worked on developing a mobile application using React Native Expo for the frontend, ensuring a seamless user experience across devices. On the backend, utilized Python and AWS services to create robust and scalable solutions.",
