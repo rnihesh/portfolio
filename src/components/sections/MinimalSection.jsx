@@ -5,13 +5,15 @@ import { projects } from "../../data/projects";
 import { experience } from "../../data/experience";
 import {
   LuMail,
-  LuPhone,
   LuGithub,
   LuLinkedin,
+  LuInstagram,
   LuExternalLink,
   LuArrowUp,
   LuKeyboard,
 } from "react-icons/lu";
+import { FaXTwitter } from "react-icons/fa6";
+import { TbBrandBluesky } from "react-icons/tb";
 import "./MinimalSection.css";
 
 function MinimalSection({ onBackToChoice }) {
@@ -98,12 +100,6 @@ function MinimalSection({ onBackToChoice }) {
       href: "mailto:niheshr03+portfolio@gmail.com",
     },
     {
-      icon: LuPhone,
-      label: "Phone",
-      value: "+91 83280 94810",
-      href: "tel:+918328094810",
-    },
-    {
       icon: LuGithub,
       label: "GitHub",
       value: "github.com/rnihesh",
@@ -114,6 +110,24 @@ function MinimalSection({ onBackToChoice }) {
       label: "LinkedIn",
       value: "linkedin.com/in/rachakonda-nihesh",
       href: "https://www.linkedin.com/in/rachakonda-nihesh/",
+    },
+    {
+      icon: FaXTwitter,
+      label: "X",
+      value: "x.com/niheshr03",
+      href: "https://x.com/niheshr03",
+    },
+    {
+      icon: LuInstagram,
+      label: "Instagram",
+      value: "instagram.com/niheshr",
+      href: "https://instagram.com/niheshr",
+    },
+    {
+      icon: TbBrandBluesky,
+      label: "Bluesky",
+      value: "bsky.app/profile/niheshr.com",
+      href: "https://bsky.app/profile/niheshr.com",
     },
   ];
 

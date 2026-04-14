@@ -1,93 +1,64 @@
-# Nihesh Rachakonda | Portfolio
+# Nihesh Rachakonda — Portfolio
 
-A modern, dual-experience portfolio website built with React, offering users the choice between two distinct viewing experiences.
+Dual-experience portfolio built with **React 19 + Vite**.
 
-## 🌟 Features
+[Live Site](https://niheshr.com) · [LinkedIn](https://www.linkedin.com/in/rachakonda-nihesh/) · [GitHub](https://github.com/rnihesh) · [Instagram](https://instagram.com/niheshr) · [Bluesky](https://bsky.app/profile/niheshr.com) · [X](https://x.com/niheshr03)
 
-### Dual Experience Architecture
+## Experiences
 
-- **Minimal Experience** (`/minimal`): Clean, text-based portfolio with keyboard navigation
-- **Gooey Experience** (`/gooey`): Interactive 3D animations, custom motion effects, and immersive UI
+1. **Minimal** (`/minimal`) — clean, text-first, keyboard-friendly portfolio.
+2. **Gooey** (`/gooey`) — interactive 3D experience with scroll-driven reveals.
 
-### Tech Stack
+## Stack
 
-- **Frontend**: React 19, Framer Motion, Tailwind CSS
-- **3D Graphics**: Three.js, @react-three/fiber, @react-three/drei
-- **Routing**: React Router DOM
-- **Animation**: GSAP, Rough Notation, Matter.js
-- **Build Tool**: Vite
-- **Deployment**: Vercel
+- **Core**: React 19, React Router 7, Vite 7
+- **UI/Motion**: Tailwind CSS 4, Framer Motion, GSAP
+- **3D**: Three.js, @react-three/fiber, @react-three/drei
+- **Extras**: Rough Notation, Matter.js
 
-## 🚀 Quick Start
+## Quick start
 
 ```bash
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
 ```
 
-## 📱 Routes
+## Scripts
 
-- `/` - Landing page with experience selection
-- `/minimal` - Clean, minimal portfolio experience
-- `/gooey` - Interactive 3D portfolio experience
-
-## 🎨 Experiences
-
-### Minimal Experience
-
-- Keyboard shortcuts (1-5 for sections, H for help, B/ESC for back)
-- Clean typography with Space Grotesk and JetBrains Mono
-- Scrollable single-page layout
-- Dark/light mode support
-- Accessible and fast loading
-
-### Gooey Experience
-
-- 3D model viewer with interactive controls
-- Custom text animations and motion effects
-- Scroll-based section reveals
-- Photo gallery with advanced interactions
-- Command toolbar with keyboard shortcuts
-- Optimized resource preloading
-
-## 🛠 Development
-
-### Project Structure
-
+```bash
+npm run dev       # Vite dev server
+npm run build     # Production build
+npm run preview   # Preview production build
+npm run lint      # ESLint
+npm run format    # Prettier write
+npm run deploy    # GitHub Pages deploy
+npm run start     # Preview on 0.0.0.0:8080
+npm run startCloud # Express server (server.js)
 ```
+
+## SEO setup
+
+- Route-level `<title>`, description, canonical URL, and keyword sets (`src/utils/seo.js`)
+- Open Graph + Twitter card metadata in `index.html`
+- Structured data (`WebSite` + `ProfilePage`/`Person`) with `sameAs` profile backlinks
+- Crawl/index directives via `public/robots.txt`
+- Discoverability via `public/sitemap.xml`
+
+## Project structure
+
+```text
 src/
-├── components/
-│   ├── sections/     # Page sections (Intro, Skills, Projects, etc.)
-│   ├── ui/          # Reusable UI components
-│   └── layout/      # Layout components
-├── data/            # Content data (skills, projects, photos)
-├── hooks/           # Custom React hooks
-├── pages/           # Route pages
-└── utils/           # Utility functions
+  components/
+    sections/
+    ui/
+    layout/
+  data/
+  hooks/
+  pages/
+  utils/
+public/
 ```
 
-### Key Features
+## License
 
-- Smart resource preloading (only for gooey experience)
-- Responsive design for all screen sizes
-- SEO optimized with structured data
-- Performance optimized with lazy loading
-
-## 📧 Contact
-
-- **Email**: niheshr03+portfolio@gmail.com
-- **LinkedIn**: [rachakonda-nihesh](https://www.linkedin.com/in/rachakonda-nihesh/)
-- **GitHub**: [rnihesh](https://github.com/rnihesh)
-
-## 📄 License
-
-This project is open source and available under the MIT License.
+Licensed under the **GNU Affero General Public License v3.0 or later**. See [`LICENSE`](./LICENSE).
