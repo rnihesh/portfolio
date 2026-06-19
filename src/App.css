@@ -9,11 +9,11 @@
   scrollbar-width: none; /* Firefox */
 }
 
-/* Skills horizontal scroll row: hide native bar, use the progress line instead */
-.skills-hrow {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+/* Centered (focused) skills card during the horizontal scrub. */
+.skills-card-active {
+  border-color: rgba(16, 185, 129, 0.55) !important;
+  box-shadow: 0 22px 70px -26px rgba(16, 185, 129, 0.5);
 }
-.skills-hrow::-webkit-scrollbar {
-  display: none;
+.skills-card-active .skills-card-accent {
+  transform: scaleX(1);
 }

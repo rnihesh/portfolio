@@ -202,7 +202,7 @@ function GooeyPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="min-h-[900vh] w-full relative bg-white dark:bg-black"
+            className="min-h-[1500vh] w-full relative bg-white dark:bg-black"
           >
             <CommandToolbar showKeyboardHelp={showKeyboardHelp} />
             <div className="absolute inset-0 flex flex-col items-center">
