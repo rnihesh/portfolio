@@ -8,12 +8,17 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    visualizer({
-      open: true,
-      filename: "dist/report.html",
-      gzipSize: true,
-      brotliSize: true,
-    }),
+    // Bundle report only when explicitly requested: ANALYZE=1 npm run build
+    ...(process.env.ANALYZE
+      ? [
+          visualizer({
+            open: true,
+            filename: "dist/report.html",
+            gzipSize: true,
+            brotliSize: true,
+          }),
+        ]
+      : []),
   ],
   base: "./",
 });
