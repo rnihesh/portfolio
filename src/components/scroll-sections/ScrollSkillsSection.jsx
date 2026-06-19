@@ -220,17 +220,8 @@ function ScrollSkillsSection() {
             );
           });
 
-          // Per-block depth parallax (alternating speeds)
-          gsap.to(block, {
-            yPercent: blockIndex % 2 === 0 ? -5 : -9,
-            ease: "none",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.5,
-            },
-          });
+          // (per-block vertical parallax removed: it pulled blocks up into
+          // the header/subtitle. Depth comes from the clip-path reveals.)
         });
       }, sectionRef);
 
@@ -443,17 +434,9 @@ function ScrollSkillsSection() {
             });
           }
 
-          // Layered depth parallax: blocks drift at alternating speeds
-          gsap.to(block, {
-            yPercent: blockIndex % 2 === 0 ? -7 : -12,
-            ease: "none",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.2,
-            },
-          });
+          // (per-block vertical parallax removed: it pulled blocks up into
+          // the header/subtitle and broke alignment. Depth comes from the
+          // clip-path reveals and the active-pop instead.)
 
           // --- "Active" pop: center-of-viewport category gains emerald edge ---
           ScrollTrigger.create({
@@ -606,17 +589,8 @@ function ScrollSkillsSection() {
           }
         });
 
-        // --- Foreground grid parallax (subtle, in front) ---
-        gsap.to(gridRef.current, {
-          yPercent: -4,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            end: "bottom top",
-            scrub: 1,
-          },
-        });
+        // (grid parallax removed to guarantee the grid never drifts up into
+        // the header/subtitle. The section stays cleanly laid out.)
       }, sectionRef);
 
       return () => {
