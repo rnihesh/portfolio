@@ -146,11 +146,6 @@ function SkillsSection({ id }) {
         ref={panelRef}
         className="absolute top-0 left-0 z-20 w-full h-screen overflow-hidden flex flex-col justify-center bg-white dark:bg-black"
       >
-        {/* Giant backdrop word */}
-        <span className="pointer-events-none select-none absolute left-2 bottom-1 text-[24vw] font-black leading-none tracking-tighter text-black/[0.03] dark:text-white/[0.04]">
-          SKILLS
-        </span>
-
         {/* Header (constrained) */}
         <div className="w-[92vw] max-w-6xl mx-auto flex items-end justify-between mb-6 relative z-10">
           <div>
