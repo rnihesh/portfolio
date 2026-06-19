@@ -4,7 +4,7 @@ export const projects = [
   {
     description: "Tax Reconciliation Knowledge Graph",
     title: "GST Recon",
-    src: "projects/gst-recon.jpeg",
+    src: "projects/gst-recon.png",
     ctaText: "Visit",
     ctaLink: "https://github.com/rnihesh/acm-klh/?ref=niheshr.com",
     github: "https://github.com/rnihesh/acm-klh/?ref=niheshr.com",

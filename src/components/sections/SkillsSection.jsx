@@ -7,7 +7,6 @@ function SkillsSection({ id, isVisible, animationProps }) {
   const rowRef = useRef(null);
   const [progress, setProgress] = useState(0);
 
-  // Group skills by category, preserving data order
   const categories = useMemo(() => {
     const map = new Map();
     skills.forEach((skill) => {
@@ -17,8 +16,8 @@ function SkillsSection({ id, isVisible, animationProps }) {
     return [...map.entries()];
   }, []);
 
-  // Translate vertical wheel into horizontal scroll. Release to the page
-  // (advance to next/prev section) only when the row hits its edge.
+  // Vertical wheel drives the horizontal track. Releases to the page (next/prev
+  // gooey section) only at the track's edges.
   useEffect(() => {
     const el = rowRef.current;
     if (!el) return;
@@ -29,7 +28,8 @@ function SkillsSection({ id, isVisible, animationProps }) {
     };
 
     const onWheel = (e) => {
-      const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      const delta =
+        Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
       const max = el.scrollWidth - el.clientWidth;
       if (max <= 0) return;
       const atStart = el.scrollLeft <= 0;
@@ -68,10 +68,10 @@ function SkillsSection({ id, isVisible, animationProps }) {
         initial="hidden"
         animate="show"
         exit="exit"
-        className="flex flex-col w-[90vw] max-w-6xl"
+        className="flex flex-col w-[92vw] max-w-6xl"
       >
         {/* Header */}
-        <motion.div variants={fade} className="flex items-end justify-between mb-6">
+        <motion.div variants={fade} className="flex items-end justify-between mb-5">
           <div>
             <h2
               className="text-4xl md:text-6xl font-bold text-black dark:text-white leading-none"
@@ -83,7 +83,7 @@ function SkillsSection({ id, isVisible, animationProps }) {
               className="mt-2 text-xs md:text-sm text-gray-500 dark:text-gray-400"
               style={{ fontFamily: "'JetBrains Mono', monospace" }}
             >
-              {skills.length} tools across {categories.length} domains
+              {skills.length} tools, {categories.length} domains
             </p>
           </div>
           <div
@@ -95,49 +95,43 @@ function SkillsSection({ id, isVisible, animationProps }) {
           </div>
         </motion.div>
 
-        {/* Horizontal scroll: category columns */}
+        {/* Horizontal track of category cards */}
         <motion.div
           ref={rowRef}
           variants={fade}
-          className="skills-hrow flex gap-10 md:gap-14 overflow-x-auto pb-4 select-none"
-          style={{ scrollSnapType: "x proximity" }}
+          className="skills-hrow flex gap-5 md:gap-6 overflow-x-auto pb-4 h-[60vh] max-h-[480px] items-stretch select-none"
         >
           {categories.map(([category, items], i) => (
-            <div
+            <article
               key={category}
-              className="shrink-0 flex flex-col"
-              style={{ scrollSnapAlign: "start" }}
+              className="group shrink-0 w-[82vw] sm:w-[360px] h-full flex flex-col rounded-2xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.03] p-5 md:p-6 transition-colors duration-300 hover:border-black/30 dark:hover:border-white/30"
             >
-              <div className="flex items-baseline gap-2 mb-4 border-b border-gray-200 dark:border-neutral-800 pb-2">
+              {/* Card header */}
+              <div className="flex items-start justify-between">
                 <span
-                  className="text-[10px] text-emerald-500"
+                  className="text-emerald-500 text-sm"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3
-                  className="text-xs uppercase tracking-[0.16em] text-gray-700 dark:text-gray-300 whitespace-nowrap"
+                <span
+                  className="text-[10px] uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500 text-right max-w-[55%]"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   {category}
-                </h3>
-                <span className="text-[10px] text-gray-400 dark:text-gray-600 font-mono">
-                  {items.length}
                 </span>
               </div>
 
-              <div className="grid grid-flow-col grid-rows-5 gap-x-8 gap-y-3 auto-cols-max">
+              {/* Skills list */}
+              <div className="mt-5 flex-1 overflow-y-auto pr-1 grid grid-cols-2 gap-x-3 gap-y-3 content-start">
                 {items.map((skill) => (
-                  <div
-                    key={skill.name + category}
-                    className="group flex items-center gap-3"
-                  >
-                    <div className="w-11 h-11 shrink-0 rounded-lg bg-white dark:bg-neutral-100 p-2 flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:-translate-y-0.5 transition-all duration-200">
+                  <div key={skill.name + category} className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 shrink-0 rounded-lg bg-white p-1.5 flex items-center justify-center shadow-sm">
                       <img
                         src={skill.image}
                         alt={skill.name}
                         loading="lazy"
-                        className="w-7 h-7 object-contain"
+                        className="w-6 h-6 object-contain"
                         onError={(e) => {
                           e.target.onerror = null;
                           e.target.src = `https://placehold.co/100x100/10b981/ffffff?text=${encodeURIComponent(
@@ -147,7 +141,7 @@ function SkillsSection({ id, isVisible, animationProps }) {
                       />
                     </div>
                     <span
-                      className="text-sm text-gray-800 dark:text-gray-200 whitespace-nowrap"
+                      className="text-xs text-gray-800 dark:text-gray-200 leading-tight"
                       style={{ fontFamily: "'Cascadia Code', monospace" }}
                     >
                       {skill.name}
@@ -155,7 +149,20 @@ function SkillsSection({ id, isVisible, animationProps }) {
                   </div>
                 ))}
               </div>
-            </div>
+
+              {/* Card footer readout */}
+              <div className="mt-4 flex items-center gap-2 border-t border-black/10 dark:border-white/10 pt-3">
+                <span className="text-xl font-bold text-black dark:text-white tabular-nums">
+                  {items.length}
+                </span>
+                <span
+                  className="text-[10px] uppercase tracking-[0.16em] text-gray-400 dark:text-gray-500"
+                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  tools
+                </span>
+              </div>
+            </article>
           ))}
         </motion.div>
 
@@ -166,7 +173,7 @@ function SkillsSection({ id, isVisible, animationProps }) {
         >
           <div
             className="absolute inset-y-0 left-0 bg-emerald-500 transition-[width] duration-150"
-            style={{ width: `${Math.max(6, progress * 100)}%` }}
+            style={{ width: `${Math.max(5, progress * 100)}%` }}
           />
         </motion.div>
       </motion.div>
