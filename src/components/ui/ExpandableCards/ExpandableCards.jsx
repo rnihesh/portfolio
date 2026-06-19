@@ -131,6 +131,10 @@ export default function ExpandableCard({ cards }) {
                     height={200}
                     src={active.src}
                     alt={active.title}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "projects/_placeholder.svg";
+                    }}
                     className="w-full h-60 sm:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
                   />
                 </motion.div>
@@ -147,6 +151,9 @@ export default function ExpandableCard({ cards }) {
                         <img
                           src={`${active.logo}`}
                           alt=""
+                          onError={(e) => {
+                            e.target.style.display = "none";
+                          }}
                           className={`w-[30px] pr-2 ${active.logoClassName}`}
                         />
                         {active.title}
@@ -233,6 +240,10 @@ export default function ExpandableCard({ cards }) {
                   height={100}
                   src={card.src}
                   alt={card.title}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "projects/_placeholder.svg";
+                  }}
                   className="h-16 w-16 md:h-60 md:w-full rounded-lg object-cover object-top"
                 />
               </motion.div>

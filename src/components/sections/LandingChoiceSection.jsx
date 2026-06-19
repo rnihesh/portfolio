@@ -84,7 +84,7 @@ function LandingChoiceSection({ onChoice }) {
           variants={itemVariants}
         >
           <motion.button
-            onClick={() => onChoice("minimal")}
+            onClick={() => onChoice("scroll")}
             className="px-8 py-4 border-2 border-black dark:border-white text-black dark:text-white bg-transparent hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 hover:rounded-xl shadow-lg hover:shadow-xl"
             style={{
               fontFamily: "'JetBrains Mono', monospace",
@@ -93,10 +93,10 @@ function LandingChoiceSection({ onChoice }) {
             variants={buttonVariants}
             whileHover="hover"
             whileTap="tap"
-            title="Navigate to /minimal"
+            title="Navigate to /scroll"
           >
-            MINIMAL
-            <div className="text-sm mt-1 opacity-70">Clean & Simple</div>
+            SCROLLY
+            <div className="text-sm mt-1 opacity-70">Story Scroll</div>
           </motion.button>
 
           <motion.div
@@ -120,6 +120,29 @@ function LandingChoiceSection({ onChoice }) {
           >
             GOOEY
             <div className="text-sm mt-1 opacity-70">Full Experience</div>
+          </motion.button>
+
+          <motion.div
+            className="text-gray-400 dark:text-gray-600"
+            variants={itemVariants}
+          >
+            or
+          </motion.div>
+
+          <motion.button
+            onClick={() => onChoice("minimal")}
+            className="px-8 py-4 border-2 border-black dark:border-white text-black dark:text-white bg-transparent hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 hover:rounded-xl shadow-lg hover:shadow-xl"
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              transformStyle: "preserve-3d",
+            }}
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+            title="Navigate to /minimal"
+          >
+            MINIMAL
+            <div className="text-sm mt-1 opacity-70">Clean & Simple</div>
           </motion.button>
         </motion.div>
       </motion.div>

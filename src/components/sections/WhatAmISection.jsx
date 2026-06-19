@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Section from "../layout/Section";
+import { JOB_TITLE } from "../../data/identity";
 
 function WhatAmISection({ id, isVisible, animationProps }) {
   // staggered animation for children
@@ -68,7 +69,7 @@ function WhatAmISection({ id, isVisible, animationProps }) {
           className="text-4xl md:text-5xl font-bold mb-6 text-black dark:text-white"
           style={{ fontFamily: "'Space Grotesk', sans-serif" }}
         >
-          Full Stack Developer
+          {JOB_TITLE}
         </motion.h2>
 
         <motion.p

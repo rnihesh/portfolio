@@ -2,6 +2,121 @@ import React from "react";
 
 export const projects = [
   {
+    description: "Tax Reconciliation Knowledge Graph",
+    title: "GST Recon",
+    src: "projects/gst-recon.jpeg",
+    ctaText: "Visit",
+    ctaLink: "https://github.com/rnihesh/acm-klh/?ref=niheshr.com",
+    github: "https://github.com/rnihesh/acm-klh/?ref=niheshr.com",
+    logo: "projects/logos/gst-recon.png",
+    content: () => {
+      return (
+        <>
+          <p>
+            A GST reconciliation engine that matches GSTR returns inside a Neo4j
+            knowledge graph, surfacing circular-trading fraud, vendor risk
+            scoring, and a graph-aware LLM audit chatbot that answers questions
+            grounded in the underlying graph.
+          </p>
+          <div className="flex g-2 flex-wrap overflow-ellipsis">
+            {[
+              "TypeScript",
+              "Python",
+              "Neo4j",
+              "Cypher",
+              "LLM",
+              "Docker",
+            ].map((skill, index) => (
+              <span
+                key={index}
+                className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
+                style={{ fontFamily: "JetBrains Mono" }}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </>
+      );
+    },
+  },
+  {
+    description: "AI Knowledge Platform",
+    title: "second-brain",
+    src: "projects/second-brain.jpeg",
+    ctaText: "Visit",
+    ctaLink: "https://github.com/rnihesh/second-brain/?ref=niheshr.com",
+    github: "https://github.com/rnihesh/second-brain/?ref=niheshr.com",
+    logo: "projects/logos/second-brain.png",
+    content: () => {
+      return (
+        <>
+          <p>
+            An AI knowledge platform for capturing notes, AI summarization, and
+            auto-tagging, with conversational query over your own notes,
+            knowledge-graph visualization, plus a public query API and an
+            embeddable widget.
+          </p>
+          <div className="flex g-2 flex-wrap overflow-ellipsis">
+            {[
+              "Next.js",
+              "TypeScript",
+              "Prisma",
+              "NextAuth",
+              "React Flow",
+              "Pluggable AI Providers",
+            ].map((skill, index) => (
+              <span
+                key={index}
+                className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
+                style={{ fontFamily: "JetBrains Mono" }}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </>
+      );
+    },
+  },
+  {
+    description: "macOS Battery Health Menu-Bar App",
+    title: "Capax",
+    src: "projects/capax.jpeg",
+    ctaText: "Visit",
+    ctaLink: "https://github.com/rnihesh/capax/?ref=niheshr.com",
+    github: "https://github.com/rnihesh/capax/?ref=niheshr.com",
+    logo: "projects/logos/capax.png",
+    content: () => {
+      return (
+        <>
+          <p>
+            A native macOS menu-bar app that reads detailed Mac plus iPhone and
+            iPad battery health over USB, with local Swift Charts history. It
+            runs fully offline, with no telemetry.
+          </p>
+          <div className="flex g-2 flex-wrap overflow-ellipsis">
+            {[
+              "Swift",
+              "SwiftUI",
+              "Swift Charts",
+              "libimobiledevice",
+              "IOKit",
+            ].map((skill, index) => (
+              <span
+                key={index}
+                className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
+                style={{ fontFamily: "JetBrains Mono" }}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </>
+      );
+    },
+  },
+  {
     description: "Open Source Blogging Platform",
     title: "NowBind",
     src: "projects/nowbind.jpeg",
@@ -14,7 +129,7 @@ export const projects = [
         <>
           <p>
             An open-source blogging platform where every post is automatically
-            exposed as an AI-consumable MCP feed — built with a Go backend,
+            exposed as an AI-consumable MCP feed, built with a Go backend,
             TipTap editor, and Cloudflare R2 for media, designed for the age of
             AI agents.
           </p>
@@ -48,7 +163,7 @@ export const projects = [
         <>
           <p>
             A Next.js 16 powered blogging platform with markdown support, smart
-            search, and adaptive theming — built for seamless writing, fast
+            search, and adaptive theming, built for seamless writing, fast
             navigation, and an exceptional reading experience.
           </p>
           <div className="flex g-2 flex-wrap overflow-ellipsis">

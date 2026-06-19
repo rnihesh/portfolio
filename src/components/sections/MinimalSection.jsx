@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { skills } from "../../data/skills";
 import { projects } from "../../data/projects";
 import { experience } from "../../data/experience";
+import { JOB_TITLE } from "../../data/identity";
 import {
   LuMail,
   LuGithub,
@@ -237,8 +238,8 @@ function MinimalSection({ onBackToChoice }) {
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 <p>
-                  A passionate Full Stack Developer with a strong eye for design
-                  and detail.
+                  A passionate {JOB_TITLE} with a strong eye for design and
+                  detail.
                 </p>
                 <p>
                   I build modern web applications that are not only functional
@@ -513,7 +514,7 @@ function MinimalSection({ onBackToChoice }) {
                     className="text-gray-600 dark:text-gray-400 space-y-2 mt-2"
                     style={{ fontFamily: "'JetBrains Mono', monospace" }}
                   >
-                    <li>• Full Stack Web Development (Self-taught)</li>
+                    <li>• AI-Native Full-Stack Engineering (Self-taught)</li>
                     <li>• MongoDB & Database Design</li>
                     <li>• React.js & Modern Frontend Development</li>
                     <li>• Cloud Computing with AWS</li>

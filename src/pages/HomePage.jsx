@@ -62,6 +62,8 @@ function HomePage() {
       navigate("/minimal");
     } else if (choice === "gooey") {
       navigate("/gooey");
+    } else if (choice === "scroll") {
+      navigate("/scroll");
     }
   };
 

@@ -1,4 +1,5 @@
 // SEO utility functions for dynamic meta tag updates
+import { JOB_TITLE } from "../data/identity";
 
 export const updateMetaDescription = (description) => {
   const metaDescription = document.querySelector('meta[name="description"]');
@@ -70,9 +71,8 @@ export const updateSEO = ({ title, description, keywords, url }) => {
 // SEO configurations for different routes
 export const SEO_CONFIG = {
   home: {
-    title: "Nihesh Rachakonda | Full Stack Developer Portfolio",
-    description:
-      "Full stack developer portfolio of Nihesh Rachakonda featuring React, Node.js, MongoDB, and two browsing modes: minimal and interactive 3D.",
+    title: `Nihesh Rachakonda | ${JOB_TITLE} Portfolio`,
+    description: `${JOB_TITLE} portfolio of Nihesh Rachakonda featuring React, Node.js, MongoDB, and two browsing modes: minimal and interactive 3D.`,
     keywords:
       "Nihesh Rachakonda portfolio, full stack developer portfolio, software engineer portfolio website, web developer portfolio website, frontend developer portfolio, frontend engineer portfolio, react developer portfolio, react portfolio website, javascript developer portfolio, node.js developer portfolio, nestjs developer portfolio, MERN stack developer portfolio, mern full stack developer portfolio, three js portfolio website, react three fiber portfolio, framer motion portfolio, graphql developer portfolio, postgresql developer portfolio, redis developer portfolio, docker developer portfolio, developer portfolio github",
     url: "https://niheshr.com/",

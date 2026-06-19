@@ -8,3 +8,12 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* Skills horizontal scroll row: hide native bar, use the progress line instead */
+.skills-hrow {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.skills-hrow::-webkit-scrollbar {
+  display: none;
+}

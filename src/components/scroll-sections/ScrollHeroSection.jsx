@@ -7,6 +7,7 @@ import {
   scrollVelocity,
 } from "../../utils/gsapConfig";
 import { splitText, revertSplit } from "../../utils/textSplit";
+import { JOB_TITLE } from "../../data/identity";
 
 function ScrollHeroSection() {
   const sectionRef = useRef(null);
@@ -685,7 +686,7 @@ function ScrollHeroSection() {
           className="font-mono text-[10px] md:text-sm uppercase tracking-[0.15em] md:tracking-[0.3em] text-neutral-400 mt-4 md:mt-8 opacity-0"
           style={{ fontFamily: "JetBrains Mono, monospace" }}
         >
-          Full Stack Developer
+          {JOB_TITLE}
         </p>
       </div>
 
