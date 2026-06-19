@@ -2,12 +2,28 @@ import { useRef, useEffect, useState } from "react";
 import {
   gsap,
   ScrollTrigger,
+  SplitText,
+  Flip,
+  DrawSVGPlugin,
   BREAKPOINTS,
   EASINGS,
   scrollVelocity,
 } from "../../utils/gsapConfig";
-import { splitText, revertSplit } from "../../utils/textSplit";
 import { projects } from "../../data/projects";
+
+// A small, curated tech readout per project index (monospace stat line).
+// Kept generic + cycled so every scene has a "spec" to scramble in.
+const SCENE_TECH = [
+  ["TypeScript", "Neo4j", "LLM"],
+  ["Next.js", "Prisma", "React Flow"],
+  ["Swift", "SwiftUI", "IOKit"],
+  ["Go", "TipTap", "MCP"],
+  ["Next.js", "MDX", "Search"],
+  ["React", "MongoDB", "Leaflet"],
+  ["React", "Cron", "Express"],
+  ["React", "Gemini", "Cloudinary"],
+  ["React", "WebSockets", "ws"],
+];
 
 function ScrollProjectsSection() {
   const sectionRef = useRef(null);
@@ -15,99 +31,167 @@ function ScrollProjectsSection() {
   const galleryContainerRef = useRef(null);
   const titleRef = useRef(null);
   const counterRef = useRef(null);
+  const spineRef = useRef(null);
   const [layout, setLayout] = useState("desktop");
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const mm = gsap.matchMedia();
 
-    // Reduced motion
+    // ----------------------------------------------------------------
+    // REDUCED MOTION: clean final states, no transforms, no splits.
+    // ----------------------------------------------------------------
     mm.add(BREAKPOINTS.reducedMotion, () => {
       gsap.set(headerRef.current, { opacity: 1, y: 0 });
-      const cards = sectionRef.current?.querySelectorAll(".project-card, .gallery-item");
-      if (cards) gsap.set(cards, { opacity: 1, y: 0, x: 0, rotation: 0 });
+      const root = sectionRef.current;
+      if (root) {
+        gsap.set(
+          root.querySelectorAll(
+            ".project-card-mobile, .gallery-item, .project-image-container, .project-content, .project-content-mobile, .project-title, .project-description, .tech-tag, .project-links, .scene-stat",
+          ),
+          {
+            opacity: 1,
+            y: 0,
+            x: 0,
+            rotation: 0,
+            scale: 1,
+            skewX: 0,
+            clipPath: "inset(0 0% 0 0%)",
+          },
+        );
+        gsap.set(root.querySelectorAll(".scene-spine"), { drawSVG: "100%" });
+      }
       return () => {};
     });
 
-    // Mobile
-    mm.add(BREAKPOINTS.mobile, () => {
+    // ----------------------------------------------------------------
+    // MOBILE / TABLET: lighter cinematic. Masked SplitText line reveal
+    // on titles, clip wipes on imagery, alternating card cuts.
+    // ----------------------------------------------------------------
+    const buildCompact = (config) => () => {
       setLayout("mobile");
+      const splits = [];
       const ctx = gsap.context(() => {
         requestAnimationFrame(() => {
           const projectCards = gsap.utils.toArray(".project-card-mobile");
 
-          gsap.fromTo(headerRef.current,
-            { y: 50, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.8, ease: EASINGS.smooth,
-              scrollTrigger: { trigger: sectionRef.current, start: "top 85%", toggleActions: "play none none reverse" },
-            }
+          gsap.fromTo(
+            headerRef.current,
+            { y: config.headerY, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.9,
+              ease: EASINGS.cineOut,
+              scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top 85%",
+                toggleActions: "play none none reverse",
+              },
+            },
           );
 
           projectCards.forEach((card, i) => {
             const isEven = i % 2 === 0;
-            const imageContainer = card.querySelector(".project-image-container");
-            const content = card.querySelector(".project-content-mobile");
+            const imageContainer = card.querySelector(
+              ".project-image-container",
+            );
+            const titleEl = card.querySelector(".project-title-mobile");
 
-            // Alternating side entrance
-            gsap.fromTo(card,
-              { x: isEven ? -80 : 80, opacity: 0, rotation: isEven ? -3 : 3 },
+            // Alternating cinematic cut-in
+            gsap.fromTo(
+              card,
+              { x: isEven ? -config.cardX : config.cardX, opacity: 0 },
               {
-                x: 0, opacity: 1, rotation: 0,
-                duration: 0.8, ease: EASINGS.smooth,
-                scrollTrigger: { trigger: card, start: "top 90%", toggleActions: "play none none reverse" },
-              }
+                x: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: EASINGS.cine,
+                scrollTrigger: {
+                  trigger: card,
+                  start: "top 90%",
+                  toggleActions: "play none none reverse",
+                },
+              },
             );
 
+            // Clip-path image wipe (alternating direction)
             if (imageContainer) {
-              gsap.fromTo(imageContainer,
-                { clipPath: isEven ? "inset(0 100% 0 0)" : "inset(0 0 0 100%)" },
-                { clipPath: "inset(0 0% 0 0%)", duration: 0.8, ease: "power3.inOut",
-                  scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none reverse" },
+              gsap.fromTo(
+                imageContainer,
+                {
+                  clipPath: isEven
+                    ? "inset(0 100% 0 0)"
+                    : "inset(0 0 0 100%)",
+                },
+                {
+                  clipPath: "inset(0 0% 0 0%)",
+                  duration: 0.9,
+                  ease: EASINGS.cine,
+                  scrollTrigger: {
+                    trigger: card,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse",
+                  },
+                },
+              );
+            }
+
+            // Masked SplitText line reveal on the title
+            if (titleEl) {
+              const split = new SplitText(titleEl, {
+                type: "lines",
+                linesClass: "split-line",
+              });
+              splits.push(split);
+              split.lines.forEach((line) => {
+                const wrap = document.createElement("span");
+                wrap.style.display = "block";
+                wrap.style.overflow = "hidden";
+                line.parentNode.insertBefore(wrap, line);
+                wrap.appendChild(line);
+              });
+              gsap.fromTo(
+                split.lines,
+                { yPercent: 110 },
+                {
+                  yPercent: 0,
+                  duration: 0.8,
+                  stagger: 0.08,
+                  ease: EASINGS.cineOut,
+                  scrollTrigger: {
+                    trigger: card,
+                    start: "top 82%",
+                    toggleActions: "play none none reverse",
+                  },
                 },
               );
             }
           });
         });
       }, sectionRef);
-      return () => ctx.revert();
-    });
 
-    // Tablet
-    mm.add(BREAKPOINTS.tablet, () => {
-      setLayout("mobile");
-      const ctx = gsap.context(() => {
-        requestAnimationFrame(() => {
-          const projectCards = gsap.utils.toArray(".project-card-mobile");
+      return () => {
+        ctx.revert();
+        splits.forEach((s) => s.revert());
+      };
+    };
 
-          gsap.fromTo(headerRef.current,
-            { y: 60, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.9, ease: EASINGS.smooth,
-              scrollTrigger: { trigger: sectionRef.current, start: "top 80%", toggleActions: "play none none reverse" },
-            }
-          );
+    mm.add(BREAKPOINTS.mobile, buildCompact({ headerY: 50, cardX: 70 }));
+    mm.add(BREAKPOINTS.tablet, buildCompact({ headerY: 60, cardX: 110 }));
 
-          projectCards.forEach((card, i) => {
-            const isEven = i % 2 === 0;
-
-            gsap.fromTo(card,
-              { x: isEven ? -120 : 120, opacity: 0, rotation: isEven ? -4 : 4 },
-              {
-                x: 0, opacity: 1, rotation: 0,
-                duration: 1, ease: EASINGS.smooth,
-                scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none reverse" },
-              }
-            );
-          });
-        });
-      }, sectionRef);
-      return () => ctx.revert();
-    });
-
-    // Desktop — horizontal gallery with alternating entrances + random fly-off
+    // ----------------------------------------------------------------
+    // DESKTOP: pinned horizontal film-strip scrub. Each project is a
+    // SCENE that cuts in with a clip-path wipe, masked SplitText title,
+    // layered parallax depth, a scale "focus" on the active scene, a
+    // DrawSVG spine readout, and a scrambled monospace index/stat.
+    // ----------------------------------------------------------------
     mm.add(BREAKPOINTS.desktop, () => {
       setLayout("desktop");
-      let titleSplit = null;
       let velocityUnsubscribe = null;
+      const splits = [];
+      const cleanups = [];
+      let scrubbedScrambles = [];
 
       const ctx = gsap.context(() => {
         requestAnimationFrame(() => {
@@ -115,287 +199,513 @@ function ScrollProjectsSection() {
           const galleryItems = gsap.utils.toArray(".gallery-item");
           if (!container) return;
 
-          const totalWidth = container.scrollWidth - window.innerWidth;
-
-          // Title split
-          if (titleRef.current) {
-            titleSplit = splitText(titleRef.current, { type: "chars" });
-            gsap.set(titleSplit.chars, { opacity: 0, y: 80, rotateX: -90, transformOrigin: "bottom center" });
-          }
+          // Horizontal travel distance = full strip width minus one viewport.
+          // The pinned scroll length MUST equal this exact distance so the
+          // reel finishes translating precisely as the pin releases. Adding an
+          // extra viewport (the previous bug) left dead scroll where the next
+          // (Connect) section could show through / interleave with the reel.
+          const getTravel = () => container.scrollWidth - window.innerWidth;
 
           scrollVelocity.start();
 
-          // Header
-          const headerTl = gsap.timeline({
-            scrollTrigger: { trigger: sectionRef.current, start: "top 80%", toggleActions: "play none none reverse" },
-          });
+          // ---- Header title: masked line reveal via SplitText ----
+          if (titleRef.current) {
+            const titleSplit = new SplitText(titleRef.current, {
+              type: "lines",
+              linesClass: "split-line",
+            });
+            splits.push(titleSplit);
+            titleSplit.lines.forEach((line) => {
+              const wrap = document.createElement("span");
+              wrap.style.display = "block";
+              wrap.style.overflow = "hidden";
+              line.parentNode.insertBefore(wrap, line);
+              wrap.appendChild(line);
+            });
+            gsap.set(titleSplit.lines, { yPercent: 115 });
 
-          if (titleSplit?.chars.length > 0) {
-            headerTl.to(titleSplit.chars, {
-              opacity: 1, y: 0, rotateX: 0, duration: 0.8,
-              stagger: { each: 0.04, from: "start" }, ease: EASINGS.snappy,
+            gsap.timeline({
+              scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top 80%",
+                toggleActions: "play none none reverse",
+              },
+            }).to(titleSplit.lines, {
+              yPercent: 0,
+              duration: 1,
+              stagger: 0.08,
+              ease: EASINGS.cineOut,
             });
           }
 
-          // Horizontal scroll
+          // ---- The pinned horizontal scrub (the spine of the reel) ----
           const scrollTween = gsap.to(container, {
-            x: -totalWidth,
+            x: () => -getTravel(),
             ease: "none",
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top top",
-              end: () => `+=${totalWidth + window.innerWidth}`,
+              // Reserve EXACTLY the horizontal travel so the strip is fully
+              // played before the pin releases. With default pinSpacing (true)
+              // the pin reserves its own scroll length, so the next section
+              // cannot slide underneath: no bleed, no interleaving.
+              end: () => `+=${getTravel()}`,
               scrub: 1,
               pin: true,
+              pinSpacing: true,
               anticipatePin: 1,
               invalidateOnRefresh: true,
-              onEnter: () => gsap.set(container, { willChange: "transform" }),
+              onEnter: () =>
+                gsap.set(container, { willChange: "transform" }),
               onLeave: () => gsap.set(container, { willChange: "auto" }),
               onUpdate: (self) => {
                 const newIndex = Math.min(
                   Math.floor(self.progress * galleryItems.length),
                   galleryItems.length - 1,
                 );
-                setActiveIndex(newIndex);
+                setActiveIndex((prev) =>
+                  prev === newIndex ? prev : newIndex,
+                );
+                // Scramble the master counter as the reel moves.
                 if (counterRef.current) {
-                  counterRef.current.textContent = `${String(newIndex + 1).padStart(2, "0")} / ${String(projects.length).padStart(2, "0")}`;
+                  counterRef.current.textContent = `${String(
+                    newIndex + 1,
+                  ).padStart(2, "0")} / ${String(projects.length).padStart(
+                    2,
+                    "0",
+                  )}`;
                 }
               },
             },
           });
 
-          // Animate each gallery item with alternating side entrances + random fly-off
+          // ---- DrawSVG progress spine tied to the scrub ----
+          if (spineRef.current) {
+            const spinePath = spineRef.current.querySelector(".scene-spine");
+            if (spinePath) {
+              gsap.set(spinePath, { drawSVG: "0%" });
+              gsap.to(spinePath, {
+                drawSVG: "100%",
+                ease: "none",
+                scrollTrigger: {
+                  trigger: sectionRef.current,
+                  start: "top top",
+                  // Same length as the master scrub so the spine draws to
+                  // 100% exactly when the reel completes.
+                  end: () => `+=${getTravel()}`,
+                  scrub: 1,
+                },
+              });
+            }
+          }
+
+          // ---- Per scene choreography ----
           galleryItems.forEach((item, i) => {
-            const imageContainer = item.querySelector(".project-image-container");
+            const imageContainer = item.querySelector(
+              ".project-image-container",
+            );
             const image = item.querySelector(".project-image");
             const content = item.querySelector(".project-content");
             const title = item.querySelector(".project-title");
             const description = item.querySelector(".project-description");
             const techTags = item.querySelectorAll(".tech-tag");
             const links = item.querySelector(".project-links");
-            const number = item.querySelector(".project-number-overlay");
+            const stat = item.querySelector(".scene-stat");
             const isEven = i % 2 === 0;
 
-            // ENTRANCE: Alternate from top/bottom with rotation
-            const enterY = isEven ? -200 : 200;
-            const enterRotation = isEven ? -8 : 8;
-            const enterSkewX = isEven ? 5 : -5;
-
-            gsap.fromTo(item,
+            // SCENE ENTRANCE: a filmic settle (no chaotic spins).
+            gsap.fromTo(
+              item,
+              { yPercent: isEven ? -14 : 14, opacity: 0, scale: 0.94 },
               {
-                y: enterY,
-                opacity: 0,
-                rotation: enterRotation,
-                skewX: enterSkewX,
-              },
-              {
-                y: 0,
+                yPercent: 0,
                 opacity: 1,
-                rotation: 0,
-                skewX: 0,
-                ease: "power3.out",
+                scale: 1,
+                ease: EASINGS.cine,
                 scrollTrigger: {
                   trigger: item,
                   containerAnimation: scrollTween,
                   start: "left 95%",
-                  end: "left 60%",
+                  end: "left 55%",
                   scrub: 1,
                 },
-              }
+              },
             );
 
-            // EXIT: Random direction fly-off
-            const exitDirections = [
-              { y: -400, x: gsap.utils.random(-200, 200), rotation: gsap.utils.random(-25, 25) },
-              { y: 400, x: gsap.utils.random(-200, 200), rotation: gsap.utils.random(-25, 25) },
-              { y: gsap.utils.random(-300, 300), x: -300, rotation: gsap.utils.random(-20, 20) },
-              { y: gsap.utils.random(-200, -400), x: gsap.utils.random(100, 300), rotation: 15 },
-              { y: gsap.utils.random(200, 400), x: gsap.utils.random(-300, -100), rotation: -15 },
-            ];
-            const exit = exitDirections[i % exitDirections.length];
-
+            // SCENE EXIT: a decisive cut out (scale + opacity, no debris).
             gsap.to(item, {
-              y: exit.y,
-              x: exit.x,
-              rotation: exit.rotation,
+              yPercent: isEven ? 12 : -12,
               opacity: 0,
-              scale: 0.7,
-              ease: "power2.in",
+              scale: 0.9,
+              ease: EASINGS.cut,
               scrollTrigger: {
                 trigger: item,
                 containerAnimation: scrollTween,
                 start: "right 45%",
-                end: "right 5%",
+                end: "right 8%",
                 scrub: 1,
               },
             });
 
-            // Image reveal — alternating clip-path
+            // CLIP-PATH IMAGE WIPE: alternating cinematic mask.
             if (imageContainer) {
-              const clipReveals = [
-                { from: "inset(0 100% 0 0)", to: "inset(0 0% 0 0%)" },       // wipe from left
-                { from: "inset(100% 0 0 0)", to: "inset(0% 0 0 0)" },         // curtain from top
-                { from: "inset(0 0 0 100%)", to: "inset(0 0 0 0%)" },         // wipe from right
-                { from: "circle(0% at 50% 50%)", to: "circle(75% at 50% 50%)" }, // circle
-                { from: "inset(0 0 100% 0)", to: "inset(0 0 0% 0)" },         // curtain from bottom
-                { from: "polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)", to: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }, // diamond
+              const wipes = [
+                { from: "inset(0 100% 0 0)", to: "inset(0 0% 0 0%)" }, // L to R
+                { from: "inset(0 0 0 100%)", to: "inset(0 0 0 0%)" }, // R to L
+                { from: "inset(100% 0 0 0)", to: "inset(0% 0 0 0)" }, // top down
+                { from: "inset(0 0 100% 0)", to: "inset(0 0 0% 0)" }, // bottom up
               ];
-              const clip = clipReveals[i % clipReveals.length];
-
-              gsap.fromTo(imageContainer,
+              const clip = wipes[i % wipes.length];
+              gsap.fromTo(
+                imageContainer,
                 { clipPath: clip.from },
                 {
-                  clipPath: clip.to, ease: "power3.inOut",
+                  clipPath: clip.to,
+                  ease: EASINGS.cine,
                   scrollTrigger: {
-                    trigger: item, containerAnimation: scrollTween,
-                    start: "left 85%", end: "left 50%", scrub: 1,
+                    trigger: item,
+                    containerAnimation: scrollTween,
+                    start: "left 85%",
+                    end: "left 48%",
+                    scrub: 1,
                   },
-                }
-              );
-            }
-
-            // Image parallax
-            if (image) {
-              gsap.to(image, {
-                x: -70, ease: "none",
-                scrollTrigger: {
-                  trigger: item, containerAnimation: scrollTween,
-                  start: "left 100%", end: "right 0%", scrub: 1,
                 },
-              });
-            }
-
-            // Content stagger
-            if (content) {
-              gsap.fromTo(content,
-                { y: 60, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.8, ease: EASINGS.smooth,
-                  scrollTrigger: { trigger: item, containerAnimation: scrollTween, start: "left 65%", toggleActions: "play none none reverse" },
-                }
               );
             }
 
+            // LAYERED PARALLAX (depth): image drifts, content drifts a touch.
+            if (image) {
+              gsap.fromTo(
+                image,
+                { xPercent: 8 },
+                {
+                  xPercent: -8,
+                  ease: "none",
+                  scrollTrigger: {
+                    trigger: item,
+                    containerAnimation: scrollTween,
+                    start: "left 100%",
+                    end: "right 0%",
+                    scrub: 1,
+                  },
+                },
+              );
+            }
+
+            if (content) {
+              gsap.fromTo(
+                content,
+                { xPercent: isEven ? 5 : -5 },
+                {
+                  xPercent: 0,
+                  ease: "none",
+                  scrollTrigger: {
+                    trigger: item,
+                    containerAnimation: scrollTween,
+                    start: "left 100%",
+                    end: "right 0%",
+                    scrub: 1,
+                  },
+                },
+              );
+            }
+
+            // MASKED SPLITTEXT TITLE: lines wipe up from behind a mask.
             if (title) {
-              gsap.fromTo(title,
-                { x: isEven ? -50 : 50, opacity: 0, skewX: isEven ? -5 : 5 },
-                { x: 0, opacity: 1, skewX: 0, duration: 0.7, ease: EASINGS.smooth,
-                  scrollTrigger: { trigger: item, containerAnimation: scrollTween, start: "left 60%", toggleActions: "play none none reverse" },
-                }
+              const split = new SplitText(title, {
+                type: "lines",
+                linesClass: "split-line",
+              });
+              splits.push(split);
+              split.lines.forEach((line) => {
+                const wrap = document.createElement("span");
+                wrap.style.display = "block";
+                wrap.style.overflow = "hidden";
+                line.parentNode.insertBefore(wrap, line);
+                wrap.appendChild(line);
+              });
+              gsap.fromTo(
+                split.lines,
+                { yPercent: 115 },
+                {
+                  yPercent: 0,
+                  duration: 0.9,
+                  stagger: 0.07,
+                  ease: EASINGS.cineOut,
+                  scrollTrigger: {
+                    trigger: item,
+                    containerAnimation: scrollTween,
+                    start: "left 60%",
+                    toggleActions: "play none none reverse",
+                  },
+                },
               );
             }
 
             if (description) {
-              gsap.fromTo(description,
-                { y: 20, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.5, ease: EASINGS.smooth,
-                  scrollTrigger: { trigger: item, containerAnimation: scrollTween, start: "left 55%", toggleActions: "play none none reverse" },
-                }
+              gsap.fromTo(
+                description,
+                { y: 18, opacity: 0 },
+                {
+                  y: 0,
+                  opacity: 1,
+                  duration: 0.6,
+                  ease: EASINGS.cineOut,
+                  scrollTrigger: {
+                    trigger: item,
+                    containerAnimation: scrollTween,
+                    start: "left 58%",
+                    toggleActions: "play none none reverse",
+                  },
+                },
               );
             }
 
+            // SCRAMBLE the per scene index + spec readout (monospace).
+            if (stat) {
+              const finalText = `0${i + 1} / ${SCENE_TECH[
+                i % SCENE_TECH.length
+              ].join("  ")}`;
+              const st = ScrollTrigger.create({
+                trigger: item,
+                containerAnimation: scrollTween,
+                start: "left 62%",
+                onEnter: () =>
+                  gsap.to(stat, {
+                    duration: 1.1,
+                    ease: "none",
+                    scrambleText: {
+                      text: finalText,
+                      chars: "upperAndLowerCase",
+                      speed: 0.4,
+                      revealDelay: 0.2,
+                    },
+                  }),
+                onLeaveBack: () => {
+                  gsap.killTweensOf(stat);
+                  stat.textContent = "";
+                },
+              });
+              scrubbedScrambles.push(st);
+            }
+
             if (techTags.length > 0) {
-              gsap.fromTo(techTags,
-                { y: 25, opacity: 0, scale: 0.8 },
-                { y: 0, opacity: 1, scale: 1, duration: 0.4, stagger: 0.08, ease: "back.out(1.5)",
-                  scrollTrigger: { trigger: item, containerAnimation: scrollTween, start: "left 50%", toggleActions: "play none none reverse" },
-                }
+              gsap.fromTo(
+                techTags,
+                { y: 22, opacity: 0 },
+                {
+                  y: 0,
+                  opacity: 1,
+                  duration: 0.5,
+                  stagger: 0.07,
+                  ease: EASINGS.cineOut,
+                  scrollTrigger: {
+                    trigger: item,
+                    containerAnimation: scrollTween,
+                    start: "left 50%",
+                    toggleActions: "play none none reverse",
+                  },
+                },
               );
             }
 
             if (links) {
-              gsap.fromTo(links,
-                { y: 20, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.5, ease: EASINGS.smooth,
-                  scrollTrigger: { trigger: item, containerAnimation: scrollTween, start: "left 45%", toggleActions: "play none none reverse" },
-                }
+              gsap.fromTo(
+                links,
+                { y: 18, opacity: 0 },
+                {
+                  y: 0,
+                  opacity: 1,
+                  duration: 0.5,
+                  ease: EASINGS.cineOut,
+                  scrollTrigger: {
+                    trigger: item,
+                    containerAnimation: scrollTween,
+                    start: "left 45%",
+                    toggleActions: "play none none reverse",
+                  },
+                },
               );
             }
 
-            if (number) {
-              gsap.fromTo(number,
-                { x: 150, opacity: 0 },
-                { x: -50, opacity: 0.06, ease: "none",
-                  scrollTrigger: { trigger: item, containerAnimation: scrollTween, start: "left 80%", end: "right 20%", scrub: 1 },
-                }
+            // SCALE FOCUS: the active scene image breathes to 1, neighbours
+            // sit slightly pulled back. Driven by the scrub center cross.
+            if (imageContainer) {
+              gsap.fromTo(
+                imageContainer,
+                { scale: 0.96 },
+                {
+                  scale: 1,
+                  ease: EASINGS.cineOut,
+                  scrollTrigger: {
+                    trigger: item,
+                    containerAnimation: scrollTween,
+                    start: "left center",
+                    end: "center center",
+                    scrub: 1,
+                  },
+                },
               );
             }
 
-            // Hover effects
+            // Hover parallax inside the framed image (pointer focus).
             if (imageContainer && image) {
-              imageContainer.addEventListener("mouseenter", () => {
-                gsap.to(image, { scale: 1.15, duration: 0.6, ease: EASINGS.smooth });
-              });
-              imageContainer.addEventListener("mousemove", (e) => {
-                const rect = imageContainer.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
+              const onEnter = () =>
                 gsap.to(image, {
-                  x: ((x - centerX) / centerX) * -15 - 35,
-                  y: ((y - centerY) / centerY) * -10,
-                  duration: 0.4, ease: "power2.out",
+                  scale: 1.1,
+                  duration: 0.6,
+                  ease: EASINGS.cineOut,
                 });
-              });
-              imageContainer.addEventListener("mouseleave", () => {
-                gsap.to(image, { scale: 1, x: 0, y: 0, duration: 0.8, ease: "power3.out" });
+              const onMove = (e) => {
+                const rect = imageContainer.getBoundingClientRect();
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                gsap.to(image, {
+                  x: ((e.clientX - rect.left - cx) / cx) * -12,
+                  y: ((e.clientY - rect.top - cy) / cy) * -8,
+                  duration: 0.4,
+                  ease: "power2.out",
+                  overwrite: "auto",
+                });
+              };
+              const onLeave = () =>
+                gsap.to(image, {
+                  scale: 1,
+                  x: 0,
+                  y: 0,
+                  duration: 0.7,
+                  ease: EASINGS.cineOut,
+                });
+              imageContainer.addEventListener("mouseenter", onEnter);
+              imageContainer.addEventListener("mousemove", onMove);
+              imageContainer.addEventListener("mouseleave", onLeave);
+              cleanups.push(() => {
+                imageContainer.removeEventListener("mouseenter", onEnter);
+                imageContainer.removeEventListener("mousemove", onMove);
+                imageContainer.removeEventListener("mouseleave", onLeave);
               });
             }
           });
 
-          // Velocity skew
+          // VELOCITY-REACTIVE SKEW on the whole strip (restrained).
           velocityUnsubscribe = scrollVelocity.subscribe((velocity) => {
-            const normalizedVelocity = Math.min(Math.abs(velocity), 1500) / 1500;
-            const skew = normalizedVelocity * 3 * Math.sign(velocity);
-            gsap.to(container, { skewY: skew, duration: 0.2, ease: "power1.out", overwrite: "auto" });
+            const n = Math.min(Math.abs(velocity), 1500) / 1500;
+            const skew = n * 2.2 * Math.sign(velocity);
+            gsap.to(container, {
+              skewY: skew,
+              duration: 0.2,
+              ease: "power1.out",
+              overwrite: "auto",
+            });
           });
         });
       }, sectionRef);
 
       return () => {
         ctx.revert();
+        scrubbedScrambles.forEach((st) => st.kill());
+        cleanups.forEach((fn) => fn());
         if (velocityUnsubscribe) velocityUnsubscribe();
         scrollVelocity.stop();
-        if (titleRef.current) revertSplit(titleRef.current);
+        splits.forEach((s) => s.revert());
       };
     });
 
     return () => mm.revert();
   }, []);
 
-  // Mobile layout
+  // ---- FLIP-based active indicator focus (runs after activeIndex paint) ----
+  useEffect(() => {
+    if (layout !== "desktop") return;
+    const dots = sectionRef.current?.querySelectorAll(".scene-dot");
+    if (!dots || dots.length === 0) return;
+    const state = Flip.getState(dots);
+    dots.forEach((dot, i) => {
+      dot.dataset.active = i === activeIndex ? "true" : "false";
+    });
+    Flip.from(state, {
+      duration: 0.45,
+      ease: EASINGS.cineOut,
+      absolute: false,
+    });
+  }, [activeIndex, layout]);
+
+  // ----------------------------------------------------------------
+  // MOBILE / TABLET layout
+  // ----------------------------------------------------------------
   if (layout === "mobile") {
     return (
-      <section ref={sectionRef} className="min-h-screen w-full bg-black py-16 md:py-24 relative overflow-hidden">
+      <section
+        ref={sectionRef}
+        className="min-h-screen w-full bg-black py-16 md:py-24 relative overflow-hidden"
+      >
         <div className="dot-pattern absolute inset-0 pointer-events-none" />
-        <div ref={headerRef} className="max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-20">
+        <div
+          ref={headerRef}
+          className="max-w-7xl mx-auto px-4 md:px-6 mb-12 md:mb-20"
+        >
           <div className="flex items-center gap-4 md:gap-6 mb-4">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] md:tracking-[0.3em] text-neutral-500">04</span>
+            <span className="font-mono text-xs uppercase tracking-[0.2em] md:tracking-[0.3em] text-neutral-500">
+              04
+            </span>
             <div className="flex-1 h-px bg-neutral-800" />
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white" style={{ fontFamily: "Space Grotesk, sans-serif" }}>Projects</h2>
+          <h2
+            className="text-3xl md:text-5xl font-bold tracking-tight text-white"
+            style={{ fontFamily: "Space Grotesk, sans-serif" }}
+          >
+            Selected Work
+          </h2>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="space-y-12 md:space-y-20">
             {projects.map((project, i) => (
-              <article key={project.title} className="project-card-mobile relative">
+              <article
+                key={project.title}
+                className="project-card-mobile relative"
+              >
                 <div className="project-image-container relative aspect-video overflow-hidden mb-4 md:mb-6">
-                  <img src={project.src} alt={project.title} className="project-image w-full h-full object-cover" />
+                  <img
+                    src={project.src}
+                    alt={project.title}
+                    className="project-image w-full h-full object-cover"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <span className="absolute bottom-3 right-3 font-mono text-xs text-white/60">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="absolute bottom-3 right-3 font-mono text-xs text-white/60">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                 </div>
                 <div className="project-content-mobile">
-                  <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.15em] text-neutral-500 mb-1 block">{project.description}</span>
-                  <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-3" style={{ fontFamily: "Space Grotesk, sans-serif" }}>{project.title}</h3>
+                  <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.15em] text-neutral-500 mb-1 block">
+                    {project.description}
+                  </span>
+                  <h3
+                    className="project-title-mobile text-xl md:text-2xl font-bold tracking-tight text-white mb-3"
+                    style={{ fontFamily: "Space Grotesk, sans-serif" }}
+                  >
+                    {project.title}
+                  </h3>
                   <div className="flex flex-wrap gap-1.5 mb-4">
-                    {project.content && ["React", "Node.js", "TailwindCSS"].map((tech) => (
-                      <span key={tech} className="tech-tag px-2 py-0.5 text-[10px] font-mono border border-neutral-700 text-neutral-400">{tech}</span>
+                    {SCENE_TECH[i % SCENE_TECH.length].map((tech) => (
+                      <span
+                        key={tech}
+                        className="tech-tag px-2 py-0.5 text-[10px] font-mono border border-neutral-700 text-neutral-400"
+                      >
+                        {tech}
+                      </span>
                     ))}
                   </div>
                   <div className="flex gap-3">
                     {project.ctaLink && (
-                      <a href={project.ctaLink} target="_blank" rel="noopener noreferrer" className="px-4 py-2 text-xs font-mono uppercase tracking-wider border border-white text-white hover:bg-white hover:text-black transition-colors">View Live</a>
+                      <a
+                        href={project.ctaLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 text-xs font-mono uppercase tracking-wider border border-white text-white hover:bg-emerald-500 hover:border-emerald-500 hover:text-black transition-colors"
+                      >
+                        View Live
+                      </a>
                     )}
                   </div>
                 </div>
@@ -403,67 +713,166 @@ function ScrollProjectsSection() {
             ))}
           </div>
         </div>
-        <div className="absolute bottom-4 right-4 font-mono text-[10px] text-neutral-600 tracking-widest">04 / 07</div>
+        <div className="absolute bottom-4 right-4 font-mono text-[10px] text-neutral-600 tracking-widest">
+          04 / 07
+        </div>
       </section>
     );
   }
 
-  // Desktop — horizontal gallery
+  // ----------------------------------------------------------------
+  // DESKTOP layout: pinned horizontal film-strip
+  // ----------------------------------------------------------------
   return (
-    <section ref={sectionRef} className="h-screen w-full bg-black overflow-hidden relative">
+    <section
+      ref={sectionRef}
+      className="h-screen w-full bg-black overflow-hidden relative"
+    >
       <div className="dot-pattern absolute inset-0 pointer-events-none" />
 
       <div className="absolute top-8 left-8 z-20">
-        <span className="font-mono text-xs uppercase tracking-[0.3em] text-neutral-500">04 / Projects</span>
-        <h2 ref={titleRef} className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white" style={{ fontFamily: "Space Grotesk, sans-serif", perspective: "1000px" }}>Projects</h2>
+        <span className="font-mono text-xs uppercase tracking-[0.3em] text-emerald-500">
+          04 / Selected Work
+        </span>
+        <h2
+          ref={titleRef}
+          className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white"
+          style={{ fontFamily: "Space Grotesk, sans-serif" }}
+        >
+          The Reel
+        </h2>
       </div>
 
-      <div ref={counterRef} className="absolute top-8 right-8 z-20 font-mono text-sm text-neutral-400">
+      <div
+        ref={counterRef}
+        className="absolute top-8 right-8 z-20 font-mono text-sm text-neutral-400"
+      >
         01 / {String(projects.length).padStart(2, "0")}
+      </div>
+
+      {/* DrawSVG progress spine: a line that draws as the reel runs */}
+      <div
+        ref={spineRef}
+        className="absolute top-1/2 left-8 right-8 -translate-y-1/2 z-0 pointer-events-none"
+      >
+        <svg
+          className="w-full"
+          height="2"
+          viewBox="0 0 1000 2"
+          preserveAspectRatio="none"
+        >
+          <line
+            x1="0"
+            y1="1"
+            x2="1000"
+            y2="1"
+            stroke="#262626"
+            strokeWidth="2"
+          />
+          <line
+            className="scene-spine"
+            x1="0"
+            y1="1"
+            x2="1000"
+            y2="1"
+            stroke="#10b981"
+            strokeWidth="2"
+          />
+        </svg>
       </div>
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
         {projects.map((_, i) => (
-          <div key={i} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === activeIndex ? "bg-white scale-150 shadow-[0_0_8px_rgba(255,255,255,0.5)]" : "bg-neutral-600"}`} />
+          <div
+            key={i}
+            data-active={i === activeIndex ? "true" : "false"}
+            className="scene-dot w-2 h-2 rounded-full bg-neutral-600 data-[active=true]:bg-emerald-500 data-[active=true]:scale-[1.6] data-[active=true]:shadow-[0_0_10px_rgba(16,185,129,0.6)] transition-colors"
+          />
         ))}
       </div>
 
-      <div ref={galleryContainerRef} className="h-full flex items-center horizontal-scroll-container" style={{ transformStyle: "preserve-3d" }}>
+      <div
+        ref={galleryContainerRef}
+        className="h-full flex items-center horizontal-scroll-container"
+        style={{ transformStyle: "preserve-3d" }}
+      >
         <div className="w-[50vw] h-full shrink-0" />
 
         {projects.map((project, i) => (
-          <article key={project.title} className="gallery-item shrink-0 h-full flex items-center px-8 relative" style={{ width: "80vw", maxWidth: "1400px" }}>
-            <span className="project-number-overlay absolute -left-8 top-1/2 -translate-y-1/2 text-[25rem] font-black text-white leading-none pointer-events-none select-none" style={{ opacity: 0 }}>0{i + 1}</span>
-
+          <article
+            key={project.title}
+            className="gallery-item shrink-0 h-full flex items-center px-8 relative"
+            style={{ width: "80vw", maxWidth: "1400px" }}
+          >
             <div className="relative z-10 grid grid-cols-12 gap-8 items-center w-full">
               <div className="col-span-7">
                 <div className="project-image-container relative aspect-[16/10] overflow-hidden group">
-                  <img src={project.src} alt={project.title} className="project-image w-full h-full object-cover" style={{ transform: "scale(1.1)" }} />
+                  <img
+                    src={project.src}
+                    alt={project.title}
+                    className="project-image w-full h-full object-cover"
+                    style={{ transform: "scale(1.1)" }}
+                  />
                   <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-6 z-10">
                     {project.ctaLink && (
-                      <a href={project.ctaLink} target="_blank" rel="noopener noreferrer" className="project-cta px-8 py-4 border border-white text-white text-sm font-mono uppercase tracking-wider"><span>View Live</span></a>
+                      <a
+                        href={project.ctaLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="project-cta px-8 py-4 border border-emerald-500 text-emerald-400 text-sm font-mono uppercase tracking-wider hover:bg-emerald-500 hover:text-black transition-colors"
+                      >
+                        <span>View Live</span>
+                      </a>
                     )}
                   </div>
-                  <div className="absolute top-4 left-4 w-8 h-8 border-l border-t border-white/30" />
-                  <div className="absolute bottom-4 right-4 w-8 h-8 border-r border-b border-white/30" />
+                  <div className="absolute top-4 left-4 w-8 h-8 border-l border-t border-emerald-500/40" />
+                  <div className="absolute bottom-4 right-4 w-8 h-8 border-r border-b border-emerald-500/40" />
                 </div>
               </div>
 
               <div className="col-span-5 project-content">
-                <span className="project-description font-mono text-xs uppercase tracking-[0.2em] text-neutral-500 mb-4 block">{project.description}</span>
-                <h3 className="project-title text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4" style={{ fontFamily: "Space Grotesk, sans-serif" }}>{project.title}</h3>
-                <div className="w-16 h-px bg-gradient-to-r from-white/60 to-transparent mb-6" />
+                <span className="scene-stat block font-mono text-[11px] uppercase tracking-[0.18em] text-emerald-500 mb-4 min-h-[14px]" />
+                <span className="project-description font-mono text-xs uppercase tracking-[0.2em] text-neutral-500 mb-4 block">
+                  {project.description}
+                </span>
+                <h3
+                  className="project-title text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4"
+                  style={{ fontFamily: "Space Grotesk, sans-serif" }}
+                >
+                  {project.title}
+                </h3>
+                <div className="w-16 h-px bg-gradient-to-r from-emerald-500 to-transparent mb-6" />
                 <div className="flex flex-wrap gap-2 mb-8">
-                  {["React", "Node.js", "MongoDB", "TailwindCSS"].slice(0, 4).map((tech) => (
-                    <span key={tech} className="tech-tag px-4 py-2 text-xs font-mono border border-neutral-700 text-neutral-300 hover:border-neutral-500 hover:text-white transition-colors">{tech}</span>
+                  {SCENE_TECH[i % SCENE_TECH.length].map((tech) => (
+                    <span
+                      key={tech}
+                      className="tech-tag px-4 py-2 text-xs font-mono border border-neutral-700 text-neutral-300 hover:border-emerald-500 hover:text-white transition-colors"
+                    >
+                      {tech}
+                    </span>
                   ))}
                 </div>
                 <div className="project-links flex gap-4">
                   {project.ctaLink && (
-                    <a href={project.ctaLink} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2 text-white font-mono text-sm uppercase tracking-wider hover:text-neutral-300 transition-colors">
+                    <a
+                      href={project.ctaLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-2 text-white font-mono text-sm uppercase tracking-wider hover:text-emerald-400 transition-colors"
+                    >
                       <span>Visit Project</span>
-                      <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      <svg
+                        className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
                       </svg>
                     </a>
                   )}
@@ -475,13 +884,17 @@ function ScrollProjectsSection() {
 
         <div className="w-screen h-full shrink-0 flex items-center justify-center">
           <div className="text-center">
-            <div className="w-24 h-px bg-white/30 mx-auto mb-8" />
-            <span className="font-mono text-sm uppercase tracking-[0.2em] text-neutral-500">Continue scrolling</span>
+            <div className="w-24 h-px bg-emerald-500/40 mx-auto mb-8" />
+            <span className="font-mono text-sm uppercase tracking-[0.2em] text-neutral-500">
+              Continue scrolling
+            </span>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-8 right-8 font-mono text-xs text-neutral-600 tracking-widest">04 / 07</div>
+      <div className="absolute bottom-8 right-8 font-mono text-xs text-neutral-600 tracking-widest">
+        04 / 07
+      </div>
     </section>
   );
 }

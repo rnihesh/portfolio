@@ -1,8 +1,29 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+import { Flip } from "gsap/Flip";
+import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { Observer } from "gsap/Observer";
+import { CustomEase } from "gsap/CustomEase";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
-// Register ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger);
+// Register all plugins (GSAP 3.13+ ships every plugin free in the npm package)
+gsap.registerPlugin(
+  ScrollTrigger,
+  SplitText,
+  Flip,
+  DrawSVGPlugin,
+  MotionPathPlugin,
+  Observer,
+  CustomEase,
+  ScrambleTextPlugin
+);
+
+// Cinematic custom eases (registered once, referenced by name)
+CustomEase.create("cine", "0.83, 0, 0.17, 1"); // expo-style in-out, filmic
+CustomEase.create("cineOut", "0.16, 1, 0.3, 1"); // soft decisive settle
+CustomEase.create("cut", "0.9, 0, 0.1, 1"); // hard, snappy "cut"
 
 // Configure global GSAP defaults
 gsap.defaults({
@@ -16,11 +37,15 @@ ScrollTrigger.defaults({
   markers: false,
 });
 
-// Responsive breakpoints for gsap.matchMedia
+// Responsive breakpoints for gsap.matchMedia.
+// mobile/tablet/desktop are gated on no-preference so they are mutually
+// exclusive with reducedMotion (otherwise a reduced-motion user at >=1024px
+// matches BOTH and the desktop branch clobbers the safe visible states).
 export const BREAKPOINTS = {
-  mobile: "(max-width: 767px)",
-  tablet: "(min-width: 768px) and (max-width: 1023px)",
-  desktop: "(min-width: 1024px)",
+  mobile: "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
+  tablet:
+    "(min-width: 768px) and (max-width: 1023px) and (prefers-reduced-motion: no-preference)",
+  desktop: "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
   reducedMotion: "(prefers-reduced-motion: reduce)",
 };
 
@@ -47,6 +72,11 @@ export const EASINGS = {
   expo: "expo.out",
   expoIn: "expo.in",
   expoInOut: "expo.inOut",
+
+  // Cinematic custom eases (registered above via CustomEase)
+  cine: "cine",
+  cineOut: "cineOut",
+  cut: "cut",
 };
 
 /**
@@ -207,4 +237,14 @@ export const refreshScrollTrigger = () => {
   ScrollTrigger.refresh();
 };
 
-export { gsap, ScrollTrigger };
+export {
+  gsap,
+  ScrollTrigger,
+  SplitText,
+  Flip,
+  DrawSVGPlugin,
+  MotionPathPlugin,
+  Observer,
+  CustomEase,
+  ScrambleTextPlugin,
+};
