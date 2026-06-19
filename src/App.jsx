@@ -1,12 +1,28 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import "./App.css";
 import ThemeToggle from "./components/Theme/ThemeToggle";
+
+// Wrapper component to conditionally render ThemeToggle
+function ThemeToggleWrapper() {
+  const location = useLocation();
+  // Hide theme toggle on scroll page
+  if (location.pathname === "/scroll") {
+    return null;
+  }
+  return <ThemeToggle className="fixed top-4 right-4 z-50" />;
+}
 
 // Pages
 import HomePage from "./pages/HomePage";
 import MinimalPage from "./pages/MinimalPage";
 import GooeyPage from "./pages/GooeyPage";
+import ScrollPage from "./pages/ScrollPage";
 
 function App() {
   // Global keyboard handler for resume
@@ -35,11 +51,12 @@ function App() {
   return (
     <Router>
       <div className="relative">
-        <ThemeToggle className="fixed top-4 right-4 z-50" />
+        <ThemeToggleWrapper />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/minimal" element={<MinimalPage />} />
           <Route path="/gooey" element={<GooeyPage />} />
+          <Route path="/scroll" element={<ScrollPage />} />
           {/* Fallback route */}
           <Route path="*" element={<HomePage />} />
         </Routes>
