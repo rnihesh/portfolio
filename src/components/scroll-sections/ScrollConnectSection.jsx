@@ -443,7 +443,7 @@ function ScrollConnectSection() {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen w-full bg-white flex items-center justify-center relative overflow-hidden py-16 md:py-0"
+      className="min-h-screen w-full bg-white flex items-center justify-center relative z-30 overflow-hidden py-16 md:py-0"
     >
       {/* Vertical grid lines */}
       <div className="hidden md:block absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-neutral-200 to-transparent" />

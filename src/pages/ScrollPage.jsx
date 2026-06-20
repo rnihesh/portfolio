@@ -61,6 +61,21 @@ function ScrollPage() {
     };
   }, []);
 
+  // Refresh ScrollTrigger after layout, fonts and images settle so every
+  // section's pin start/end is measured against its REAL height. Without this,
+  // pins (e.g. Connect) compute stale positions and overlap their neighbours.
+  useEffect(() => {
+    const refresh = () => ScrollTrigger.refresh();
+    const timers = [300, 800, 1500, 2500].map((ms) =>
+      window.setTimeout(refresh, ms)
+    );
+    window.addEventListener("load", refresh);
+    return () => {
+      timers.forEach((t) => window.clearTimeout(t));
+      window.removeEventListener("load", refresh);
+    };
+  }, []);
+
   // Scroll progress indicator
   useEffect(() => {
     if (!progressRef.current) return;
