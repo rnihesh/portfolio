@@ -59,18 +59,27 @@ function ScrollManifestoSection() {
         if (ruleRef.current)
           gsap.set(ruleRef.current, { scaleX: 0, transformOrigin: "left" });
 
-        // Reveal tied to scroll, anchored so it finishes well before centre.
+        // TIME-BASED entrance: plays over ~1.2s when the section enters view,
+        // so the effect is clearly visible the moment you land (not a frozen
+        // scrub). Reverses when scrolled back above.
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 72%",
-            end: "top 38%",
-            scrub: 0.8,
+            toggleActions: "play none none reverse",
           },
         });
-        tl.to(lines, { yPercent: 0, ease: "power3.out", stagger: 0.2 }, 0);
+        tl.to(
+          lines,
+          { yPercent: 0, duration: 1, ease: "power4.out", stagger: 0.14 },
+          0
+        );
         if (ruleRef.current)
-          tl.to(ruleRef.current, { scaleX: 1, ease: "none" }, 0.35);
+          tl.to(
+            ruleRef.current,
+            { scaleX: 1, duration: 0.7, ease: "power2.out" },
+            0.45
+          );
 
         // Settle: once the section is in view, hard-lock fully revealed so a
         // fast flick can never leave a line stuck behind its mask.

@@ -20,7 +20,6 @@ import ScrollProjectsSection from "../components/scroll-sections/ScrollProjectsS
 import ScrollPhotosSection from "../components/scroll-sections/ScrollPhotosSection";
 import ScrollTimelineSection from "../components/scroll-sections/ScrollTimelineSection";
 import ScrollConnectSection from "../components/scroll-sections/ScrollConnectSection";
-import ScrollCompanion from "../components/scroll-sections/ScrollCompanion";
 
 function ScrollPage() {
   const mainRef = useRef(null);
@@ -137,8 +136,6 @@ function ScrollPage() {
         <ScrollTimelineSection />
         <ScrollConnectSection />
       </main>
-
-      <ScrollCompanion />
     </div>
   );
 }

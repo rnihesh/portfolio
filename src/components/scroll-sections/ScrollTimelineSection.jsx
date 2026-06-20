@@ -378,7 +378,6 @@ function ScrollTimelineSection() {
             const reveal = card.querySelectorAll(".exp-reveal");
             const date = card.querySelector(".exp-date");
             const fromLeft = i % 2 === 0;
-            const wipe = fromLeft ? "inset(0 100% 0 0)" : "inset(0 0 0 100%)";
 
             // --- Node: 3D back-ease pop SCRUBBED as the chapter is reached.
             //     Scrubbing (not one-shot) means it visibly pops bigger/settles
@@ -393,15 +392,12 @@ function ScrollTimelineSection() {
                   scale: 1,
                   rotateY: 0,
                   opacity: 1,
+                  duration: 0.6,
                   ease: EASINGS.snappyStrong,
                   scrollTrigger: {
                     trigger: card,
-                    start: "top 90%",
-                    end: "top 62%",
-                    scrub: 0.6,
-                    invalidateOnRefresh: true,
-                    onLeave: () =>
-                      gsap.set(node, { scale: 1, rotateY: 0, opacity: 1 }),
+                    start: "top 82%",
+                    toggleActions: "play none none reverse",
                   },
                 },
               );
@@ -455,28 +451,28 @@ function ScrollTimelineSection() {
                 transformPerspective: 1100,
                 transformOrigin: fromLeft ? "left center" : "right center",
               });
+              // TIME-BASED entrance (no clip-path, so the skills/pills are never
+              // cut). Plays a clear slide + 3D settle over ~0.9s when the card
+              // enters, regardless of scroll speed.
               gsap.fromTo(
                 panel,
                 {
-                  clipPath: wipe,
                   opacity: 0,
-                  y: 80 * K,
-                  rotateY: fromLeft ? -14 : 14,
-                  scale: 0.95,
+                  y: 56 * K,
+                  rotateY: fromLeft ? -12 : 12,
+                  scale: 0.96,
                 },
                 {
-                  clipPath: "inset(0 0% 0 0%)",
                   opacity: 1,
                   y: 0,
                   rotateY: 0,
                   scale: 1,
-                  ease: "none",
+                  duration: 0.9,
+                  ease: EASINGS.cineOut,
                   scrollTrigger: {
                     trigger: card,
-                    start: "top 90%",
-                    end: "top 56%",
-                    scrub: 1,
-                    invalidateOnRefresh: true,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse",
                   },
                 },
               );
