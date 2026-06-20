@@ -1,25 +1,45 @@
 import { useRef, useEffect } from "react";
 import {
   gsap,
+  SplitText,
+  ScrambleTextPlugin,
   BREAKPOINTS,
   EASINGS,
+  scrollVelocity,
 } from "../../utils/gsapConfig";
 import { applyMagneticEffect } from "../../hooks/useMagnetic";
 import { LuGithub, LuLinkedin, LuMail, LuPhone } from "react-icons/lu";
 import { FaXTwitter } from "react-icons/fa6";
 
+// Keep the plugin reference alive through tree-shaking (registered in gsapConfig)
+void ScrambleTextPlugin;
+
 const EMERALD = "#10b981";
 
 /**
- * Connect — the closing screen.
+ * Connect — the closing screen and the LAST section.
  *
- * The LAST section: it simply flows in (NOT pinned, NOT scrubbed). One calm
- * entrance timeline plays once as the section scrolls into view: the kicker
- * fades, the heading rises out of its mask, an emerald underline draws, the
- * email wipes in, the status settles, and the social cards lift in with an
- * elegant stagger. Everything ends fully visible and readable. Opaque white
- * background, so it never overlays a neighbor. A reduced-motion branch sets
- * clean final states with no transforms.
+ * RELIABILITY CONTRACT (non-negotiable):
+ *  - Opaque white background on the section root; it never overlays a neighbor.
+ *  - NOT pinned, NOT scrubbed-with-pin: this section must keep flowing so it
+ *    can never overlap the section before it and must always remain last.
+ *  - A single cinematic entrance timeline plays once on enter and RESOLVES every
+ *    element to its clean, fully visible, in-frame state (opacity 1, no clip,
+ *    no residual transform, DrawSVG 100%). toggleActions reverse only rewinds
+ *    that same timeline back to its safe initial mask, never past it.
+ *  - A few LIGHT parallax-on-scrub layers add depth as the section passes, but
+ *    they are pure translateY drift that returns to neutral, so they can never
+ *    push content off-screen or hide it.
+ *  - Reduced-motion branch sets clean final visible states with no transforms.
+ *
+ * GSAP arsenal layered here:
+ *  SplitText (heading char masked reveal + outro line masked reveal),
+ *  DrawSVGPlugin (heading underline, email signature underline, the converging
+ *  connector arcs that "draw" toward the card row), a choreographed 3D flip-in
+ *  for the social cards (perspective + rotateX/rotateY + arc converge + scale),
+ *  magnetic hover (applyMagneticEffect), ScrambleTextPlugin for the final index
+ *  readout, multi-layer parallax depth on scrub, and the velocity singleton for
+ *  a subtle filmic skew. Eases: cine / cineOut / cut.
  */
 function ScrollConnectSection() {
   const sectionRef = useRef(null);
@@ -31,6 +51,9 @@ function ScrollConnectSection() {
   const statusRef = useRef(null);
   const drawLineRef = useRef(null);
   const signRef = useRef(null);
+  const indexRef = useRef(null);
+  const auraRef = useRef(null);
+  const fieldRef = useRef(null);
 
   const socialLinks = [
     { icon: LuGithub, href: "https://github.com/rnihesh", label: "GitHub" },
@@ -46,7 +69,6 @@ function ScrollConnectSection() {
 
   useEffect(() => {
     const mm = gsap.matchMedia();
-    let magneticCleanups = [];
 
     // ---------------------------------------------------------------
     // Reduced motion — clean, fully visible final states, no transforms
@@ -54,18 +76,29 @@ function ScrollConnectSection() {
     mm.add(BREAKPOINTS.reducedMotion, () => {
       const root = sectionRef.current;
       gsap.set(
-        [kickerRef.current, statusRef.current, contentRef.current],
-        { opacity: 1, x: 0, y: 0 }
+        [kickerRef.current, statusRef.current, contentRef.current, indexRef.current],
+        { opacity: 1, x: 0, y: 0, clearProps: "transform" }
       );
       if (emailRef.current)
         gsap.set(emailRef.current, {
           opacity: 1,
-          clearProps: "clipPath,letterSpacing,color",
+          clearProps: "clipPath,letterSpacing,color,transform",
         });
-      const headingLines = root?.querySelectorAll(".heading-line");
-      if (headingLines) gsap.set(headingLines, { yPercent: 0, opacity: 1 });
+      if (auraRef.current) gsap.set(auraRef.current, { opacity: 1, clearProps: "transform" });
+      const headingChars = root?.querySelectorAll(".heading-line");
+      if (headingChars) gsap.set(headingChars, { yPercent: 0, opacity: 1 });
       const cards = root?.querySelectorAll(".social-card");
-      if (cards) gsap.set(cards, { opacity: 1, y: 0, scale: 1 });
+      if (cards)
+        gsap.set(cards, {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          z: 0,
+          rotateX: 0,
+          rotateY: 0,
+          scale: 1,
+          clearProps: "transform",
+        });
       const draws = root?.querySelectorAll(".draw-path");
       if (draws) gsap.set(draws, { drawSVG: "100%", opacity: 1 });
       const outro = root?.querySelectorAll(".outro-line");
@@ -74,115 +107,301 @@ function ScrollConnectSection() {
     });
 
     // ---------------------------------------------------------------
-    // Motion (all viewports) — one calm entrance, play once on enter.
-    // No pin, no scrub: a single timeline keyed to "top 72%" with
-    // toggleActions play/reverse. Tuned a touch lighter on small screens.
+    // Motion — rich, choreographed, but flowing (no pin / no pin-scrub).
     // ---------------------------------------------------------------
     const buildEntrance = (isDesktop) => {
-      const ctx = gsap.context(() => {
-        const headingLines = gsap.utils.toArray(".heading-line");
-        const cards = gsap.utils.toArray(".social-card");
-        const outroLines = gsap.utils.toArray(".outro-line");
+      let splitHeading = null;
+      let splitOutro = [];
+      let velocityUnsub = null;
+      const magneticCleanups = [];
 
-        // Initial (pre-reveal) states — content masked, ready to settle in.
-        gsap.set(headingLines, { yPercent: 110 });
-        gsap.set(outroLines, { yPercent: 110 });
-        gsap.set(cards, { opacity: 0, y: 28, scale: 0.96 });
-        if (kickerRef.current) gsap.set(kickerRef.current, { opacity: 0, y: 10 });
-        if (statusRef.current) gsap.set(statusRef.current, { opacity: 0, y: 10 });
+      const ctx = gsap.context(() => {
+        const root = sectionRef.current;
+        const cards = gsap.utils.toArray(".social-card");
+        const connectors = gsap.utils.toArray(".connector-path");
+
+        // -----------------------------------------------------------
+        // SplitText — heading into masked characters that rise + roll
+        // -----------------------------------------------------------
+        let headingChars = [];
+        if (headingRef.current) {
+          splitHeading = new SplitText(headingRef.current, {
+            type: "chars,lines",
+            linesClass: "heading-line",
+          });
+          // overflow-hidden mask per line so chars rise out of nothing
+          splitHeading.lines.forEach((line) => {
+            line.style.overflow = "hidden";
+            line.style.display = "block";
+            line.style.paddingBottom = "0.08em";
+          });
+          headingChars = splitHeading.chars;
+        }
+
+        // -----------------------------------------------------------
+        // SplitText — outro credit lines into masked lines
+        // -----------------------------------------------------------
+        const outroEls = gsap.utils.toArray(".outro-source");
+        let outroLines = [];
+        outroEls.forEach((el) => {
+          const s = new SplitText(el, { type: "lines", linesClass: "outro-line" });
+          s.lines.forEach((line) => {
+            line.style.overflow = "hidden";
+            line.style.display = "block";
+          });
+          splitOutro.push(s);
+          outroLines = outroLines.concat(s.lines);
+        });
+
+        // -----------------------------------------------------------
+        // Initial (pre-reveal) states — masked, ready to settle in.
+        // Cards start scattered on an arc, rotated in 3D, ready to
+        // converge into a clean centered row.
+        // -----------------------------------------------------------
+        gsap.set(headingChars, { yPercent: 115, rotateX: -55, opacity: 0 });
+        gsap.set(outroLines, { yPercent: 115 });
+        if (kickerRef.current) gsap.set(kickerRef.current, { opacity: 0, y: 14 });
+        if (statusRef.current) gsap.set(statusRef.current, { opacity: 0, y: 12 });
+        if (auraRef.current) gsap.set(auraRef.current, { opacity: 0, scale: 0.6 });
         if (drawLineRef.current) gsap.set(drawLineRef.current, { drawSVG: "0%" });
         if (signRef.current) gsap.set(signRef.current, { drawSVG: "0%" });
+        if (connectors.length) gsap.set(connectors, { drawSVG: "0%", opacity: 1 });
         if (emailRef.current)
           gsap.set(emailRef.current, {
             clipPath: "inset(0 100% 0 0)",
             opacity: 1,
           });
 
+        // perspective container for the 3D card flip-in
+        if (linksRef.current)
+          gsap.set(linksRef.current, { perspective: 1100, transformStyle: "preserve-3d" });
+
+        const count = cards.length;
+        cards.forEach((card, i) => {
+          // fan the cards out on a shallow arc above their resting spot
+          const mid = (count - 1) / 2;
+          const offset = i - mid;
+          gsap.set(card, {
+            opacity: 0,
+            x: offset * (isDesktop ? 60 : 30),
+            y: 70,
+            z: -260,
+            rotateX: 62,
+            rotateY: offset * -9,
+            scale: 0.82,
+            transformOrigin: "50% 100% -40px",
+            transformPerspective: 1100,
+          });
+        });
+
+        // -----------------------------------------------------------
+        // The entrance timeline — plays once on enter, reverses on exit
+        // back to the masked start. Everything RESOLVES to visible.
+        // -----------------------------------------------------------
         const tl = gsap.timeline({
           defaults: { ease: EASINGS.cineOut },
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 72%",
             toggleActions: "play none none reverse",
+            onEnter: () => {
+              // emerald aura behind heading blooms once, settles, no ghost word
+              if (auraRef.current)
+                gsap.fromTo(
+                  auraRef.current,
+                  { opacity: 0, scale: 0.6 },
+                  {
+                    opacity: 0.14,
+                    scale: 1,
+                    duration: 1.4,
+                    ease: EASINGS.cineOut,
+                  }
+                );
+            },
           },
         });
 
-        // Kicker
-        if (kickerRef.current) {
-          tl.to(
-            kickerRef.current,
-            { opacity: 1, y: 0, duration: 0.6 },
-            0
-          );
-        }
+        // Kicker drifts up
+        if (kickerRef.current)
+          tl.to(kickerRef.current, { opacity: 1, y: 0, duration: 0.6 }, 0);
 
-        // Heading rises out of its mask
+        // Heading characters rise + un-roll out of their mask (cinematic)
         tl.to(
-          headingLines,
-          { yPercent: 0, duration: 0.9, stagger: 0.1 },
+          headingChars,
+          {
+            yPercent: 0,
+            rotateX: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: EASINGS.cine,
+            stagger: { each: 0.028, from: "center" },
+          },
           0.05
         );
 
-        // Emerald underline draws
-        if (drawLineRef.current) {
+        // Emerald underline draws beneath the heading
+        if (drawLineRef.current)
           tl.to(
             drawLineRef.current,
             { drawSVG: "100%", duration: 0.7, ease: EASINGS.cine },
-            0.45
+            0.4
           );
-        }
 
         // Email wipes in, then its signature underline draws
-        if (emailRef.current) {
+        if (emailRef.current)
           tl.to(
             emailRef.current,
             { clipPath: "inset(0 0% 0 0)", duration: 0.6, ease: EASINGS.cine },
             0.5
           );
-        }
-        if (signRef.current) {
+        if (signRef.current)
           tl.to(
             signRef.current,
             { drawSVG: "100%", duration: 0.6, ease: EASINGS.cine },
-            0.7
+            0.72
           );
-        }
 
         // Status readout settles
-        if (statusRef.current) {
-          tl.to(
-            statusRef.current,
-            { opacity: 1, y: 0, duration: 0.5 },
-            0.7
-          );
-        }
+        if (statusRef.current)
+          tl.to(statusRef.current, { opacity: 1, y: 0, duration: 0.5 }, 0.72);
 
-        // Social cards lift in with an elegant stagger (simple rise + fade)
+        // Connector arcs draw downward toward the card row (DrawSVG depth)
+        if (connectors.length)
+          tl.to(
+            connectors,
+            { drawSVG: "100%", duration: 0.6, stagger: 0.05, ease: EASINGS.cine },
+            0.82
+          );
+
+        // -----------------------------------------------------------
+        // Social cards: choreographed 3D flip-in + arc converge into a
+        // clean, readable, centered row. Ends at full opacity, no skew,
+        // no residual rotation. clearProps wipes the 3D transform so the
+        // resting row is pixel-clean and magnetic hover starts from zero.
+        // -----------------------------------------------------------
         tl.to(
           cards,
           {
             opacity: 1,
+            x: 0,
             y: 0,
+            z: 0,
+            rotateX: 0,
+            rotateY: 0,
             scale: 1,
-            duration: 0.6,
-            stagger: 0.07,
-            ease: EASINGS.snappy,
+            duration: 0.85,
+            ease: EASINGS.cineOut,
+            stagger: { each: 0.08, from: "center" },
           },
-          0.8
+          0.92
         );
+        tl.add(() => {
+          // resolve to a transform-free resting state (only when fully shown)
+          if (tl.progress() > 0.95) gsap.set(cards, { clearProps: "transform" });
+        });
 
-        // Outro credit lines rise out of their masks, last
-        tl.to(
-          outroLines,
-          { yPercent: 0, duration: 0.6, stagger: 0.08 },
-          1.05
-        );
+        // ScrambleText — the final section index resolves with a mono scramble
+        if (indexRef.current)
+          tl.to(
+            indexRef.current,
+            {
+              duration: 1.1,
+              ease: "none",
+              scrambleText: {
+                text: "07 / 07",
+                chars: "0123456789/ ",
+                speed: 0.5,
+                revealDelay: 0.2,
+              },
+            },
+            1.0
+          );
 
-        // ---- Hover micro-interactions (emerald accent) ----
+        // Outro credit lines rise out of their masks, last beat
+        tl.to(outroLines, { yPercent: 0, duration: 0.6, stagger: 0.08 }, 1.15);
+
+        // -----------------------------------------------------------
+        // SAFETY NET: when the timeline finishes (or if the user lands
+        // here fast), force every element to its visible resting state.
+        // This guarantees nothing is ever stuck hidden.
+        // -----------------------------------------------------------
+        tl.eventCallback("onComplete", () => {
+          gsap.set(headingChars, { yPercent: 0, rotateX: 0, opacity: 1 });
+          gsap.set(outroLines, { yPercent: 0, opacity: 1 });
+          gsap.set(cards, {
+            opacity: 1,
+            clearProps: "transform",
+          });
+          if (kickerRef.current) gsap.set(kickerRef.current, { opacity: 1, y: 0 });
+          if (statusRef.current) gsap.set(statusRef.current, { opacity: 1, y: 0 });
+          if (drawLineRef.current) gsap.set(drawLineRef.current, { drawSVG: "100%" });
+          if (signRef.current) gsap.set(signRef.current, { drawSVG: "100%" });
+          if (connectors.length) gsap.set(connectors, { drawSVG: "100%" });
+          if (emailRef.current)
+            gsap.set(emailRef.current, { clipPath: "inset(0 0% 0 0)", opacity: 1 });
+          if (indexRef.current) indexRef.current.textContent = "07 / 07";
+        });
+
+        // -----------------------------------------------------------
+        // PARALLAX DEPTH — light multi-layer translateY drift on scrub
+        // as the section passes through. Pure transform, returns to
+        // neutral, never hides or displaces content beyond a few px.
+        // -----------------------------------------------------------
+        const depthTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+        if (auraRef.current)
+          depthTl.fromTo(
+            auraRef.current,
+            { yPercent: -8 },
+            { yPercent: 8, ease: "none" },
+            0
+          );
+        if (kickerRef.current)
+          depthTl.fromTo(
+            kickerRef.current,
+            { yPercent: -14 },
+            { yPercent: 14, ease: "none" },
+            0
+          );
+        // corner field drifts the opposite way for layered depth
+        if (fieldRef.current)
+          depthTl.fromTo(
+            fieldRef.current,
+            { yPercent: 6 },
+            { yPercent: -6, ease: "none" },
+            0
+          );
+
+        // -----------------------------------------------------------
+        // VELOCITY SKEW — subtle filmic smear on fast scroll, settles
+        // back to zero. Applied to the content wrapper, clamped small.
+        // -----------------------------------------------------------
+        if (contentRef.current) {
+          scrollVelocity.start();
+          const quickSkew = gsap.quickTo(contentRef.current, "skewY", {
+            duration: 0.3,
+            ease: "power3.out",
+          });
+          velocityUnsub = scrollVelocity.subscribe(() => {
+            const n = scrollVelocity.getNormalizedVelocity(2200);
+            const skew = n * 1.4 * Math.sign(scrollVelocity.velocity);
+            quickSkew(skew);
+          });
+        }
+
+        // -----------------------------------------------------------
+        // Magnetic + emerald hover micro-interactions on each card
+        // -----------------------------------------------------------
         cards.forEach((card) => {
           if (isDesktop) {
             const cleanup = applyMagneticEffect(card, {
-              strength: 0.22,
+              strength: 0.24,
               ease: 0.35,
               resetEase: 0.6,
               resetEaseType: "elastic.out(1, 0.5)",
@@ -196,7 +415,7 @@ function ScrollConnectSection() {
 
           const onEnter = () => {
             gsap.to(icon, {
-              scale: 1.12,
+              scale: 1.14,
               color: EMERALD,
               duration: 0.3,
               ease: EASINGS.cineOut,
@@ -209,7 +428,6 @@ function ScrollConnectSection() {
                 ease: EASINGS.cineOut,
               });
             gsap.to(card, {
-              y: -4,
               borderColor: EMERALD,
               duration: 0.3,
               ease: EASINGS.cineOut,
@@ -228,7 +446,6 @@ function ScrollConnectSection() {
             if (circle)
               gsap.to(circle, { borderColor: "#e5e5e5", duration: 0.3 });
             gsap.to(card, {
-              y: 0,
               borderColor: "#e5e5e5",
               duration: 0.35,
               ease: EASINGS.cineOut,
@@ -259,25 +476,28 @@ function ScrollConnectSection() {
           const onLeave = () => {
             gsap.to(emailRef.current, { color: "#000", duration: 0.3 });
             if (underline)
-              gsap.to(underline, {
-                attr: { stroke: "#000000" },
-                duration: 0.3,
-              });
+              gsap.to(underline, { attr: { stroke: "#000000" }, duration: 0.3 });
           };
-          emailRef.current.addEventListener("mouseenter", onEnter);
-          emailRef.current.addEventListener("mouseleave", onLeave);
           const el = emailRef.current;
+          el.addEventListener("mouseenter", onEnter);
+          el.addEventListener("mouseleave", onLeave);
           magneticCleanups.push(() => {
             el.removeEventListener("mouseenter", onEnter);
             el.removeEventListener("mouseleave", onLeave);
           });
         }
+
+        void root;
       }, sectionRef);
 
       return () => {
         ctx.revert();
+        if (velocityUnsub) velocityUnsub();
+        scrollVelocity.stop();
+        if (splitHeading) splitHeading.revert();
+        splitOutro.forEach((s) => s.revert());
+        splitOutro = [];
         magneticCleanups.forEach((cleanup) => cleanup());
-        magneticCleanups = [];
       };
     };
 
@@ -295,26 +515,40 @@ function ScrollConnectSection() {
       ref={sectionRef}
       className="min-h-screen w-full bg-white text-black flex items-center justify-center relative z-30 overflow-hidden py-20 md:py-0"
     >
+      {/* Emerald aura behind the heading (soft, restrained, not a ghost word) */}
+      <div
+        ref={auraRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-[34%] -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] md:w-[680px] md:h-[680px] rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(16,185,129,0.5) 0%, rgba(16,185,129,0) 68%)",
+          filter: "blur(40px)",
+          opacity: 0,
+        }}
+      />
+
       {/* Main content */}
-      <div ref={contentRef} className="relative z-10 text-center px-6 md:px-8 max-w-3xl mx-auto">
+      <div
+        ref={contentRef}
+        className="relative z-10 text-center px-6 md:px-8 max-w-3xl mx-auto will-change-transform"
+      >
         {/* Kicker */}
         <span
           ref={kickerRef}
-          className="font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] text-neutral-400 mb-7 md:mb-9 block"
+          className="font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] text-neutral-400 mb-7 md:mb-9 block will-change-transform"
         >
           07 / Connect
         </span>
 
-        {/* Heading with masked line reveal */}
-        <div className="overflow-hidden inline-block py-[0.05em]">
-          <h2
-            ref={headingRef}
-            className="heading-line text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] will-change-transform"
-            style={{ fontFamily: "Space Grotesk, sans-serif" }}
-          >
-            Let's Connect
-          </h2>
-        </div>
+        {/* Heading — SplitText char masked reveal */}
+        <h2
+          ref={headingRef}
+          className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]"
+          style={{ fontFamily: "Space Grotesk, sans-serif" }}
+        >
+          Let's Connect
+        </h2>
 
         {/* Emerald DrawSVG underline under heading */}
         <div className="flex justify-center mt-4 mb-8 md:mb-10">
@@ -369,7 +603,7 @@ function ScrollConnectSection() {
         {/* Status readout (emerald, available) */}
         <div
           ref={statusRef}
-          className="flex items-center justify-center gap-2.5 mb-11 md:mb-14"
+          className="flex items-center justify-center gap-2.5 mb-9 md:mb-12 will-change-transform"
         >
           <span
             className="block w-2 h-2 rounded-full"
@@ -383,7 +617,43 @@ function ScrollConnectSection() {
           </span>
         </div>
 
-        {/* Social cards (clean rise + fade stagger, magnetic hover) */}
+        {/* Connector arcs that draw down toward the card row (depth) */}
+        <div className="flex justify-center mb-2 md:mb-3" aria-hidden="true">
+          <svg
+            width="220"
+            height="34"
+            viewBox="0 0 220 34"
+            fill="none"
+            className="overflow-visible opacity-60"
+          >
+            <path
+              className="connector-path draw-path"
+              d="M110 0 C 110 14, 60 16, 30 32"
+              stroke={EMERALD}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="none"
+            />
+            <path
+              className="connector-path draw-path"
+              d="M110 0 C 110 16, 110 18, 110 32"
+              stroke={EMERALD}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="none"
+            />
+            <path
+              className="connector-path draw-path"
+              d="M110 0 C 110 14, 160 16, 190 32"
+              stroke={EMERALD}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="none"
+            />
+          </svg>
+        </div>
+
+        {/* Social cards (3D flip-in converge + magnetic hover) */}
         <div ref={linksRef} className="relative">
           <div className="flex flex-wrap justify-center gap-3.5 md:gap-5">
             {socialLinks.map((link) => (
@@ -407,29 +677,30 @@ function ScrollConnectSection() {
           </div>
         </div>
 
-        {/* Outro credit lines (masked reveals) */}
+        {/* Outro credit lines (SplitText masked line reveals) */}
         <div className="mt-14 md:mt-16 flex flex-col items-center gap-3">
-          <div className="overflow-hidden py-[0.05em]">
-            <p className="outro-line font-mono text-[10px] md:text-xs text-neutral-400 uppercase tracking-wider md:tracking-widest will-change-transform">
-              Built with React, GSAP, and attention to detail
-            </p>
-          </div>
-          <div className="overflow-hidden py-[0.05em]">
-            <p className="outro-line font-mono text-[10px] md:text-xs text-neutral-300 tracking-[0.3em] will-change-transform">
-              FIN
-            </p>
-          </div>
+          <p className="outro-source font-mono text-[10px] md:text-xs text-neutral-400 uppercase tracking-wider md:tracking-widest will-change-transform">
+            Built with React, GSAP, and attention to detail
+          </p>
+          <p className="outro-source font-mono text-[10px] md:text-xs text-neutral-300 tracking-[0.3em] will-change-transform">
+            FIN
+          </p>
         </div>
       </div>
 
-      {/* Corner brackets */}
-      <div className="absolute top-5 left-5 md:top-8 md:left-8 w-8 h-8 md:w-12 md:h-12 border-l border-t border-neutral-200" />
-      <div className="absolute top-5 right-5 md:top-8 md:right-8 w-8 h-8 md:w-12 md:h-12 border-r border-t border-neutral-200" />
-      <div className="absolute bottom-5 left-5 md:bottom-8 md:left-8 w-8 h-8 md:w-12 md:h-12 border-l border-b border-neutral-200" />
-      <div className="absolute bottom-5 right-5 md:bottom-8 md:right-8 w-8 h-8 md:w-12 md:h-12 border-r border-b border-neutral-200" />
+      {/* Corner brackets + parallax field layer */}
+      <div ref={fieldRef} className="pointer-events-none absolute inset-0 z-0">
+        <div className="absolute top-5 left-5 md:top-8 md:left-8 w-8 h-8 md:w-12 md:h-12 border-l border-t border-neutral-200" />
+        <div className="absolute top-5 right-5 md:top-8 md:right-8 w-8 h-8 md:w-12 md:h-12 border-r border-t border-neutral-200" />
+        <div className="absolute bottom-5 left-5 md:bottom-8 md:left-8 w-8 h-8 md:w-12 md:h-12 border-l border-b border-neutral-200" />
+        <div className="absolute bottom-5 right-5 md:bottom-8 md:right-8 w-8 h-8 md:w-12 md:h-12 border-r border-b border-neutral-200" />
+      </div>
 
-      {/* Section index */}
-      <div className="absolute bottom-5 right-14 md:bottom-8 md:right-20 font-mono text-[10px] md:text-xs text-neutral-400 tracking-widest">
+      {/* Section index — resolves via ScrambleText */}
+      <div
+        ref={indexRef}
+        className="absolute bottom-5 right-14 md:bottom-8 md:right-20 font-mono text-[10px] md:text-xs text-neutral-400 tracking-widest"
+      >
         07 / 07
       </div>
     </section>
