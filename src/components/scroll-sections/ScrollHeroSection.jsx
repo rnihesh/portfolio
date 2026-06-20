@@ -16,52 +16,68 @@ import { JOB_TITLE } from "../../data/identity";
 const EMERALD = "#10b981";
 
 /**
- * Hero — the opening showstopper.
+ * Hero — the opening showstopper, now a PINNED SCRUB scene.
  *
- * A fully choreographed cinematic intro, layered with the GSAP arsenal:
+ * The owner's note was that the screens "looked static": entrance animations
+ * fired once and then froze, so scrolling THROUGH the hero showed no motion.
+ * This rebuild makes the hero scroll-COUPLED: you scroll THROUGH a held
+ * cinematic moment and every layer moves continuously, tied to scroll progress.
  *
- *  - SplitText per-character MASKED rise on NIHESH (each glyph rises out of its
- *    own overflow-hidden mask, staggered, with a touch of 3D rotateX/z depth).
- *  - SplitText line+char masked reveal on the role subtitle.
- *  - DrawSVGPlugin: an emerald accent rule strokes in, plus two emerald
- *    connector lines draw out toward the frame, plus a hairline baseline.
- *  - ScrambleTextPlugin: the mono coordinate/status readouts scramble to value.
- *  - Flip: the eyebrow + readout row settles via a captured Flip state.
- *  - Velocity-reactive skew (scrollVelocity singleton) on the whole stage.
- *  - Multi-layer PARALLAX DEPTH on scroll-out: background grid, corner frame,
- *    and the title move at different scrub speeds; the title departs with a 3D
- *    rotateX + z + scale exit. Magnetic hover on the wordmark (desktop).
- *  - Registered cinematic eases (cine / cineOut / cut).
+ * STRUCTURE
+ *  - ENTER (one-shot, on first reveal): SplitText per-character MASKED rise on
+ *    NIHESH (always plain white, no bg-clip), eyebrow tighten, emerald DrawSVG
+ *    accent + connectors stroke in, subtitle masked rise, Flip settle on the
+ *    readout row, ScrambleText on the mono readouts. This guarantees the
+ *    content actually appears.
+ *  - PINNED SCRUB (the "scroll through" moment): the section is PINNED and a
+ *    multi-beat scrubbed timeline runs across +=190% of scroll. Bold, obvious,
+ *    scroll-coupled motion:
+ *      * NIHESH scales UP (1 -> ~1.34), letter-spacing WIDENS (-0.05em ->
+ *        +0.06em), and drifts on a parallax x-path (about +90px) — clearly
+ *        readable the whole time.
+ *      * The emerald DrawSVG accent + connectors RE-DRAW on scroll (scrub) and
+ *        slide on their own faster parallax layer (about -160px x split).
+ *      * The subtitle + readout row counter-parallax at a different speed
+ *        (yPercent about -70, x about +60).
+ *      * The background grid parallaxes DEEP and SLOW (yPercent about +26,
+ *        scale 1 -> 1.18) so the depth delta versus the heading is obvious.
+ *      * The corner frame eases outward as you progress.
+ *      * Near the end the wordmark DEPARTS in 3D (rotateX, z push, fade) so the
+ *        held moment resolves cleanly into the next section.
+ *    All of the above are SCRUBBED beats on one timeline => they progress as
+ *    you scroll, never one-shot.
+ *  - Velocity-reactive skew (scrollVelocity) shears the stage with scroll speed.
  *
  * RELIABILITY (non-negotiable):
- *  - Opaque black background on the section root.
- *  - NOT pinned. The entrance is a one-shot timeline that always resolves to
- *    opacity 1 / yPercent 0 / drawSVG 100%. The scroll-out is a reversible
- *    SCRUB that only engages once the section starts leaving the top of the
- *    viewport (start "center top"), so content is ALWAYS fully visible and
- *    readable while the hero occupies the screen, and it can never overlap the
- *    next (opaque white) section.
- *  - reducedMotion branch sets clean, fully visible final states (no transforms,
- *    opacity 1, drawSVG 100%) and runs no animation.
- *  - SplitText instances are reverted; gsap.context / ctx.revert + mm.revert
- *    handle teardown; the velocity subscription is unsubscribed.
- *
- * NIHESH is always plain white (no background-clip gradient on split text).
+ *  - OPAQUE full-viewport black background on the pinned section root.
+ *  - pin: true, pinSpacing: true, anticipatePin: 1, invalidateOnRefresh: true.
+ *  - Content is FULLY visible and readable for the whole held scene; the only
+ *    fade-to-hidden happens in the final ~18% beat (the 3D depart), which
+ *    resolves cleanly as the pin releases. A `settle` set guarantees the
+ *    entrance never strands an element hidden.
+ *  - reducedMotion branch: clean fully-visible final states, NO pin, NO motion.
+ *  - Monochrome + single emerald (#10b981). No glass / purple / sparkle.
+ *  - gsap.context/ctx.revert + mm.revert teardown; SplitText reverted; velocity
+ *    unsubscribed. Magnetic hover lives on the inner <h1> (the scrub owns the
+ *    OUTER wrapper transforms) so the two never fight over the same property.
  */
 function ScrollHeroSection() {
   const sectionRef = useRef(null);
-  const stageRef = useRef(null); // velocity-skew + parallax wrapper
+  const stageRef = useRef(null); // velocity-skew wrapper
   const eyebrowRef = useRef(null);
   const readoutRowRef = useRef(null);
   const coordRef = useRef(null);
   const statusRef = useRef(null);
-  const titleRef = useRef(null);
-  const titleWrapRef = useRef(null);
+  const titleRef = useRef(null); // <h1> — magnetic hover target
+  const titleWrapRef = useRef(null); // scrub parallax owner (scale/spacing/x)
+  const titleDepthRef = useRef(null); // 3D depart owner (rotateX/z/opacity)
+  const accentLayerRef = useRef(null); // emerald svg parallax layer
   const accentPathRef = useRef(null);
   const baselinePathRef = useRef(null);
   const connectorLeftRef = useRef(null);
   const connectorRightRef = useRef(null);
   const subtitleRef = useRef(null);
+  const subLayerRef = useRef(null); // subtitle + readouts parallax layer
   const scrollIndicatorRef = useRef(null);
   const gridRef = useRef(null);
   const frameRef = useRef(null);
@@ -71,7 +87,7 @@ function ScrollHeroSection() {
     const mm = gsap.matchMedia();
 
     // -----------------------------------------------------------------
-    // Reduced motion — clean, fully visible final states. No animation.
+    // Reduced motion — clean, fully visible final states. No pin, no anim.
     // -----------------------------------------------------------------
     mm.add(BREAKPOINTS.reducedMotion, () => {
       const corners = cornerRefs.current.filter(Boolean);
@@ -80,7 +96,10 @@ function ScrollHeroSection() {
           stageRef.current,
           titleRef.current,
           titleWrapRef.current,
+          titleDepthRef.current,
           subtitleRef.current,
+          subLayerRef.current,
+          accentLayerRef.current,
           eyebrowRef.current,
           readoutRowRef.current,
           gridRef.current,
@@ -90,14 +109,17 @@ function ScrollHeroSection() {
           opacity: 1,
           x: 0,
           y: 0,
+          xPercent: 0,
           yPercent: 0,
           z: 0,
           scale: 1,
           rotateX: 0,
           skewY: 0,
+          letterSpacing: "-0.05em",
           clearProps: "filter",
         }
       );
+      gsap.set(titleRef.current, { letterSpacing: "-0.05em" });
       gsap.set(scrollIndicatorRef.current, { opacity: 1, y: 0 });
       gsap.set(corners, { opacity: 0.45, scale: 1, x: 0, y: 0 });
       gsap.set(
@@ -113,9 +135,8 @@ function ScrollHeroSection() {
     });
 
     // -----------------------------------------------------------------
-    // Motion — split into desktop (full arsenal: magnetic + heavier
-    // parallax/3D) and reduced-weight mobile/tablet. Both end fully
-    // visible; both use scrub-WITHOUT-pin for the departure.
+    // Motion — desktop = full arsenal (magnetic + heavier 3D depth),
+    // mobile/tablet = reduced weight. BOTH pin + scrub the same scene.
     // -----------------------------------------------------------------
     const build = (isDesktop) => {
       let splits = [];
@@ -126,9 +147,7 @@ function ScrollHeroSection() {
       const ctx = gsap.context(() => {
         const corners = cornerRefs.current.filter(Boolean);
 
-        // ---- SplitText: NIHESH per-character masked rise -------------
-        // mask:"chars" wraps every glyph in an overflow-hidden box, so the
-        // rise is a true cinematic curtain reveal. type stays chars-only.
+        // ---- SplitText: NIHESH per-character masked rise ----------------
         const titleSplit = new SplitText(titleRef.current, {
           type: "chars",
           mask: "chars",
@@ -136,7 +155,7 @@ function ScrollHeroSection() {
         });
         splits.push(titleSplit);
 
-        // ---- SplitText: subtitle line + char masked reveal -----------
+        // ---- SplitText: subtitle line + char masked reveal --------------
         const subSplit = new SplitText(subtitleRef.current, {
           type: "lines,chars",
           mask: "lines",
@@ -144,7 +163,7 @@ function ScrollHeroSection() {
         });
         splits.push(subSplit);
 
-        // ---- Initial hidden states (everything ready to resolve) -----
+        // ---- Initial hidden states (everything ready to resolve) --------
         gsap.set(titleSplit.chars, {
           yPercent: 120,
           rotateX: -55,
@@ -152,7 +171,11 @@ function ScrollHeroSection() {
           transformOrigin: "50% 100% -20px",
         });
         gsap.set(subSplit.chars, { yPercent: 110, opacity: 0 });
-        gsap.set([eyebrowRef.current], { opacity: 0, y: 14, letterSpacing: "0.6em" });
+        gsap.set(eyebrowRef.current, {
+          opacity: 0,
+          y: 14,
+          letterSpacing: "0.6em",
+        });
         gsap.set(readoutRowRef.current, { opacity: 0, y: 10 });
         gsap.set(scrollIndicatorRef.current, { opacity: 0, y: 18 });
         gsap.set(corners, { opacity: 0, scale: 0.85 });
@@ -168,24 +191,22 @@ function ScrollHeroSection() {
         );
 
         // ---- Flip: capture the readout row's resting state, nudge it,
-        // then Flip back in for an organic settle. Tasteful + reliable
-        // (always ends at the natural layout = fully visible). ---------
+        // then Flip back in for an organic settle (always ends at the
+        // natural layout = fully visible). -------------------------------
         const flipState = Flip.getState(readoutRowRef.current);
         gsap.set(readoutRowRef.current, { xPercent: -6 });
 
-        // ============================================================
-        // ENTRANCE — one-shot, plays on load, ALWAYS resolves visible.
-        // ============================================================
+        // ================================================================
+        // ENTRANCE — one-shot, plays on first reveal, ALWAYS resolves.
+        // ================================================================
         const tl = gsap.timeline({ delay: 0.12 });
 
-        // Background grid breathes in (subtle depth plate).
         tl.to(
           gridRef.current,
           { opacity: 1, scale: 1, duration: 1.6, ease: EASINGS.cine },
           0
         );
 
-        // Corner frame snaps in with a staggered cut.
         tl.to(
           corners,
           {
@@ -198,7 +219,6 @@ function ScrollHeroSection() {
           0.05
         );
 
-        // Eyebrow tightens into place.
         tl.to(
           eyebrowRef.current,
           {
@@ -211,7 +231,7 @@ function ScrollHeroSection() {
           0.15
         );
 
-        // NIHESH — the headline moment: masked per-char rise with 3D depth.
+        // NIHESH — masked per-char rise with 3D depth.
         tl.to(
           titleSplit.chars,
           {
@@ -225,21 +245,18 @@ function ScrollHeroSection() {
           0.28
         );
 
-        // Emerald accent rule strokes in beneath the wordmark.
         tl.to(
           accentPathRef.current,
           { drawSVG: "100%", duration: 0.8, ease: EASINGS.cine },
           0.78
         );
 
-        // Connector lines draw out toward the frame edges.
         tl.to(
           [connectorLeftRef.current, connectorRightRef.current],
           { drawSVG: "100%", duration: 0.9, ease: EASINGS.cine },
           0.82
         );
 
-        // Subtitle — line/char masked rise.
         tl.to(
           subSplit.chars,
           {
@@ -252,14 +269,12 @@ function ScrollHeroSection() {
           0.9
         );
 
-        // Hairline baseline draws full width.
         tl.to(
           baselinePathRef.current,
           { drawSVG: "100%", duration: 1.1, ease: EASINGS.cine },
           0.95
         );
 
-        // Flip the readout row home (settles to natural layout) + fade.
         tl.add(() => {
           Flip.from(flipState, {
             duration: 0.7,
@@ -273,7 +288,6 @@ function ScrollHeroSection() {
           1.0
         );
 
-        // ScrambleText: coordinate + status mono readouts resolve to value.
         tl.to(
           coordRef.current,
           {
@@ -302,14 +316,33 @@ function ScrollHeroSection() {
           1.15
         );
 
-        // Scroll cue resolves last.
         tl.to(
           scrollIndicatorRef.current,
           { opacity: 1, y: 0, duration: 0.7, ease: EASINGS.cineOut },
           1.25
         );
 
-        // Looping scroll-cue dot — purely decorative, never hides content.
+        // SETTLE — guarantees nothing strands hidden if the entrance is
+        // interrupted (e.g. fast scroll). Forces full, readable final state.
+        tl.add(() => {
+          gsap.set(
+            [eyebrowRef.current, readoutRowRef.current, subtitleRef.current],
+            { opacity: 1, y: 0 }
+          );
+          gsap.set(titleSplit.chars, { yPercent: 0, rotateX: 0, z: 0 });
+          gsap.set(subSplit.chars, { yPercent: 0, opacity: 1 });
+          gsap.set(
+            [
+              accentPathRef.current,
+              baselinePathRef.current,
+              connectorLeftRef.current,
+              connectorRightRef.current,
+            ],
+            { drawSVG: "100%" }
+          );
+        }, ">-0.05");
+
+        // Looping scroll-cue dot — decorative, never hides content.
         const dot = scrollIndicatorRef.current?.querySelector(".scroll-dot");
         if (dot) {
           gsap.fromTo(
@@ -326,81 +359,147 @@ function ScrollHeroSection() {
           );
         }
 
-        // ============================================================
-        // VELOCITY-REACTIVE SKEW — the whole stage shears slightly with
-        // scroll speed, then eases home. Reliable: skew only, no opacity.
-        // ============================================================
+        // ================================================================
+        // VELOCITY-REACTIVE SKEW — the stage shears slightly with scroll
+        // speed, then eases home. Skew only, never opacity.
+        // ================================================================
         velocityQuickTo = gsap.quickTo(stageRef.current, "skewY", {
           duration: 0.4,
           ease: "power3.out",
         });
         scrollVelocity.start();
         velocityUnsub = scrollVelocity.subscribe((v) => {
-          const skew = gsap.utils.clamp(-6, 6, v * 0.012);
+          const skew = gsap.utils.clamp(-5, 5, v * 0.01);
           if (velocityQuickTo) velocityQuickTo(skew);
         });
 
-        // ============================================================
-        // SCROLL-OUT DEPARTURE — rich, multi-layer PARALLAX + 3D exit.
-        // SCRUB, NO PIN. Engages only once the section starts leaving the
-        // top ("center top"), so content stays FULLY visible while the
-        // hero is on screen, and it physically cannot overlap the next
-        // (opaque) section. Reversible: scroll back up and it restores.
-        // ============================================================
-        const out = gsap.timeline({
+        // ================================================================
+        // PINNED SCRUB SCENE — you scroll THROUGH the hero.
+        // OPAQUE bg + pinSpacing:true + anticipatePin:1 + invalidateOnRefresh.
+        // One scrubbed timeline; every beat progresses with scroll, so the
+        // motion is continuously scroll-COUPLED, not one-shot.
+        // ================================================================
+        const scrub = gsap.timeline({
+          defaults: { ease: "none" },
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "center top",
-            end: "bottom top",
+            start: "top top",
+            end: isDesktop ? "+=190%" : "+=150%",
             scrub: 1,
+            pin: true,
+            pinSpacing: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
           },
         });
 
-        // Title layer — leads the exit with a 3D depart (rotateX + z + scale).
-        out.to(
+        // --- BACKGROUND GRID: deep + slow parallax (the slow reference) ---
+        // Drifts DOWN while everything else lifts => obvious depth split.
+        scrub.fromTo(
+          gridRef.current,
+          { yPercent: 0, scale: 1 },
+          { yPercent: 26, scale: 1.18, ease: "none" },
+          0
+        );
+
+        // --- CORNER FRAME: eases outward (mid-slow) ----------------------
+        scrub.fromTo(
+          frameRef.current,
+          { yPercent: 0, scale: 1 },
+          { yPercent: -8, scale: 1.06, ease: "none" },
+          0
+        );
+        scrub.to(corners[0], { x: -34, y: -34 }, 0);
+        scrub.to(corners[1], { x: 34, y: -34 }, 0);
+        scrub.to(corners[2], { x: -34, y: 34 }, 0);
+        scrub.to(corners[3], { x: 34, y: 34 }, 0);
+
+        // --- NIHESH WORDMARK: the headline scrolls THROUGH a held grow ---
+        // Big, obvious: scales up, letter-spacing widens, drifts right.
+        scrub.fromTo(
           titleWrapRef.current,
+          { scale: 1, xPercent: 0, yPercent: 0 },
           {
-            yPercent: -28,
-            z: isDesktop ? -260 : -120,
-            rotateX: isDesktop ? 22 : 12,
-            scale: 0.94,
-            opacity: 0.18,
+            scale: isDesktop ? 1.34 : 1.18,
+            xPercent: isDesktop ? 6 : 3, // ~ +90px drift on desktop
+            yPercent: -6,
             ease: "none",
           },
           0
         );
-
-        // Subtitle + readouts — slightly slower parallax layer.
-        out.to(
-          [subtitleRef.current, readoutRowRef.current, eyebrowRef.current],
-          { yPercent: -60, opacity: 0, ease: "none" },
+        // Letter-spacing widens on the inner <h1> as you scroll.
+        scrub.fromTo(
+          titleRef.current,
+          { letterSpacing: "-0.05em" },
+          { letterSpacing: "0.06em", ease: "none" },
           0
         );
 
-        // Accent SVG — mid layer.
-        out.to(
-          [accentPathRef.current?.parentNode],
-          { yPercent: -45, opacity: 0, ease: "none" },
+        // --- EMERALD ACCENT LAYER: faster parallax + scrub RE-DRAW -------
+        // Moves UP faster than the heading; the connectors re-draw as you go.
+        scrub.fromTo(
+          accentLayerRef.current,
+          { yPercent: 0, xPercent: 0 },
+          { yPercent: -56, xPercent: isDesktop ? -8 : -4, ease: "none" },
+          0
+        );
+        // Connectors visibly redraw with scroll (tie DrawSVG to progress).
+        scrub.fromTo(
+          [connectorLeftRef.current, connectorRightRef.current],
+          { drawSVG: "100%" },
+          { drawSVG: "30% 70%", ease: "none" },
           0
         );
 
-        // Background grid — deepest layer, drifts slowest (parallax depth).
-        out.to(
-          gridRef.current,
-          { yPercent: 14, scale: 1.12, opacity: 0, ease: "none" },
+        // --- SUBTITLE + READOUTS: their own (different speed) parallax ----
+        scrub.fromTo(
+          subLayerRef.current,
+          { yPercent: 0, xPercent: 0, opacity: 1 },
+          { yPercent: -72, xPercent: isDesktop ? 5 : 2, ease: "none" },
           0
         );
 
-        // Corner frame — pushes outward as the section leaves.
-        out.to(frameRef.current, { yPercent: -10, opacity: 0, ease: "none" }, 0);
+        // --- BASELINE HAIRLINE: drains as you scroll past (scrub DrawSVG) -
+        scrub.fromTo(
+          baselinePathRef.current,
+          { drawSVG: "0% 100%" },
+          { drawSVG: "100% 100%", ease: "none" },
+          0.2
+        );
 
-        // Scroll cue exits early.
-        out.to(scrollIndicatorRef.current, { opacity: 0, ease: "none" }, 0);
+        // --- SCROLL CUE: exits early in the scrub --------------------------
+        scrub.to(scrollIndicatorRef.current, { opacity: 0, y: -20 }, 0);
 
-        // ---- Magnetic hover on the wordmark (desktop only) ----------
-        if (isDesktop && titleWrapRef.current) {
-          magneticCleanup = applyMagneticEffect(titleWrapRef.current, {
-            strength: 0.16,
+        // --- FINAL BEAT: 3D DEPART of the wordmark (last ~18%) ------------
+        // Content stays fully visible until here; this resolves the held
+        // moment cleanly as the pin releases into the next section.
+        scrub.to(
+          titleDepthRef.current,
+          {
+            rotateX: isDesktop ? 26 : 14,
+            z: isDesktop ? -340 : -160,
+            yPercent: -16,
+            opacity: 0.12,
+            ease: "power2.in",
+          },
+          0.82
+        );
+        scrub.to(
+          subLayerRef.current,
+          { opacity: 0, ease: "power2.in" },
+          0.82
+        );
+        scrub.to(
+          accentLayerRef.current,
+          { opacity: 0, ease: "power2.in" },
+          0.82
+        );
+
+        // ---- Magnetic hover on the INNER wordmark (desktop only) --------
+        // Lives on <h1>; the scrub owns the OUTER wrapper => no conflict.
+        if (isDesktop && titleRef.current) {
+          magneticCleanup = applyMagneticEffect(titleRef.current, {
+            strength: 0.12,
             ease: 0.4,
             resetEase: 0.7,
             resetEaseType: "elastic.out(1, 0.5)",
@@ -438,7 +537,7 @@ function ScrollHeroSection() {
       <div
         ref={gridRef}
         aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none will-change-transform"
         style={{
           backgroundImage:
             "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)",
@@ -451,26 +550,29 @@ function ScrollHeroSection() {
       />
 
       {/* Corner frame (its own parallax layer) */}
-      <div ref={frameRef} className="absolute inset-0 pointer-events-none">
+      <div
+        ref={frameRef}
+        className="absolute inset-0 pointer-events-none will-change-transform"
+      >
         <div
           ref={(el) => (cornerRefs.current[0] = el)}
-          className="absolute top-4 left-4 md:top-8 md:left-8 w-8 h-8 md:w-14 md:h-14 border-l border-t border-neutral-700"
+          className="absolute top-4 left-4 md:top-8 md:left-8 w-8 h-8 md:w-14 md:h-14 border-l border-t border-neutral-700 will-change-transform"
         />
         <div
           ref={(el) => (cornerRefs.current[1] = el)}
-          className="absolute top-4 right-4 md:top-8 md:right-8 w-8 h-8 md:w-14 md:h-14 border-r border-t border-neutral-700"
+          className="absolute top-4 right-4 md:top-8 md:right-8 w-8 h-8 md:w-14 md:h-14 border-r border-t border-neutral-700 will-change-transform"
         />
         <div
           ref={(el) => (cornerRefs.current[2] = el)}
-          className="absolute bottom-4 left-4 md:bottom-8 md:left-8 w-8 h-8 md:w-14 md:h-14 border-l border-b border-neutral-700"
+          className="absolute bottom-4 left-4 md:bottom-8 md:left-8 w-8 h-8 md:w-14 md:h-14 border-l border-b border-neutral-700 will-change-transform"
         />
         <div
           ref={(el) => (cornerRefs.current[3] = el)}
-          className="absolute bottom-4 right-4 md:bottom-8 md:right-8 w-8 h-8 md:w-14 md:h-14 border-r border-b border-neutral-700"
+          className="absolute bottom-4 right-4 md:bottom-8 md:right-8 w-8 h-8 md:w-14 md:h-14 border-r border-b border-neutral-700 will-change-transform"
         />
       </div>
 
-      {/* Velocity-skew + parallax stage */}
+      {/* Velocity-skew stage */}
       <div
         ref={stageRef}
         className="relative z-10 w-full flex flex-col items-center"
@@ -486,27 +588,36 @@ function ScrollHeroSection() {
             Portfolio
           </span>
 
-          {/* Title — SplitText masked per-char rise. Always plain white. */}
+          {/* Title — 3D depart owner wraps scrub-parallax wrapper wraps <h1> */}
           <div
-            ref={titleWrapRef}
+            ref={titleDepthRef}
             className="will-change-transform"
             style={{ transformStyle: "preserve-3d" }}
           >
-            <h1
-              ref={titleRef}
-              className="font-black tracking-[-0.05em] leading-none text-white"
-              style={{
-                fontSize: "clamp(3rem, 18vw, 16rem)",
-                fontFamily: "Space Grotesk, sans-serif",
-                paddingBottom: "0.06em",
-              }}
+            <div
+              ref={titleWrapRef}
+              className="will-change-transform"
+              style={{ transformStyle: "preserve-3d" }}
             >
-              NIHESH
-            </h1>
+              <h1
+                ref={titleRef}
+                className="font-black tracking-[-0.05em] leading-none text-white will-change-transform"
+                style={{
+                  fontSize: "clamp(3rem, 18vw, 16rem)",
+                  fontFamily: "Space Grotesk, sans-serif",
+                  paddingBottom: "0.06em",
+                }}
+              >
+                NIHESH
+              </h1>
+            </div>
           </div>
 
-          {/* Emerald accent rule + connectors (DrawSVG) */}
-          <div className="relative mt-6 md:mt-8 w-[min(80vw,640px)] h-6 flex items-center justify-center">
+          {/* Emerald accent rule + connectors (DrawSVG) — own parallax layer */}
+          <div
+            ref={accentLayerRef}
+            className="relative mt-6 md:mt-8 w-[min(80vw,640px)] h-6 flex items-center justify-center will-change-transform"
+          >
             <svg
               className="absolute inset-0 w-full h-full overflow-visible"
               viewBox="0 0 640 24"
@@ -543,63 +654,69 @@ function ScrollHeroSection() {
             </svg>
           </div>
 
-          {/* Subtitle — SplitText line/char masked rise */}
-          <div className="mt-5 md:mt-7">
-            <p
-              ref={subtitleRef}
-              className="font-mono text-[10px] md:text-sm uppercase tracking-[0.2em] md:tracking-[0.32em] text-neutral-400 will-change-transform"
-              style={{ fontFamily: "JetBrains Mono, monospace" }}
-            >
-              {JOB_TITLE}
-            </p>
-          </div>
-
-          {/* Mono readout row (Flip settle + ScrambleText) */}
-          <div
-            ref={readoutRowRef}
-            className="mt-7 md:mt-9 flex items-center gap-4 md:gap-6 will-change-transform"
-          >
-            <span
-              ref={coordRef}
-              className="font-mono text-[9px] md:text-[11px] tracking-[0.25em] text-neutral-600"
-              style={{ fontFamily: "JetBrains Mono, monospace" }}
-            >
-              ............ / ............
-            </span>
-            <span className="w-px h-3 bg-neutral-700" />
-            <span className="flex items-center gap-2">
-              <span
-                className="block w-1.5 h-1.5 rounded-full"
-                style={{ backgroundColor: EMERALD }}
-              />
-              <span
-                ref={statusRef}
-                className="font-mono text-[9px] md:text-[11px] tracking-[0.25em]"
-                style={{ color: EMERALD, fontFamily: "JetBrains Mono, monospace" }}
+          {/* Subtitle + readouts — shared parallax layer (different speed) */}
+          <div ref={subLayerRef} className="will-change-transform">
+            {/* Subtitle — SplitText line/char masked rise */}
+            <div className="mt-5 md:mt-7">
+              <p
+                ref={subtitleRef}
+                className="font-mono text-[10px] md:text-sm uppercase tracking-[0.2em] md:tracking-[0.32em] text-neutral-400 will-change-transform"
+                style={{ fontFamily: "JetBrains Mono, monospace" }}
               >
-                .........
-              </span>
-            </span>
-          </div>
+                {JOB_TITLE}
+              </p>
+            </div>
 
-          {/* Hairline baseline (DrawSVG, full width under content) */}
-          <div className="mt-9 md:mt-12 w-[min(86vw,760px)]">
-            <svg
-              className="w-full overflow-visible"
-              height="2"
-              viewBox="0 0 760 2"
-              preserveAspectRatio="none"
-              fill="none"
-              aria-hidden="true"
+            {/* Mono readout row (Flip settle + ScrambleText) */}
+            <div
+              ref={readoutRowRef}
+              className="mt-7 md:mt-9 flex items-center justify-center gap-4 md:gap-6 will-change-transform"
             >
-              <path
-                ref={baselinePathRef}
-                d="M1 1 L759 1"
-                stroke="rgba(255,255,255,0.18)"
-                strokeWidth="1"
-                strokeLinecap="round"
-              />
-            </svg>
+              <span
+                ref={coordRef}
+                className="font-mono text-[9px] md:text-[11px] tracking-[0.25em] text-neutral-600"
+                style={{ fontFamily: "JetBrains Mono, monospace" }}
+              >
+                ............ / ............
+              </span>
+              <span className="w-px h-3 bg-neutral-700" />
+              <span className="flex items-center gap-2">
+                <span
+                  className="block w-1.5 h-1.5 rounded-full"
+                  style={{ backgroundColor: EMERALD }}
+                />
+                <span
+                  ref={statusRef}
+                  className="font-mono text-[9px] md:text-[11px] tracking-[0.25em]"
+                  style={{
+                    color: EMERALD,
+                    fontFamily: "JetBrains Mono, monospace",
+                  }}
+                >
+                  .........
+                </span>
+              </span>
+            </div>
+
+            {/* Hairline baseline (DrawSVG, full width under content) */}
+            <div className="mt-9 md:mt-12 w-[min(86vw,760px)]">
+              <svg
+                className="w-full overflow-visible"
+                height="2"
+                viewBox="0 0 760 2"
+                preserveAspectRatio="none"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  ref={baselinePathRef}
+                  d="M1 1 L759 1"
+                  stroke="rgba(255,255,255,0.18)"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -607,7 +724,7 @@ function ScrollHeroSection() {
       {/* Scroll indicator */}
       <div
         ref={scrollIndicatorRef}
-        className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3"
+        className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3 will-change-transform"
       >
         <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-neutral-500">
           Scroll
