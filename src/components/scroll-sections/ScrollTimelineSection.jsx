@@ -478,32 +478,9 @@ function ScrollTimelineSection() {
               );
             }
 
-            // --- Inner depth layers parallax at OPPOSING, OBVIOUS speeds so
-            //     the card visibly re-composes as it passes. Logo (depth 1)
-            //     travels ~ +130 -> -130px; details (depth 0.4) the other way.
-            //     This runs across the FULL pass (top bottom -> bottom top), so
-            //     it keeps moving the whole time the card is on screen. -------
-            const parallaxLayers = card.querySelectorAll(".exp-parallax");
-            parallaxLayers.forEach((layer) => {
-              const depth = parseFloat(layer.dataset.depth || "0.5");
-              const dir = layer.dataset.dir === "down" ? 1 : -1;
-              const travel = 130 * depth * K;
-              gsap.fromTo(
-                layer,
-                { y: -travel * dir },
-                {
-                  y: travel * dir,
-                  ease: "none",
-                  scrollTrigger: {
-                    trigger: card,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1,
-                    invalidateOnRefresh: true,
-                  },
-                },
-              );
-            });
+            // (Inner-card parallax removed: it pushed the card content, and the
+            //  last card's skill pills, down past the section clip and cut them
+            //  off. The card stays put so its content is never clipped.)
 
             // --- Content cascade: staggered masked rise (one-shot on enter).
             //     Finishes above centre; safety trigger guarantees the final
@@ -665,7 +642,7 @@ function ScrollTimelineSection() {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen w-full bg-neutral-50 text-neutral-900 py-24 md:py-32 px-6 md:px-12 lg:px-16 relative overflow-hidden"
+      className="min-h-screen w-full bg-neutral-50 text-neutral-900 py-24 md:py-32 px-6 md:px-12 lg:px-16 relative overflow-x-hidden"
     >
       {/* OPAQUE backdrop guarantee + faint multi-layer parallax depth.
           These are monochrome, low-contrast and sit BEHIND content (z-0).
