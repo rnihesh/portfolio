@@ -182,7 +182,10 @@ function ScrollProjectsSection() {
       className="relative w-full bg-black text-white overflow-hidden"
     >
       {/* ===== Desktop: pinned horizontal reel ===== */}
-      <div ref={deckRef} className="hidden lg:block h-screen w-full relative">
+      <div
+        ref={deckRef}
+        className="hidden lg:block h-screen w-full relative bg-black"
+      >
         {/* Header overlay (stays during pin) */}
         <div className="absolute top-10 left-0 w-full px-[5vw] z-20 flex items-start justify-between pointer-events-none">
           <div>
