@@ -720,10 +720,12 @@ function ScrollTimelineSection() {
                           strokeLinecap="round"
                         />
                       </svg>
-                      <span
-                        className="exp-node relative w-3.5 h-3.5 md:w-[18px] md:h-[18px] rounded-full ring-4 ring-neutral-50 cursor-pointer"
-                        style={{ backgroundColor: EMERALD }}
-                      />
+                      <span className="exp-node relative w-3.5 h-3.5 md:w-[18px] md:h-[18px] rounded-full bg-neutral-50 ring-2 ring-emerald-500 flex items-center justify-center cursor-pointer shadow-[0_0_0_4px_rgb(249,250,251)]">
+                        <span
+                          className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full"
+                          style={{ backgroundColor: EMERALD }}
+                        />
+                      </span>
                     </span>
                     {/* connector line drawn from spine to panel */}
                     <svg

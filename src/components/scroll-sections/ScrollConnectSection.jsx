@@ -8,7 +8,7 @@ import {
   scrollVelocity,
 } from "../../utils/gsapConfig";
 import { applyMagneticEffect } from "../../hooks/useMagnetic";
-import { LuGithub, LuLinkedin, LuMail, LuPhone } from "react-icons/lu";
+import { LuGithub, LuLinkedin, LuMail } from "react-icons/lu";
 import { FaXTwitter } from "react-icons/fa6";
 
 // Keep the plugin reference alive through tree-shaking (registered in gsapConfig)
@@ -64,7 +64,6 @@ function ScrollConnectSection() {
     },
     { icon: FaXTwitter, href: "https://x.com/niheshr03", label: "X" },
     { icon: LuMail, href: "mailto:niheshr03@gmail.com", label: "Email" },
-    { icon: LuPhone, href: "tel:+918328094810", label: "Call" },
   ];
 
   useEffect(() => {

@@ -6,7 +6,6 @@ import TextPressure from "../../TextAnimations/TextPressure/TextPressure";
 import { LuLinkedin } from "react-icons/lu";
 import { LuGithub } from "react-icons/lu";
 import { LuMail } from "react-icons/lu";
-import { LuPhone } from "react-icons/lu";
 import { FaXTwitter } from "react-icons/fa6";
 import { LuInstagram } from "react-icons/lu";
 import { TbBrandBluesky } from "react-icons/tb";
