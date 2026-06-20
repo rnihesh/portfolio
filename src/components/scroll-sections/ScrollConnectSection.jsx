@@ -306,23 +306,16 @@ function ScrollConnectSection() {
           );
         }
 
-        // ---- Pinned closing scene: a deliberate, scrubbed settle ----
-        // Pin the section once it is fully in frame and play the orbital-card
-        // convergence plus the end-credits flourish as the user scrolls through.
-        //
-        // pinSpacing stays true (default) so the pin reserves its own scroll
-        // length and the previous (Timeline) section cannot slide underneath
-        // (no bleed). end is kept modest (+=70%) so the closing scene resolves to
-        // its final frame without leaving a long, empty scrub tail.
+        // ---- Closing scene (NOT pinned) ----
+        // Connect is the final section; it must simply flow LAST. It is not
+        // pinned (pinning here computed stale positions and made Connect appear
+        // early, before the Timeline). The orbital-card convergence and the
+        // end-credits flourish play once as the section scrolls into view.
         const sceneTl = gsap.timeline({
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top top",
-            end: "+=70%",
-            scrub: 1,
-            pin: true,
-            pinSpacing: true,
-            anticipatePin: 1,
+            start: "top 65%",
+            toggleActions: "play none none reverse",
           },
         });
 
