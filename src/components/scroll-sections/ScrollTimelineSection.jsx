@@ -642,7 +642,7 @@ function ScrollTimelineSection() {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen w-full bg-neutral-50 text-neutral-900 py-24 md:py-32 px-6 md:px-12 lg:px-16 relative overflow-x-hidden"
+      className="min-h-screen w-full bg-neutral-50 text-neutral-900 py-24 md:py-32 px-6 md:px-12 lg:px-16 sticky top-0 overflow-x-hidden"
     >
       {/* OPAQUE backdrop guarantee + faint multi-layer parallax depth.
           These are monochrome, low-contrast and sit BEHIND content (z-0).

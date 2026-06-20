@@ -512,7 +512,7 @@ function ScrollConnectSection() {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen w-full bg-white text-black flex items-center justify-center relative z-30 overflow-hidden py-20 md:py-0"
+      className="min-h-screen w-full bg-white text-black flex items-center justify-center sticky top-0 z-30 overflow-hidden py-20 md:py-0"
     >
       {/* Emerald aura behind the heading (soft, restrained, not a ghost word) */}
       <div

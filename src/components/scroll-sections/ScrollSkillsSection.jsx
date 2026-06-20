@@ -612,7 +612,7 @@ function ScrollSkillsSection() {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen w-full bg-neutral-950 py-16 md:py-24 relative overflow-hidden"
+      className="min-h-screen w-full bg-neutral-950 py-16 md:py-24 sticky top-0 overflow-hidden"
     >
       {/* Top accent line */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-neutral-700 to-transparent" />
