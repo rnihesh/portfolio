@@ -83,7 +83,7 @@ function LandingChoiceSection({ onChoice }) {
           className="flex flex-col md:flex-row gap-8 items-center justify-center"
           variants={itemVariants}
         >
-          <motion.button
+          {/* <motion.button
             onClick={() => onChoice("scroll")}
             className="px-8 py-4 border-2 border-black dark:border-white text-black dark:text-white bg-transparent hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 hover:rounded-xl shadow-lg hover:shadow-xl"
             style={{
@@ -104,7 +104,7 @@ function LandingChoiceSection({ onChoice }) {
             variants={itemVariants}
           >
             or
-          </motion.div>
+          </motion.div> */}
 
           <motion.button
             onClick={() => onChoice("gooey")}

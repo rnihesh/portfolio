@@ -42,7 +42,7 @@ export const projects = [
   },
   {
     description: "AI Knowledge Platform",
-    title: "second-brain",
+    title: "Second Brain",
     src: "projects/second-brain.jpeg",
     ctaText: "Visit",
     ctaLink: "https://github.com/rnihesh/second-brain/?ref=niheshr.com",
@@ -116,40 +116,40 @@ export const projects = [
       );
     },
   },
-  {
-    description: "Open Source Blogging Platform",
-    title: "NowBind",
-    src: "projects/nowbind.jpeg",
-    ctaText: "Visit",
-    ctaLink: "https://nowbind.com/?ref=niheshr.com",
-    github: "https://github.com/rnihesh/nowbind/?ref=niheshr.com",
-    logo: "projects/logos/nowbind.png",
-    content: () => {
-      return (
-        <>
-          <p>
-            An open-source blogging platform where every post is automatically
-            exposed as an AI-consumable MCP feed, built with a Go backend,
-            TipTap editor, and Cloudflare R2 for media, designed for the age of
-            AI agents.
-          </p>
-          <div className="flex g-2 flex-wrap overflow-ellipsis">
-            {["Go", "NextJS", "TipTap", "MCP", "Cloudflare R2", "AGPL v3"].map(
-              (skill, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
-                  style={{ fontFamily: "JetBrains Mono" }}
-                >
-                  {skill}
-                </span>
-              ),
-            )}
-          </div>
-        </>
-      );
-    },
-  },
+  // {
+  //   description: "Open Source Blogging Platform",
+  //   title: "NowBind",
+  //   src: "projects/nowbind.jpeg",
+  //   ctaText: "Visit",
+  //   ctaLink: "https://nowbind.com/?ref=niheshr.com",
+  //   github: "https://github.com/rnihesh/nowbind/?ref=niheshr.com",
+  //   logo: "projects/logos/nowbind.png",
+  //   content: () => {
+  //     return (
+  //       <>
+  //         <p>
+  //           An open-source blogging platform where every post is automatically
+  //           exposed as an AI-consumable MCP feed, built with a Go backend,
+  //           TipTap editor, and Cloudflare R2 for media, designed for the age of
+  //           AI agents.
+  //         </p>
+  //         <div className="flex g-2 flex-wrap overflow-ellipsis">
+  //           {["Go", "NextJS", "TipTap", "MCP", "Cloudflare R2", "AGPL v3"].map(
+  //             (skill, index) => (
+  //               <span
+  //                 key={index}
+  //                 className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 mr-1 mb-2"
+  //                 style={{ fontFamily: "JetBrains Mono" }}
+  //               >
+  //                 {skill}
+  //               </span>
+  //             ),
+  //           )}
+  //         </div>
+  //       </>
+  //     );
+  //   },
+  // },
   {
     description: "My Personal Blog Platform",
     title: "Nihesh's Blog",
