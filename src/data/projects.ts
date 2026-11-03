@@ -20,9 +20,8 @@ import cursorLogo from "../assets/projects/logos/cursor.png";
 
 export interface Project {
   title: string;
-  /** Short line, written on the slide mount. */
-  tagline: string;
-  summary: string;
+  /** One line, from the old site's project cards. */
+  description: string;
   stack: string[];
   image: ImageMetadata;
   logo: ImageMetadata;
@@ -35,9 +34,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     title: "GST Recon",
-    tagline: "Tax reconciliation knowledge graph",
-    summary:
-      "A GST reconciliation engine that matches GSTR returns inside a Neo4j knowledge graph, surfacing circular-trading fraud, vendor risk scoring, and a graph-aware LLM audit chatbot that answers questions grounded in the underlying graph.",
+    description: "Tax Reconciliation Knowledge Graph",
     stack: ["TypeScript", "Python", "Neo4j", "Cypher", "LLM", "Docker"],
     image: gstRecon,
     logo: gstReconLogo,
@@ -45,9 +42,7 @@ export const projects: Project[] = [
   },
   {
     title: "Second Brain",
-    tagline: "AI knowledge platform",
-    summary:
-      "An AI knowledge platform for capturing notes, AI summarization and auto-tagging, with conversational query over your own notes, knowledge-graph visualization, plus a public query API and an embeddable widget.",
+    description: "AI Knowledge Platform",
     stack: ["Next.js", "TypeScript", "Prisma", "NextAuth", "React Flow", "Pluggable AI providers"],
     image: secondBrain,
     logo: secondBrainLogo,
@@ -55,9 +50,7 @@ export const projects: Project[] = [
   },
   {
     title: "Capax",
-    tagline: "macOS battery health menu-bar app",
-    summary:
-      "A native macOS menu-bar app that reads detailed Mac plus iPhone and iPad battery health over USB, with local Swift Charts history. It runs fully offline, with no telemetry.",
+    description: "macOS Battery Health Menu-Bar App",
     stack: ["Swift", "SwiftUI", "Swift Charts", "libimobiledevice", "IOKit"],
     image: capax,
     logo: capaxLogo,
@@ -65,9 +58,7 @@ export const projects: Project[] = [
   },
   {
     title: "Nihesh's Blog",
-    tagline: "My personal blog platform",
-    summary:
-      "A Next.js 16 powered blogging platform with markdown support, smart search and adaptive theming, built for seamless writing, fast navigation and a good reading experience.",
+    description: "My Personal Blog Platform",
     stack: ["Next.js", "shadcn/ui", "Tailwind CSS", "MDX"],
     image: blog,
     logo: blogLogo,
@@ -76,9 +67,7 @@ export const projects: Project[] = [
   },
   {
     title: "RideShare",
-    tagline: "A vehicle pooling app",
-    summary:
-      "A MERN-based vehicle pooling app using MongoDB aggregation pipelines and geo-coordinates for efficient driver-passenger matching and location-based queries, with secure authentication through Clerk.",
+    description: "A Vehicle Pooling App",
     stack: ["React", "Node.js", "MongoDB", "Aggregation pipelines", "Leaflet", "Bootstrap", "Express", "Auth"],
     image: rideshare,
     logo: rideshareLogo,
@@ -87,9 +76,7 @@ export const projects: Project[] = [
   },
   {
     title: "Habify",
-    tagline: "A gamified habit tracker",
-    summary:
-      "A gamified habit tracker built on the MERN stack, using MongoDB for progress tracking, dynamic scoring and level systems, with responsive dashboards, leaderboards, secure user auth and role control.",
+    description: "A Gamified Habit Tracker",
     stack: ["React", "Node.js", "Cron", "MongoDB", "Bootstrap", "Express", "Auth"],
     image: habify,
     logo: habifyLogo,
@@ -98,9 +85,7 @@ export const projects: Project[] = [
   },
   {
     title: "Nihesh's Seller Portal",
-    tagline: "A modern seller portal",
-    summary:
-      "A MERN stack app integrated with Cloudinary for media management and Gemini AI for smart content generation, enabling product uploads, edits and seller analytics.",
+    description: "A Modern Seller Portal",
     stack: ["React", "Node.js", "MongoDB", "Bootstrap", "Gemini AI", "Cloudinary", "Express", "Auth"],
     image: sellerPortal,
     logo: sellerPortalLogo,
@@ -109,9 +94,7 @@ export const projects: Project[] = [
   },
   {
     title: "Live Cursors",
-    tagline: "A WebSocket example",
-    summary:
-      "A real-time collaborative web app using WebSockets where users join with a name and see each other's cursor movements live, enabling shared interaction through minimal input and seamless syncing.",
+    description: "A WebSocket Example",
     stack: ["React", "Node.js", "WebSockets", "Express", "ws"],
     image: liveCursors,
     logo: cursorLogo,

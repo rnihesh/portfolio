@@ -5,22 +5,18 @@ export interface Job {
   company: string;
   role: string;
   period: string;
-  /** ISO dates for <time> elements. */
-  start: string;
-  end?: string;
   logo?: ImageMetadata;
   description: string;
   skills: string[];
   link?: string;
 }
 
+// Carried over from the old site's src/data/experience.js.
 export const experience: Job[] = [
   {
     company: "Dattam Labs",
     role: "Software Engineer Intern",
-    period: "Aug 2025 to Mar 2026",
-    start: "2025-08",
-    end: "2026-03",
+    period: "Aug 2025 – Mar 2026",
     logo: dattam,
     description:
       "Built backend services in Python and FastAPI on AWS, and wrote Playwright scrapers to pull data from government portals. Also contributed to a React Native (Expo) mobile app and worked on AI features that processed the collected data.",
@@ -30,29 +26,27 @@ export const experience: Job[] = [
 ];
 
 export interface Study {
-  title: string;
+  school: string;
+  degree: string;
   period: string;
-  start: string;
-  end?: string;
-  description: string;
+  grade?: string;
 }
 
+// From the resume (public/resume/v7.pdf).
 export const education: Study[] = [
   {
-    title: "Bachelor's in Computer Science",
-    period: "2021 to 2025",
-    start: "2021",
-    end: "2025",
-    description:
-      "Focused on web development, algorithms and software engineering principles. Active in coding competitions and open-source contributions.",
+    school: "VNR Vignana Jyothi Institute of Technology",
+    degree: "B.Tech in Information Technology",
+    period: "2023 – 2027",
+    grade: "CGPA 9.16 / 10",
   },
 ];
 
-/** Self-directed learning, carried over from the old minimal page. */
-export const learning: string[] = [
-  "AI-native full-stack engineering (self-taught)",
-  "MongoDB and database design",
-  "React and modern frontend development",
-  "Cloud computing with AWS",
-  "Git and version control",
+// From the resume. No prize amounts.
+export const achievements: string[] = [
+  "Winner, National ACM-KLH HackWithAI 2026 (GST Reconciliation Engine)",
+  "Winner, GDG TechSprint 2026 (Civic Lemma, AI civic-grievance platform)",
+  "Winner, AI Week Vibe Coding 2026 (SEFS, smart file organizer)",
+  "AWS Open Data contributor (Indian Court Judgements dataset on S3)",
+  "Research paper: Model Selection via Hypothesis Testing (IJFMR)",
 ];

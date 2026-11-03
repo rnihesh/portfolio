@@ -1,27 +1,20 @@
 export const site = {
   name: "Nihesh Rachakonda",
-  shortName: "Nihesh",
-  jobTitle: "AI-Native Full-Stack Engineer",
-  location: "Hyderabad, India",
+  jobTitle: "Full-stack engineer",
   url: "https://niheshr.com",
   email: "niheshr03@gmail.com",
   emailHref: "mailto:niheshr03+portfolio@gmail.com",
   resume: "/resume/v7.pdf",
-  openToWork: true,
-  title: "Nihesh Rachakonda | AI-Native Full-Stack Engineer Portfolio",
+  title: "Nihesh Rachakonda | Full-stack engineer",
   description:
-    "Nihesh Rachakonda is an AI-Native Full-Stack Engineer building fast, well-made web products, agentic AI tools and native apps. Projects, work, photography and contact.",
+    "Nihesh Rachakonda, full-stack engineer. Projects, work, achievements and contact.",
   ogImage: "/nihesh.png",
   ogImageAlt: "Nihesh Rachakonda portfolio logo and profile image",
   twitter: "@niheshr03",
   alternateNames: ["rnihesh", "niheshr", "niheshr03", "Nihesh R", "R. Nihesh"],
-  // Short bio. Shown in the hero and about block.
+  // From the old site's "What am I" section.
   intro:
-    "I build digital experiences that merge form and function: AI-native products, full-stack web apps and the occasional native Mac app.",
-  about: [
-    "I care about design and detail as much as the code underneath. Clean code, careful design, pixel-level execution.",
-    "I'm self-taught in most of what I use, currently exploring agentic infrastructure, and always learning to improve my craft.",
-  ],
+    "With a strong eye for design and detail, I build modern web applications that are not only functional but also intuitive and visually clean.",
 } as const;
 
 export type SocialIcon =
@@ -63,5 +56,5 @@ export const nav = [
   { href: "/#projects", label: "Projects" },
   { href: "/#work", label: "Work" },
   { href: "/#skills", label: "Skills" },
-  { href: "/#contact", label: "Contact" },
+  { href: "#contact", label: "Contact" },
 ];

@@ -26,8 +26,8 @@ const person = {
   url: `${site.url}/`,
   image: ogImage,
   email: `mailto:${site.email}`,
-  description: `${site.name} is an ${site.jobTitle} working across AI agents, full-stack web apps and native apps.`,
-  homeLocation: { "@type": "City", name: "Hyderabad", containedInPlace: { "@type": "Country", name: "India" } },
+  description: site.description,
+  alumniOf: { "@type": "CollegeOrUniversity", name: "VNR Vignana Jyothi Institute of Technology" },
   knowsAbout: skills.flatMap((g) => g.items).slice(0, 40),
   sameAs,
 };
@@ -39,7 +39,7 @@ const jsonLd = {
     {
       "@type": "WebSite",
       "@id": `${site.url}/#website`,
-      name: `${site.name} - ${site.jobTitle} Portfolio`,
+      name: site.title,
       url: `${site.url}/`,
       inLanguage: "en-US",
       author: { "@id": `${site.url}/#person` },
@@ -106,7 +106,6 @@ const jsonLd = {
     </script>
 
     <Font cssVariable="--font-newsreader" preload={[{ style: "normal" }]} />
-    <Font cssVariable="--font-shantell" />
 
     {!noindex && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
