@@ -1,64 +1,51 @@
-# Nihesh Rachakonda — Portfolio
+# niheshr.com
 
-Dual-experience portfolio built with **React 19 + Vite**.
+Personal site of Nihesh Rachakonda, AI Engineer. One static page (projects, work, achievements, skills, photos, contact icons in the footer) plus a 404. Built with Astro and Tailwind CSS 4. Ships no JavaScript bundle: a few small inline scripts handle the theme toggle, the hero scroll intro, the `R` résumé shortcut, scroll reveals and the photo lightbox.
 
-[Live Site](https://niheshr.com) · [LinkedIn](https://www.linkedin.com/in/rachakonda-nihesh/) · [GitHub](https://github.com/rnihesh) · [Instagram](https://instagram.com/niheshr) · [Bluesky](https://bsky.app/profile/niheshr.com) · [X](https://x.com/niheshr03)
+## Run it
 
-## Experiences
-
-1. **Minimal** (`/minimal`) — clean, text-first, keyboard-friendly portfolio.
-2. **Gooey** (`/gooey`) — interactive 3D experience with scroll-driven reveals.
-
-## Stack
-
-- **Core**: React 19, React Router 7, Vite 7
-- **UI/Motion**: Tailwind CSS 4, Framer Motion, GSAP
-- **3D**: Three.js, @react-three/fiber, @react-three/drei
-- **Extras**: Rough Notation, Matter.js
-
-## Quick start
-
-```bash
-npm install
-npm run dev
+```sh
+pnpm install
+pnpm dev        # http://localhost:4321
+pnpm build      # static output in dist/
+pnpm preview    # serve dist/ locally
+pnpm check      # astro check
 ```
 
-## Scripts
+Deployed on Vercel from `main`. `vercel.json` sets the framework, build command, security headers, long caching for `/_astro/*`, and redirects the old `/minimal` and `/gooey` routes to `/`. The previous Vite site lives on the `archive/vite-2025` branch.
 
-```bash
-npm run dev       # Vite dev server
-npm run build     # Production build
-npm run preview   # Preview production build
-npm run lint      # ESLint
-npm run format    # Prettier write
-npm run deploy    # GitHub Pages deploy
-npm run start     # Preview on 0.0.0.0:8080
-npm run startCloud # Express server (server.js)
-```
+## Where to edit content
 
-## SEO setup
+Everything on the page comes from typed files in `src/data/`:
 
-- Route-level `<title>`, description, canonical URL, and keyword sets (`src/utils/seo.js`)
-- Open Graph + Twitter card metadata in `index.html`
-- Structured data (`WebSite` + `ProfilePage`/`Person`) with `sameAs` profile backlinks
-- Crawl/index directives via `public/robots.txt`
-- Discoverability via `public/sitemap.xml`
+| File | What it holds |
+| --- | --- |
+| `site.ts` | Name, role, intro line, email, résumé path, OG image, socials, nav, SEO text |
+| `projects.ts` | Project list in page order. Each row links to `live` if set, otherwise `github` |
+| `experience.ts` | Work and achievements |
+| `skills.ts` | Skill groups |
+| `photos.ts` | Photo grid. `full` points at the higher quality file used in the lightbox |
+| `signature.ts` | The "Nihesh" signature SVG path, shared by the hero and the OG image |
 
-## Project structure
+Photos live in `src/assets/photos/` so Astro can turn them into responsive AVIF/WebP at build time (high quality versions in `src/assets/photos/hi/`).
 
-```text
-src/
-  components/
-    sections/
-    ui/
-    layout/
-  data/
-  hooks/
-  pages/
-  utils/
-public/
-```
+Static files that must keep their URLs live in `public/`: `/resume/v*.pdf`, `/og.png`, `robots.txt`, `sitemap.xml`.
 
-## License
+### New résumé
 
-Licensed under the **GNU Affero General Public License v3.0 or later**. See [`LICENSE`](./LICENSE).
+Add it as the next version in `public/resume/` (currently `v8.pdf`) and change `site.resume`. The hero button, footer link and `R` key all read from there. Older versions stay so old links keep working.
+
+### OG image
+
+`public/og.png` (1200x630) is a screenshot of `src/pages/[og].astro`, a template that only exists in `pnpm dev`. To change it, edit the template, open http://localhost:4321/og, and save a 1200x630 screenshot over `public/og.png`.
+
+## Design notes
+
+- Type: Newsreader (variable, self-hosted through Astro's fonts API, preloaded, `font-display: swap`).
+- The hero name is Nihesh's own signature, traced to one SVG path. On load it fills the screen as an outline; scrolling shrinks it into place and fills it with ink. Skipped under `prefers-reduced-motion`.
+- Colour: cool paper and graphite ink in light mode, slate in dark mode. Tokens are at the top of `src/styles/global.css`.
+- Kept deliberately plain: no screenshots on projects, no scroll hints, contact as icons only.
+
+## Content rule
+
+Copy comes from Nihesh or the résumé (`public/resume/v8.pdf`). Don't invent descriptions, dates, education or numbers, and don't add counts, star numbers or prize money.

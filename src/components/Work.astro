@@ -1,0 +1,132 @@
+---
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+import { experience, achievements } from "../data/experience";
+import { site } from "../data/site";
+---
+
+<section id="work" class="section wrap" aria-labelledby="work-title">
+  <div class="head">
+    <h2 id="work-title" class="section-title">Work</h2>
+    <a class="resume" href={site.resume} target="_blank" rel="noopener"><Icon name="file" size={16} /> Résumé</a>
+  </div>
+
+  <div class="rows">
+    {
+      experience.map((job) => (
+        <article class="row reveal">
+          <p class="when">{job.period}</p>
+          <div>
+            <h3>
+              {job.logo && <Image src={job.logo} width={22} height={22} densities={[1, 2]} alt="" class="logo" loading="lazy" />}
+              {job.link ? (
+                <a href={job.link} target="_blank" rel="noopener">
+                  {job.company}
+                </a>
+              ) : (
+                job.company
+              )}
+            </h3>
+            <p class="sub">{job.role}</p>
+            <p class="desc">{job.description}</p>
+            <p class="stack">{job.skills.join(", ")}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+
+  <h2 id="achievements-title" class="section-title small">Achievements</h2>
+  <ul class="achievements reveal" role="list">
+    {achievements.map((a) => <li>{a}</li>)}
+  </ul>
+</section>
+
+<style>
+  .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .resume {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1rem;
+  }
+  .small {
+    margin-top: clamp(3rem, 7vw, 4.5rem);
+    font-size: clamp(1.35rem, 2.4vw, 1.6rem);
+  }
+  .rows {
+    display: grid;
+    margin-top: 1.25rem;
+  }
+  .row {
+    display: grid;
+    gap: 0.25rem 2rem;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .row:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+  @media (min-width: 40rem) {
+    .row {
+      grid-template-columns: 11rem minmax(0, 1fr);
+    }
+  }
+  .when {
+    margin: 0.2rem 0 0;
+    color: var(--mute);
+    font-size: 0.98rem;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 450;
+    line-height: 1.25;
+  }
+  h3 a {
+    text-decoration-color: var(--rule);
+  }
+  .row :global(.logo) {
+    width: 24px;
+    height: 24px;
+    padding: 2px;
+    border-radius: 5px;
+    background: var(--chip);
+    object-fit: contain;
+    flex: none;
+  }
+  .sub {
+    margin: 0.15rem 0 0;
+    color: var(--mute);
+  }
+  .desc {
+    margin: 0.6rem 0 0;
+    max-width: 40rem;
+    text-wrap: pretty;
+  }
+  .stack {
+    margin: 0.4rem 0 0;
+    color: var(--mute);
+    font-size: 0.95rem;
+  }
+  .achievements {
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--rule);
+  }
+  .achievements li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+</style>

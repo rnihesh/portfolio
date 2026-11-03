@@ -1,0 +1,78 @@
+---
+// Template for public/og.png (1200x630). Only exists in `astro dev`; never built.
+// Regenerate: `pnpm dev`, then screenshot http://localhost:4321/og at 1200x630.
+import { Font } from "astro:assets";
+import "../styles/global.css";
+import { site } from "../data/site";
+import { signaturePath, signatureViewBox } from "../data/signature";
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { og: "og" } }] : [];
+}
+---
+
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <Font cssVariable="--font-newsreader" />
+  </head>
+  <body>
+    <main>
+      <svg viewBox={signatureViewBox} aria-hidden="true">
+        <path fill="currentColor" fill-rule="evenodd" d={signaturePath} />
+      </svg>
+      <p class="surname">Rachakonda</p>
+      <p class="role">{site.jobTitle}</p>
+      <p class="url">niheshr.com</p>
+    </main>
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+  }
+  main {
+    position: relative;
+    box-sizing: border-box;
+    width: 1200px;
+    height: 630px;
+    padding: 0 96px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  svg {
+    display: block;
+    width: 560px;
+    height: auto;
+    margin-left: -6px;
+  }
+  p {
+    margin: 0;
+  }
+  .surname {
+    margin-top: 14px;
+    font-size: 76px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 380;
+  }
+  .role {
+    margin-top: 30px;
+    font-size: 34px;
+    color: var(--mute);
+  }
+  .url {
+    position: absolute;
+    right: 96px;
+    bottom: 64px;
+    font-size: 26px;
+    color: var(--mute);
+  }
+</style>

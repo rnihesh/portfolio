@@ -1,0 +1,85 @@
+---
+import Icon from "./Icon.astro";
+import { site, socials } from "../data/site";
+const year = new Date().getFullYear();
+---
+
+<footer id="contact" class="wrap" aria-label="Contact">
+  <div class="foot">
+    <ul class="links" role="list">
+      <li>
+        <a href={site.emailHref} aria-label={`Email ${site.email}`} title={site.email} class="icon-link"><Icon name="mail" size={18} /></a>
+      </li>
+      {
+        socials.map((s) => (
+          <li>
+            <a href={s.href} target="_blank" rel="noopener me" aria-label={s.label} title={s.label} class="icon-link">
+              <Icon name={s.icon} size={18} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="note">
+      <svg width="11" height="26" aria-hidden="true"><use href="#nr-mark" /></svg>
+      <span>{site.name}, {year}. Press <kbd>R</kbd> for my <a href={site.resume} target="_blank" rel="noopener">résumé</a>.</span>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    margin-top: clamp(5rem, 12vw, 8rem);
+    padding-block: 1.75rem 2.5rem;
+    border-top: 1px solid var(--rule);
+    color: var(--mute);
+    font-size: 0.95rem;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--ink);
+    text-decoration-color: transparent;
+  }
+  /* Newsreader sits high in its line box; lift icons to the text's optical center */
+  .links a :global(svg) {
+    flex: none;
+    translate: 0 -0.1em;
+  }
+  .links .icon-link {
+    padding: 0.25rem;
+    margin: -0.25rem;
+    color: var(--mute);
+    transition: color 0.15s ease;
+  }
+  .links .icon-link :global(svg) {
+    translate: 0 0.05em;
+  }
+  .links .icon-link:hover {
+    color: var(--ink);
+  }
+  .links a:hover {
+    text-decoration-color: var(--accent);
+  }
+  .note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 1.5rem 0 0;
+  }
+  .note svg {
+    color: var(--ink);
+    margin-right: 0.4rem;
+  }
+</style>
