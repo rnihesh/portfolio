@@ -1,0 +1,52 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Base title="Page not found | Nihesh Rachakonda" path="/404" noindex>
+  <Header />
+  <main id="main" class="wrap nf">
+    <p class="code hand">404</p>
+    <h1>Nothing at this address.</h1>
+    <p class="muted">The link may be old, or the page has moved. The home page has everything.</p>
+    <p><a href="/">Go to the home page</a></p>
+    <svg class="frame-x" viewBox="0 0 120 120" aria-hidden="true">
+      <path class="pencil" stroke-width="3" d="M14 16 C 44 46, 76 78, 106 104 M104 14 C 76 44, 44 76, 16 106" />
+    </svg>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .nf {
+    position: relative;
+    padding-block: clamp(4rem, 14vh, 9rem) 2rem;
+  }
+  .code {
+    margin: 0;
+    color: var(--pencil);
+    font-size: 1.4rem;
+    transform: rotate(-3deg);
+    display: inline-block;
+  }
+  h1 {
+    margin: 0.5rem 0 0;
+    font-size: clamp(2.5rem, 8vw, 5.5rem);
+    font-weight: 380;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    max-width: 12ch;
+  }
+  .muted {
+    max-width: 32rem;
+    margin-top: 1.5rem;
+  }
+  .frame-x {
+    position: absolute;
+    right: var(--gutter);
+    top: clamp(3rem, 10vh, 6rem);
+    width: clamp(5rem, 14vw, 9rem);
+    opacity: 0.85;
+  }
+</style>

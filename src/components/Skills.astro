@@ -1,0 +1,52 @@
+---
+import { skills } from "../data/skills";
+---
+
+<section id="skills" class="section wrap" aria-labelledby="skills-title">
+  <div class="section-grid">
+    <div>
+      <h2 id="skills-title" class="section-title">Skills</h2>
+      <p class="lede">What I reach for, grouped roughly by where it sits in the stack.</p>
+    </div>
+    <dl class="groups reveal">
+      {
+        skills.map((g) => (
+          <div class="group">
+            <dt>{g.category}</dt>
+            <dd>{g.items.join(", ")}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  .groups {
+    margin: 0;
+    display: grid;
+  }
+  .group {
+    display: grid;
+    gap: 0.15rem 2rem;
+    padding: 0.85rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .group:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+  @media (min-width: 40rem) {
+    .group {
+      grid-template-columns: 15rem minmax(0, 1fr);
+    }
+  }
+  dt {
+    color: var(--mute);
+    font-size: 1rem;
+    padding-top: 0.1rem;
+  }
+  dd {
+    margin: 0;
+    max-width: 38rem;
+  }
+</style>

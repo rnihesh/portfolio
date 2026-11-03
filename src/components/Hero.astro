@@ -1,0 +1,145 @@
+---
+import Icon from "./Icon.astro";
+import { site } from "../data/site";
+---
+
+<section class="hero wrap" aria-labelledby="hero-name">
+  <h1 id="hero-name" class="name">
+    <span>Nihesh</span>
+    <span>Rachakonda</span>
+  </h1>
+  <svg class="underline draw in" viewBox="0 0 640 40" preserveAspectRatio="none" aria-hidden="true">
+    <path class="pencil" pathLength="1" stroke-width="5" d="M6 25 C 96 14, 214 11, 330 15 S 520 24, 632 12" />
+    <path class="pencil" pathLength="1" stroke-width="3.5" d="M40 33 C 170 24, 340 25, 560 21" />
+  </svg>
+
+  <div class="meta">
+    <p class="role">
+      {site.jobTitle} in {site.location}.
+      {site.openToWork && <span class="muted">Open to work.</span>}
+    </p>
+    <div class="intro">
+      <p>{site.intro}</p>
+      <div class="actions">
+        <a class="btn" href={site.resume} target="_blank" rel="noopener">
+          <Icon name="file" />
+          Résumé
+        </a>
+        <a class="btn ghost" href={site.emailHref}>
+          <Icon name="mail" />
+          Email me
+        </a>
+        <span class="note hand" aria-hidden="true">
+          <svg viewBox="0 0 60 36" width="46" height="28" class="note-arrow">
+            <path class="pencil" stroke-width="2" d="M56 28 C 40 34, 18 30, 8 12 M8 12 l 1 10 M8 12 l 9 3" />
+          </svg>
+          or press R
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(3rem, 11vh, 7rem) 0;
+  }
+  .name {
+    margin: 0;
+    font-weight: 380;
+    font-size: clamp(3.5rem, 14.5vw, 10.5rem);
+    line-height: 0.86;
+    letter-spacing: -0.04em;
+    font-variant-numeric: lining-nums;
+  }
+  .name span {
+    display: block;
+  }
+  .name span + span {
+    padding-left: 0.42em;
+  }
+  .underline {
+    display: block;
+    width: min(92%, 46rem);
+    height: clamp(1.25rem, 3vw, 2.25rem);
+    margin: 0.4rem 0 0 clamp(0.75rem, 6vw, 4.5rem);
+    overflow: visible;
+    --draw-dur: 1100ms;
+  }
+  .meta {
+    display: grid;
+    gap: 1.25rem 3rem;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+  }
+  @media (min-width: 56rem) {
+    .meta {
+      grid-template-columns: 13rem minmax(0, 1fr);
+    }
+  }
+  .role {
+    margin: 0;
+    font-size: 1.0625rem;
+    line-height: 1.45;
+    max-width: 18rem;
+  }
+  .role span {
+    display: block;
+    margin-top: 0.35rem;
+  }
+  .intro p {
+    margin: 0;
+    max-width: 30ch;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+    font-weight: 360;
+    text-wrap: pretty;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 0.75rem;
+    margin-top: 2rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.1rem 0.65rem;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+    font-size: 1rem;
+    line-height: 1;
+    transition: transform 200ms var(--ease), background 200ms var(--ease);
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+  .btn.ghost {
+    background: transparent;
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--rule);
+  }
+  .btn.ghost:hover {
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+  .note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    color: var(--pencil);
+    font-size: 1.05rem;
+    transform: rotate(-3deg) translateY(4px);
+  }
+  .note-arrow {
+    overflow: visible;
+  }
+  @media (hover: none) {
+    .note {
+      display: none;
+    }
+  }
+</style>

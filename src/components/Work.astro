@@ -1,0 +1,147 @@
+---
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+import { experience, education, learning } from "../data/experience";
+import { site } from "../data/site";
+---
+
+<section id="work" class="section wrap" aria-labelledby="work-title">
+  <div class="section-grid">
+    <div>
+      <h2 id="work-title" class="section-title">Work</h2>
+      <p class="lede">Building real products with real teams, one chapter at a time.</p>
+      <p class="resume">
+        <a href={site.resume} target="_blank" rel="noopener"><Icon name="file" size={16} /> Full résumé</a>
+      </p>
+    </div>
+
+    <div class="entries">
+      {
+        experience.map((job) => (
+          <article class="entry reveal">
+            <p class="when">
+              <time datetime={job.start}>{job.period.split(" to ")[0]}</time>
+              {" to "}
+              {job.end ? <time datetime={job.end}>{job.period.split(" to ")[1]}</time> : "now"}
+            </p>
+            <div>
+              <h3>
+                {job.logo && <Image src={job.logo} width={26} height={26} densities={[1, 2]} alt="" class="logo" loading="lazy" />}
+                {job.link ? (
+                  <a href={job.link} target="_blank" rel="noopener">
+                    {job.company}
+                  </a>
+                ) : (
+                  job.company
+                )}
+              </h3>
+              <p class="role">{job.role}</p>
+              <p class="desc">{job.description}</p>
+              <p class="stack">{job.skills.join(", ")}</p>
+            </div>
+          </article>
+        ))
+      }
+
+      {
+        education.map((e) => (
+          <article class="entry reveal">
+            <p class="when">
+              <time datetime={e.start}>{e.period.split(" to ")[0]}</time>
+              {" to "}
+              {e.end && <time datetime={e.end}>{e.period.split(" to ")[1]}</time>}
+            </p>
+            <div>
+              <h3>{e.title}</h3>
+              <p class="desc">{e.description}</p>
+            </div>
+          </article>
+        ))
+      }
+
+      <article class="entry reveal">
+        <p class="when">Ongoing</p>
+        <div>
+          <h3>Learning on my own</h3>
+          <ul class="learning">
+            {learning.map((l) => <li>{l}</li>)}
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .resume {
+    margin: 1rem 0 0;
+    font-size: 1rem;
+  }
+  .resume a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .entries {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .entry {
+    display: grid;
+    gap: 0.35rem 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+  }
+  @media (min-width: 40rem) {
+    .entry {
+      grid-template-columns: 9.5rem minmax(0, 1fr);
+    }
+  }
+  .when {
+    margin: 0.3rem 0 0;
+    color: var(--mute);
+    font-size: 0.98rem;
+  }
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 420;
+    line-height: 1.2;
+  }
+  h3 a {
+    text-decoration-color: transparent;
+  }
+  h3 a:hover {
+    text-decoration-color: var(--pencil);
+  }
+  .entry :global(.logo) {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+  }
+  .role {
+    margin: 0.15rem 0 0;
+    font-style: italic;
+  }
+  .desc {
+    margin: 0.6rem 0 0;
+    max-width: 36rem;
+    text-wrap: pretty;
+  }
+  .stack {
+    margin: 0.5rem 0 0;
+    color: var(--mute);
+    font-size: 0.98rem;
+    font-style: italic;
+  }
+  .learning {
+    margin: 0.5rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .learning li::marker {
+    color: var(--pencil);
+  }
+</style>

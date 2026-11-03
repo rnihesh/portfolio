@@ -1,0 +1,41 @@
+---
+import { site } from "../data/site";
+const year = new Date().getFullYear();
+---
+
+<footer class="foot wrap">
+  <svg width="16" height="25" aria-hidden="true"><use href="#nr-mark" /></svg>
+  <p>
+    {site.name}, {year}. Built with Astro and attention to detail. Press <kbd>R</kbd> any time for my
+    <a href={site.resume} target="_blank" rel="noopener">résumé</a>.
+  </p>
+</footer>
+
+<style>
+  .foot {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: clamp(5rem, 12vw, 8rem);
+    padding-block: 2rem 2.5rem;
+    border-top: 1px solid var(--rule);
+    color: var(--mute);
+    font-size: 0.95rem;
+  }
+  .foot p {
+    margin: 0;
+  }
+  kbd {
+    display: inline-block;
+    min-width: 1.4em;
+    padding: 0 0.3em;
+    border: 1px solid var(--rule);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    font-family: var(--serif);
+    font-size: 0.9em;
+    line-height: 1.3;
+    text-align: center;
+    color: var(--ink);
+  }
+</style>
