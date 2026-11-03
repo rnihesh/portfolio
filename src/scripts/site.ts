@@ -94,3 +94,54 @@ if (dialog && frames.length && typeof dialog.showModal === "function") {
   });
   dialog.addEventListener("close", () => opener?.focus());
 }
+
+/* ---------- visit ping (traana), live site only ---------- */
+if (import.meta.env.PROD) {
+  const send = async () => {
+    const nav = navigator as Navigator & {
+      connection?: { effectiveType?: string; downlink?: number; rtt?: number };
+      deviceMemory?: number;
+      getBattery?: () => Promise<{ level: number; charging: boolean }>;
+    };
+    const conn = nav.connection || {};
+    const bat: { level: number | null; charging: boolean | null } = { level: null, charging: null };
+    try {
+      if (nav.getBattery) {
+        const b = await nav.getBattery();
+        bat.level = b.level;
+        bat.charging = b.charging;
+      }
+    } catch {}
+    const payload = {
+      url: location.href,
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+      platform: navigator.platform,
+      screenSize: `${window.innerWidth}x${window.innerHeight}`,
+      referrer: document.referrer,
+      viewport: `${document.documentElement.clientWidth}x${document.documentElement.clientHeight}`,
+      colorDepth: window.screen.colorDepth,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      connection: conn.effectiveType,
+      downlink: conn.downlink,
+      rtt: conn.rtt,
+      touchSupport: "ontouchstart" in window,
+      orientation: screen.orientation?.type,
+      batteryLevel: bat.level,
+      charging: bat.charging,
+      deviceMemory: nav.deviceMemory,
+      hardwareConcurrency: navigator.hardwareConcurrency,
+      pageTitle: document.title,
+      timestamp: new Date().toISOString(),
+    };
+    fetch("https://traana.vercel.app/tra", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      keepalive: true,
+    }).catch(() => {});
+  };
+  // after the page has loaded, so it never competes with first paint
+  if (document.readyState === "complete") send();
+  else addEventListener("load", () => send(), { once: true });
+}
