@@ -2,6 +2,8 @@
 import { Picture, Image } from "astro:assets";
 import Icon from "./Icon.astro";
 import { projects } from "../data/projects";
+import { socials } from "../data/site";
+const github = socials.find((s) => s.icon === "github")!.href;
 ---
 
 <section id="projects" class="section wrap" aria-labelledby="projects-title">
@@ -45,9 +47,40 @@ import { projects } from "../data/projects";
       ))
     }
   </ul>
+
+  <p class="more reveal">
+    <a href={github} target="_blank" rel="noopener me">
+      <Icon name="github" size={16} />
+      More on GitHub
+      <span aria-hidden="true" class="arrow">&rarr;</span>
+    </a>
+  </p>
 </section>
 
 <style>
+  .more {
+    margin: 3rem 0 0;
+  }
+  .more a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--mute);
+    text-decoration-color: transparent;
+    transition: color 0.15s ease;
+  }
+  .more a :global(svg) {
+    translate: 0 -0.1em;
+  }
+  .more a:hover {
+    color: var(--ink);
+  }
+  .more .arrow {
+    transition: translate 0.2s ease;
+  }
+  .more a:hover .arrow {
+    translate: 0.2rem 0;
+  }
   .grid {
     display: grid;
     gap: 3rem 2.5rem;

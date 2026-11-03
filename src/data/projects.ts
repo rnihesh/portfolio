@@ -2,7 +2,7 @@ import type { ImageMetadata } from "astro";
 
 import gstRecon from "../assets/projects/gst-recon.png";
 import secondBrain from "../assets/projects/second-brain.jpeg";
-import capax from "../assets/projects/capax.jpeg";
+// import capax from "../assets/projects/capax.jpeg";
 import blog from "../assets/projects/niheshr-blog.jpeg";
 // import rideshare from "../assets/projects/rideshare.jpeg";
 // import habify from "../assets/projects/habify.jpeg";
@@ -11,7 +11,7 @@ import blog from "../assets/projects/niheshr-blog.jpeg";
 
 import gstReconLogo from "../assets/projects/logos/gst-recon.png";
 import secondBrainLogo from "../assets/projects/logos/second-brain.png";
-import capaxLogo from "../assets/projects/logos/capax.png";
+// import capaxLogo from "../assets/projects/logos/capax.png";
 import blogLogo from "../assets/projects/logos/blog.png";
 // import rideshareLogo from "../assets/projects/logos/rideshare.png";
 // import habifyLogo from "../assets/projects/logos/habify.webp";
@@ -48,6 +48,7 @@ export const projects: Project[] = [
     logo: secondBrainLogo,
     github: "https://github.com/rnihesh/second-brain/?ref=niheshr.com",
   },
+  /* Hidden for now:
   {
     title: "Capax",
     description: "macOS Battery Health Menu-Bar App",
@@ -56,6 +57,7 @@ export const projects: Project[] = [
     logo: capaxLogo,
     github: "https://github.com/rnihesh/capax/?ref=niheshr.com",
   },
+  */
   {
     title: "Nihesh's Blog",
     description: "My Personal Blog Platform",
