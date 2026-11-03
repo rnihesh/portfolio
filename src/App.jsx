@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,10 +19,11 @@ function ThemeToggleWrapper() {
 }
 
 // Pages
-import HomePage from "./pages/HomePage";
-import MinimalPage from "./pages/MinimalPage";
-import GooeyPage from "./pages/GooeyPage";
-import ScrollPage from "./pages/ScrollPage";
+// Route-level code splitting: each experience loads only its own deps
+const HomePage = lazy(() => import("./pages/HomePage"));
+const MinimalPage = lazy(() => import("./pages/MinimalPage"));
+const GooeyPage = lazy(() => import("./pages/GooeyPage"));
+const ScrollPage = lazy(() => import("./pages/ScrollPage"));
 
 function App() {
   // Global keyboard handler for resume
@@ -52,14 +53,18 @@ function App() {
     <Router>
       <div className="relative">
         <ThemeToggleWrapper />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/minimal" element={<MinimalPage />} />
-          <Route path="/gooey" element={<GooeyPage />} />
-          <Route path="/scroll" element={<ScrollPage />} />
-          {/* Fallback route */}
-          <Route path="*" element={<HomePage />} />
-        </Routes>
+        <Suspense
+          fallback={<div className="min-h-screen bg-white dark:bg-black" />}
+        >
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/minimal" element={<MinimalPage />} />
+            <Route path="/gooey" element={<GooeyPage />} />
+            <Route path="/scroll" element={<ScrollPage />} />
+            {/* Fallback route */}
+            <Route path="*" element={<HomePage />} />
+          </Routes>
+        </Suspense>
       </div>
     </Router>
   );

@@ -25,6 +25,18 @@ function LandingChoiceSection({ onChoice }) {
     },
   };
 
+  // Text stays opaque so it paints immediately (keeps LCP fast); only slides in
+  const textVariants = {
+    hidden: { y: 20 },
+    visible: {
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
   const buttonVariants = {
     hidden: { scale: 0.8, opacity: 0 },
     visible: {
@@ -66,7 +78,7 @@ function LandingChoiceSection({ onChoice }) {
         <motion.h1
           className="text-4xl md:text-6xl font-bold text-black dark:text-white mb-4"
           style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-          variants={itemVariants}
+          variants={textVariants}
         >
           Welcome
         </motion.h1>
@@ -74,7 +86,7 @@ function LandingChoiceSection({ onChoice }) {
         <motion.p
           className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-12"
           style={{ fontFamily: "'JetBrains Mono', monospace" }}
-          variants={itemVariants}
+          variants={textVariants}
         >
           Choose your preferred viewing experience
         </motion.p>
