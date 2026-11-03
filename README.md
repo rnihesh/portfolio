@@ -37,7 +37,7 @@ Add it as the next version in `public/resume/` (currently `v8.pdf`) and change `
 
 ### OG image
 
-`public/og.png` (1200x630) is a screenshot of `src/pages/[og].astro`, a template that only exists in `pnpm dev`. To change it, edit the template, open http://localhost:4321/og, and save a 1200x630 screenshot over `public/og.png`.
+`public/og.png` (2400x1260, a 2x render of 1200x630) is a screenshot of `src/pages/[og].astro`, a template that only exists in `pnpm dev`. To change it, edit the template, open http://localhost:4321/og, and save a 1200x630 screenshot at 2x device scale over `public/og.png`.
 
 ## Design notes
 
