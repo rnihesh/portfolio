@@ -145,3 +145,56 @@ if (import.meta.env.PROD) {
   if (document.readyState === "complete") send();
   else addEventListener("load", () => send(), { once: true });
 }
+
+/* ---------- WebMCP: read-only tools for AI agents in the browser ---------- */
+type ModelContext = {
+  registerTool: (tool: {
+    name: string;
+    description: string;
+    inputSchema: object;
+    annotations?: { readOnlyHint?: boolean };
+    execute: (args: Record<string, unknown>) => Promise<string>;
+  }) => unknown;
+};
+const mc =
+  (document as Document & { modelContext?: ModelContext }).modelContext ??
+  (navigator as Navigator & { modelContext?: ModelContext }).modelContext;
+const agentData = document.getElementById("agent-data")?.textContent;
+if (typeof mc?.registerTool === "function" && agentData) {
+  const data = JSON.parse(agentData) as {
+    profile: Record<string, unknown>;
+    projects: { title: string; description: string; link: string }[];
+    resume: string;
+  };
+  const noArgs = { type: "object", properties: {} };
+  const tools = [
+    {
+      name: "get_profile",
+      description: `Who ${site.name} is: role, short intro and links (résumé, GitHub, LinkedIn and more).`,
+      run: () => data.profile,
+    },
+    {
+      name: "list_projects",
+      description: `${site.name}'s selected projects with a one-line description and link each.`,
+      run: () => data.projects,
+    },
+    {
+      name: "get_resume_link",
+      description: `URL of ${site.name}'s résumé PDF.`,
+      run: () => ({ resume: data.resume }),
+    },
+  ];
+  for (const t of tools) {
+    try {
+      Promise.resolve(
+        mc.registerTool({
+          name: t.name,
+          description: t.description,
+          inputSchema: noArgs,
+          annotations: { readOnlyHint: true },
+          execute: async () => JSON.stringify(t.run()),
+        }),
+      ).catch(() => {});
+    } catch {}
+  }
+}
