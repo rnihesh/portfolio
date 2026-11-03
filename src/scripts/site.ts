@@ -94,3 +94,107 @@ if (dialog && frames.length && typeof dialog.showModal === "function") {
   });
   dialog.addEventListener("close", () => opener?.focus());
 }
+
+/* ---------- visit ping (traana), live site only ---------- */
+if (import.meta.env.PROD) {
+  const send = async () => {
+    const nav = navigator as Navigator & {
+      connection?: { effectiveType?: string; downlink?: number; rtt?: number };
+      deviceMemory?: number;
+      getBattery?: () => Promise<{ level: number; charging: boolean }>;
+    };
+    const conn = nav.connection || {};
+    const bat: { level: number | null; charging: boolean | null } = { level: null, charging: null };
+    try {
+      if (nav.getBattery) {
+        const b = await nav.getBattery();
+        bat.level = b.level;
+        bat.charging = b.charging;
+      }
+    } catch {}
+    const payload = {
+      url: location.href,
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+      platform: navigator.platform,
+      screenSize: `${window.innerWidth}x${window.innerHeight}`,
+      referrer: document.referrer,
+      viewport: `${document.documentElement.clientWidth}x${document.documentElement.clientHeight}`,
+      colorDepth: window.screen.colorDepth,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      connection: conn.effectiveType,
+      downlink: conn.downlink,
+      rtt: conn.rtt,
+      touchSupport: "ontouchstart" in window,
+      orientation: screen.orientation?.type,
+      batteryLevel: bat.level,
+      charging: bat.charging,
+      deviceMemory: nav.deviceMemory,
+      hardwareConcurrency: navigator.hardwareConcurrency,
+      pageTitle: document.title,
+      timestamp: new Date().toISOString(),
+    };
+    fetch("https://traana.vercel.app/tra", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      keepalive: true,
+    }).catch(() => {});
+  };
+  // after the page has loaded, so it never competes with first paint
+  if (document.readyState === "complete") send();
+  else addEventListener("load", () => send(), { once: true });
+}
+
+/* ---------- WebMCP: read-only tools for AI agents in the browser ---------- */
+type ModelContext = {
+  registerTool: (tool: {
+    name: string;
+    description: string;
+    inputSchema: object;
+    annotations?: { readOnlyHint?: boolean };
+    execute: (args: Record<string, unknown>) => Promise<string>;
+  }) => unknown;
+};
+const mc =
+  (document as Document & { modelContext?: ModelContext }).modelContext ??
+  (navigator as Navigator & { modelContext?: ModelContext }).modelContext;
+const agentData = document.getElementById("agent-data")?.textContent;
+if (typeof mc?.registerTool === "function" && agentData) {
+  const data = JSON.parse(agentData) as {
+    profile: Record<string, unknown>;
+    projects: { title: string; description: string; link: string }[];
+    resume: string;
+  };
+  const noArgs = { type: "object", properties: {} };
+  const tools = [
+    {
+      name: "get_profile",
+      description: `Who ${site.name} is: role, short intro and links (résumé, GitHub, LinkedIn and more).`,
+      run: () => data.profile,
+    },
+    {
+      name: "list_projects",
+      description: `${site.name}'s selected projects with a one-line description and link each.`,
+      run: () => data.projects,
+    },
+    {
+      name: "get_resume_link",
+      description: `URL of ${site.name}'s résumé PDF.`,
+      run: () => ({ resume: data.resume }),
+    },
+  ];
+  for (const t of tools) {
+    try {
+      Promise.resolve(
+        mc.registerTool({
+          name: t.name,
+          description: t.description,
+          inputSchema: noArgs,
+          annotations: { readOnlyHint: true },
+          execute: async () => JSON.stringify(t.run()),
+        }),
+      ).catch(() => {});
+    } catch {}
+  }
+}
