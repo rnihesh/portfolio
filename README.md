@@ -12,7 +12,7 @@ pnpm preview    # serve dist/ locally
 pnpm check      # astro check
 ```
 
-Deployed on Vercel from `main`. `vercel.json` sets the framework, build command, security headers, long caching for `/_astro/*`, and redirects the old `/minimal` and `/gooey` routes to `/`. The previous Vite site lives on the `archive/vite-2025` branch.
+Deployed on Vercel from `main` (Framework Preset: Astro). `vercel.json` only redirects the old `/minimal` and `/gooey` routes to `/` and sets basic security headers. The previous Vite site lives on the `archive/vite-2025` branch.
 
 ## Where to edit content
 
@@ -35,9 +35,13 @@ Static files that must keep their URLs live in `public/`: `/resume/v*.pdf`, `/og
 
 Add it as the next version in `public/resume/` (currently `v8.pdf`) and change `site.resume`. The hero button, footer link and `R` key all read from there. Older versions stay so old links keep working.
 
+### llms.txt
+
+`/llms.txt` is a plain markdown version of the page for AI agents ([llmstxt.org](https://llmstxt.org)). It's built from `src/data/` by `src/pages/llms.txt.ts`, so it updates with the site.
+
 ### OG image
 
-`public/og.png` (1200x630) is a screenshot of `src/pages/[og].astro`, a template that only exists in `pnpm dev`. To change it, edit the template, open http://localhost:4321/og, and save a 1200x630 screenshot over `public/og.png`.
+`public/og.png` (2400x1260, a 2x render of 1200x630) is a screenshot of `src/pages/[og].astro`, a template that only exists in `pnpm dev`. To change it, edit the template, open http://localhost:4321/og, and save a 1200x630 screenshot at 2x device scale over `public/og.png`.
 
 ## Design notes
 
