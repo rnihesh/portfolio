@@ -7,15 +7,11 @@ export interface SkillGroup {
 export const skills: SkillGroup[] = [
   {
     category: "AI Agents & Agentic Infra",
-    items: ["Model Context Protocol", "A2A Agents", "LangChain", "RAG"],
+    items: ["Model Context Protocol", "RAG", "LangChain", "A2A Agents"],
   },
   {
     category: "LLM Applications",
-    items: ["OpenAI", "Gemini", "Ollama", "Vector Search", "Claude"],
-  },
-  {
-    category: "Machine Learning & Audio/CV",
-    items: ["TensorFlow", "NumPy", "Pandas"],
+    items: ["Claude", "OpenAI", "Gemini", "Ollama", "Vector Search"],
   },
   {
     category: "Languages",
@@ -26,20 +22,24 @@ export const skills: SkillGroup[] = [
     items: ["FastAPI", "Node.js", "Express.js", "WebRTC"],
   },
   {
+    category: "Data & Databases",
+    items: ["PostgreSQL", "Redis", "MongoDB", "Neo4j", "MySQL"],
+  },
+  {
     category: "Frontend",
     items: ["Next.js", "Tailwind CSS", "Three.js"],
   },
   {
-    category: "Mobile & Native",
-    items: ["Flutter", "Expo", "Tauri"],
-  },
-  {
-    category: "Data & Databases",
-    items: ["PostgreSQL", "Neo4j", "MongoDB", "Redis", "MySQL"],
-  },
-  {
     category: "Infra & DevOps",
     items: ["Docker", "AWS", "Cloudflare"],
+  },
+  {
+    category: "Machine Learning & Audio/CV",
+    items: ["TensorFlow", "NumPy", "Pandas"],
+  },
+  {
+    category: "Mobile & Native",
+    items: ["Expo", "Flutter", "Tauri"],
   },
   {
     category: "Testing & Tooling",
