@@ -6,7 +6,7 @@ export const site = {
   url: "https://niheshr.com",
   email: "niheshr03@gmail.com",
   emailHref: "mailto:niheshr03+portfolio@gmail.com",
-  resume: "/resume/v1.pdf",
+  resume: "/resume/v7.pdf",
   openToWork: true,
   title: "Nihesh Rachakonda | AI-Native Full-Stack Engineer Portfolio",
   description:

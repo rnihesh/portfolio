@@ -25,7 +25,7 @@ window.addEventListener("keydown", (e) => {
   if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
   if (document.querySelector("dialog[open]")) return;
   if (e.key === "r" || e.key === "R") {
-    window.open("/resume/v1.pdf", "_blank", "noopener");
+    window.open("/resume/v7.pdf", "_blank", "noopener");
   }
 });
 
