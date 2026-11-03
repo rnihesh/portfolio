@@ -11,19 +11,12 @@ const github = socials.find((s) => s.icon === "github")!.href;
   <ul class="list" role="list">
     {
       projects.map((p) => (
-        <li class="row reveal">
-          <h3>{p.title}</h3>
-          <p class="desc">{p.description}</p>
-          <p class="links">
-            {p.live && (
-              <a href={p.live} target="_blank" rel="noopener">
-                Live<span class="sr-only"> site for {p.title}</span>
-              </a>
-            )}
-            <a href={p.github} target="_blank" rel="noopener">
-              Source<span class="sr-only"> for {p.title}</span>
-            </a>
-          </p>
+        <li class="reveal">
+          <a class="row" href={p.live ?? p.github} target="_blank" rel="noopener">
+            <h3>{p.title}</h3>
+            <p class="desc">{p.description}</p>
+            <svg class="out" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
         </li>
       ))
     }
@@ -72,14 +65,33 @@ const github = socials.find((s) => s.icon === "github")!.href;
     display: grid;
     gap: 0.25rem 2rem;
     padding: 1.25rem 0;
+    color: inherit;
+    text-decoration: none;
   }
-  .row + .row {
+  li + li .row {
     border-top: 1px solid var(--rule);
+  }
+  .out {
+    display: none;
+    color: var(--mute);
+    transition: color 0.15s ease, translate 0.2s ease;
   }
   @media (min-width: 44rem) {
     .row {
       grid-template-columns: 11rem minmax(0, 1fr) auto;
       align-items: baseline;
+    }
+    .out {
+      display: block;
+      align-self: center;
+    }
+  }
+  .row:hover .out {
+    color: var(--ink);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .row:hover .out {
+      translate: 0.12rem -0.12rem;
     }
   }
   h3 {
@@ -91,11 +103,5 @@ const github = socials.find((s) => s.icon === "github")!.href;
   .desc {
     margin: 0;
     color: var(--mute);
-  }
-  .links {
-    display: flex;
-    gap: 1.25rem;
-    margin: 0;
-    font-size: 0.98rem;
   }
 </style>
