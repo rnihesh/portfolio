@@ -5,139 +5,71 @@ import { projects } from "../data/projects";
 ---
 
 <section id="projects" class="section wrap" aria-labelledby="projects-title">
-  <div class="section-grid">
-    <div>
-      <h2 id="projects-title" class="section-title">Projects</h2>
-      <p class="lede">Things I've built, from agent tooling to a Mac menu-bar app.</p>
-    </div>
+  <h2 id="projects-title" class="section-title">Projects</h2>
 
-    <ol class="list" role="list">
-      {
-        projects.map((p, i) => (
-          <li class="project reveal">
-            <a
-              class="mount"
-              href={p.live ?? p.github}
-              target="_blank"
-              rel="noopener"
-              tabindex="-1"
-              aria-hidden="true"
-            >
-              <span class="window">
-                <Picture
-                  src={p.image}
-                  formats={["avif", "webp"]}
-                  widths={[240, 360, 480, 720]}
-                  sizes="(min-width: 56rem) 12rem, (min-width: 40rem) 11rem, 56vw"
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                  quality={70}
-                />
-              </span>
-              <span class="label hand">{p.tagline}</span>
-              <span class="num hand">{String(i + 1).padStart(2, "0")}</span>
+  <ul class="grid" role="list">
+    {
+      projects.map((p) => (
+        <li class="project reveal">
+          <a class="shot" href={p.live ?? p.github} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+            <Picture
+              src={p.image}
+              formats={["avif", "webp"]}
+              widths={[360, 540, 720, 1080]}
+              sizes="(min-width: 74rem) 33rem, (min-width: 44rem) calc(50vw - 4rem), calc(100vw - 2.5rem)"
+              alt=""
+              loading="lazy"
+              decoding="async"
+              quality={70}
+            />
+          </a>
+          <h3>
+            <Image src={p.logo} width={20} height={20} densities={[1, 2]} alt="" class="logo" loading="lazy" />
+            {p.title}
+          </h3>
+          <p class="desc">{p.description}</p>
+          <p class="stack">{p.stack.join(", ")}</p>
+          <p class="links">
+            {p.live && (
+              <a href={p.live} target="_blank" rel="noopener">
+                <Icon name="external" size={15} />
+                Live<span class="sr-only"> site for {p.title}</span>
+              </a>
+            )}
+            <a href={p.github} target="_blank" rel="noopener">
+              <Icon name="github" size={15} />
+              Source<span class="sr-only"> for {p.title}</span>
             </a>
-
-            <div class="body">
-              <h3>
-                <Image
-                  src={p.logo}
-                  width={22}
-                  height={22}
-                  densities={[1, 2]}
-                  alt=""
-                  class="logo"
-                  loading="lazy"
-                />
-                {p.title}
-              </h3>
-              <p class="summary">{p.summary}</p>
-              <p class="stack">
-                <span class="sr-only">Built with </span>
-                {p.stack.join(", ")}
-              </p>
-              <p class="links">
-                {p.live && (
-                  <a href={p.live} target="_blank" rel="noopener">
-                    <Icon name="external" size={16} />
-                    Live site<span class="sr-only"> for {p.title}</span>
-                  </a>
-                )}
-                <a href={p.github} target="_blank" rel="noopener">
-                  <Icon name="github" size={16} />
-                  Source<span class="sr-only"> for {p.title}</span>
-                </a>
-              </p>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
-  </div>
+          </p>
+        </li>
+      ))
+    }
+  </ul>
 </section>
 
 <style>
-  .list {
-    list-style: none;
-    margin: 0;
+  .grid {
+    display: grid;
+    gap: 3rem 2.5rem;
+    margin: 2rem 0 0;
     padding: 0;
-    display: grid;
-    gap: clamp(2.5rem, 6vw, 4rem);
+    list-style: none;
   }
-  .project {
-    display: grid;
-    gap: 1.25rem 2.25rem;
-    align-items: start;
-  }
-  @media (min-width: 40rem) {
-    .project {
-      grid-template-columns: 14rem minmax(0, 1fr);
+  @media (min-width: 44rem) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-  @media (min-width: 56rem) {
-    .project {
-      grid-template-columns: 15rem minmax(0, 1fr);
-    }
-  }
-
-  /* 35mm slide mount */
-  .mount {
-    position: relative;
+  .shot {
     display: block;
-    width: min(72vw, 100%);
-    max-width: 17rem;
-    aspect-ratio: 1;
-    border-radius: 7%;
-    background: var(--mount);
-    box-shadow:
-      inset 0 0 0 1px var(--mount-edge),
-      0 1px 0 var(--mount-edge);
-    text-decoration: none;
-    color: var(--mute);
-    transform: rotate(var(--tilt, -0.6deg));
-    transition: transform 400ms var(--ease);
-  }
-  .project:nth-child(even) .mount {
-    --tilt: 0.8deg;
-  }
-  .project:nth-child(3n) .mount {
-    --tilt: -1.4deg;
-  }
-  .project:hover .mount {
-    transform: rotate(0deg) translateY(-3px);
-  }
-  .window {
-    position: absolute;
-    left: 11%;
-    top: 16%;
-    width: 78%;
     aspect-ratio: 3 / 2;
-    clip-path: url(#slide-window);
-    background: var(--film);
+    overflow: hidden;
+    border-radius: 6px;
+    background: var(--paper-2);
+    box-shadow: inset 0 0 0 1px var(--rule);
   }
-  .window :global(picture),
-  .window :global(img) {
+  .shot :global(picture),
+  .shot :global(img) {
     display: block;
     width: 100%;
     height: 100%;
@@ -145,71 +77,48 @@ import { projects } from "../data/projects";
     object-fit: cover;
     object-position: top center;
   }
-  .label {
-    position: absolute;
-    left: 11%;
-    right: 11%;
-    top: 74%;
-    font-size: clamp(0.8rem, 3.2vw, 0.9rem);
-    line-height: 1.2;
-    transform: rotate(-1.5deg);
+  .shot :global(img) {
+    transition: opacity 200ms var(--ease);
   }
-  .num {
-    position: absolute;
-    left: 11%;
-    top: 5.5%;
-    font-size: 0.75rem;
-    color: var(--mute);
-    opacity: 0.8;
+  .project:hover .shot :global(img) {
+    opacity: 0.92;
   }
-
-  .body h3 {
+  h3 {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    margin: 0;
-    font-size: clamp(1.45rem, 2.6vw, 1.8rem);
-    font-weight: 420;
-    line-height: 1.15;
-    letter-spacing: -0.01em;
+    gap: 0.55rem;
+    margin: 1rem 0 0;
+    font-size: 1.35rem;
+    font-weight: 450;
+    line-height: 1.2;
   }
-  .body :global(.logo) {
-    width: 24px;
-    height: 24px;
+  h3 :global(.logo) {
+    width: 22px;
+    height: 22px;
     padding: 2px;
-    border-radius: 6px;
+    border-radius: 5px;
     background: var(--chip);
     object-fit: contain;
     flex: none;
   }
-  .summary {
-    margin: 0.6rem 0 0;
-    max-width: 36rem;
-    text-wrap: pretty;
+  .desc {
+    margin: 0.3rem 0 0;
   }
   .stack {
-    margin: 0.6rem 0 0;
+    margin: 0.3rem 0 0;
     color: var(--mute);
-    font-size: 0.98rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
   }
   .links {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 1.4rem;
-    margin: 0.85rem 0 0;
-    font-size: 1rem;
+    gap: 1.25rem;
+    margin: 0.6rem 0 0;
+    font-size: 0.98rem;
   }
   .links a {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-  }
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
+    gap: 0.35rem;
   }
 </style>
