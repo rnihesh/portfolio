@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://niheshr.com/sitemap.xml
+# Plain-text summary for AI agents: https://niheshr.com/llms.txt
