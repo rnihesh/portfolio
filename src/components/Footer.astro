@@ -8,7 +8,7 @@ const year = new Date().getFullYear();
   <div class="foot">
     <ul class="links" role="list">
       <li>
-        <a href={site.emailHref}><Icon name="mail" size={16} />{site.email}</a>
+        <a href={site.emailHref} aria-label={`Email ${site.email}`} title={site.email} class="icon-link"><Icon name="mail" size={18} /></a>
       </li>
       {
         socials.map((s) => (
