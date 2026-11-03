@@ -22,8 +22,6 @@ import { site } from "../data/site";
     </a>
     <span class="hint muted">or press <kbd>R</kbd></span>
   </p>
-
-  <span class="scroll-cue" aria-hidden="true">Scroll</span>
 </section>
 </div>
 
@@ -66,7 +64,6 @@ import { site } from "../data/site";
         "translate(" + (dx * k).toFixed(1) + "px," + (dy * k).toFixed(1) + "px) scale(" + (1 + (s0 - 1) * k).toFixed(4) + ")";
       hero.style.setProperty("--fill", smooth(0.3, 0.8, p).toFixed(3));
       hero.style.setProperty("--rest", smooth(0.6, 1, p).toFixed(3));
-      hero.style.setProperty("--cue", (1 - smooth(0, 0.12, p)).toFixed(3));
     }
 
     function onScroll() { if (!queued) { queued = true; requestAnimationFrame(update); } }
@@ -188,9 +185,6 @@ import { site } from "../data/site";
     }
   }
   /* ---------- scroll intro (html.anim-intro is set in <head>) ---------- */
-  .scroll-cue {
-    display: none;
-  }
   :global(html.anim-intro) .hero {
     position: sticky;
     top: 0;
@@ -217,53 +211,12 @@ import { site } from "../data/site";
     opacity: var(--rest, 0);
     translate: 0 calc((1 - var(--rest, 0)) * 0.9rem);
   }
-  :global(html.anim-intro) .scroll-cue {
-    display: block;
-    position: absolute;
-    left: 50%;
-    bottom: 1.5rem;
-    translate: -50% 0;
-    opacity: var(--cue, 1);
-    font-size: 0.8rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--mute);
-    pointer-events: none;
-    animation: cue-in 0.6s ease 1.8s both;
-  }
-  :global(html.anim-intro) .scroll-cue::after {
-    content: "";
-    display: block;
-    width: 1px;
-    height: 1.75rem;
-    margin: 0.5rem auto 0;
-    background: currentColor;
-    transform-origin: top;
-    animation: cue-line 1.8s ease-in-out 2.2s infinite;
-  }
   @keyframes sig-draw {
     from {
       stroke-dashoffset: 1;
     }
     to {
       stroke-dashoffset: 0;
-    }
-  }
-  @keyframes cue-in {
-    from {
-      opacity: 0;
-    }
-  }
-  @keyframes cue-line {
-    0% {
-      transform: scaleY(0);
-    }
-    50% {
-      transform: scaleY(1);
-    }
-    100% {
-      transform: scaleY(1);
-      opacity: 0;
     }
   }
   .btn {
