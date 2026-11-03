@@ -59,7 +59,7 @@ export const projects: Project[] = [
   },
   */
   {
-    title: "Nihesh's Blog",
+    title: "Blog",
     description: "My Personal Blog Platform",
     stack: ["Next.js", "shadcn/ui", "Tailwind CSS", "MDX"],
     image: blog,
