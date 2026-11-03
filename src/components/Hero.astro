@@ -24,8 +24,15 @@ import { site } from "../data/site";
 </section>
 
 <style>
+  /* First screen is the hero alone: fill the viewport below the header
+     (5.5rem tall) so nothing from the next section peeks in on any device.
+     svh = smallest viewport (mobile URL bar shown), so it never overflows. */
   .hero {
-    padding-block: clamp(2.5rem, 9vh, 6rem) 0;
+    min-height: calc(100svh - 5.5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 2rem 4.5rem;
   }
   .name {
     margin: 0;
@@ -103,6 +110,48 @@ import { site } from "../data/site";
     align-items: center;
     gap: 0.75rem 1rem;
     margin: 1.75rem 0 0;
+  }
+  /* Short, wide screens (landscape phones): name left, text right, so the
+     hero fits in the ~300px left under the header. */
+  @media (max-height: 32rem) and (min-width: 40rem) {
+    .hero {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: clamp(1.5rem, 4vw, 3rem);
+      align-content: center;
+      align-items: center;
+      padding-block: 0 1rem;
+    }
+    .name {
+      grid-row: 1 / span 3;
+      grid-template-columns: auto;
+    }
+    .name .surname {
+      margin: 0.25rem 0 0;
+    }
+    .signature {
+      width: min(16rem, 34vw);
+    }
+    .surname {
+      font-size: clamp(1.5rem, 7svh, 2rem);
+    }
+    .role,
+    .intro,
+    .actions {
+      grid-column: 2;
+    }
+    .role {
+      margin-top: 0;
+      align-self: end;
+    }
+    .intro {
+      font-size: 1.05rem;
+      max-width: 36ch;
+    }
+    .actions {
+      margin-top: 0.75rem;
+      align-self: start;
+    }
   }
   .btn {
     display: inline-flex;
