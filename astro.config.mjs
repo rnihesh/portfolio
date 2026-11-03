@@ -27,23 +27,6 @@ export default defineConfig({
         ],
       },
     },
-    {
-      name: "Shantell Sans",
-      cssVariable: "--font-shantell",
-      provider: fontProviders.local(),
-      fallbacks: ["Comic Sans MS", "cursive"],
-      display: "swap",
-      options: {
-        variants: [
-          {
-            weight: "300 800",
-            style: "normal",
-            // Basic Latin subset (see README) to keep the handwriting face small.
-            src: ["./src/assets/fonts/shantell-sans-basic-wght.woff2"],
-          },
-        ],
-      },
-    },
   ],
   vite: {
     plugins: [tailwindcss()],

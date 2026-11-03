@@ -54,7 +54,7 @@ import { nav } from "../data/site";
     text-decoration-color: transparent;
   }
   nav a:hover {
-    text-decoration-color: var(--pencil);
+    text-decoration-color: var(--accent);
   }
   .theme-btn {
     display: inline-grid;
@@ -79,10 +79,5 @@ import { nav } from "../data/site";
   }
   :global([data-theme="dark"]) .theme-btn :global(.i-moon) {
     display: none;
-  }
-  @media (max-width: 40rem) {
-    nav li:nth-child(n + 4) {
-      display: none;
-    }
   }
 </style>

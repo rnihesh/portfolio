@@ -4,21 +4,16 @@
 
 /* ---------- tokens ---------- */
 :root {
-  /* Contact-sheet paper, graphite, red china-marker. */
+  /* Cool paper, graphite ink, a red accent for focus and hovers. */
   --paper: #ebedec;
   --paper-2: #e2e5e4;
   --ink: #1c1f21;
   --mute: #5b6166;
   --rule: #c3c8c9;
-  --pencil: #c41e3a;
-  --film: #161718;
-  --edge: #d9a24e;
-  --mount: #f6f7f6;
-  --mount-edge: #cfd3d3;
+  --accent: #c41e3a;
   --chip: #ffffff;
 
   --serif: var(--font-newsreader), Georgia, serif;
-  --hand: var(--font-shantell), "Comic Sans MS", cursive;
 
   --measure: 34rem;
   --gutter: clamp(1.25rem, 5vw, 3rem);
@@ -28,17 +23,13 @@
 }
 
 [data-theme="dark"] {
-  /* Same sheet under a darkroom lamp: slate paper, yellow china-marker. */
+  /* Slate paper, light ink, a warm yellow accent. */
   --paper: #1d2023;
   --paper-2: #24282b;
   --ink: #e5e7e4;
   --mute: #9ba2a7;
   --rule: #3a3f43;
-  --pencil: #f0c03a;
-  --film: #0c0d0e;
-  --edge: #c9934a;
-  --mount: #2a2e31;
-  --mount-edge: #3c4246;
+  --accent: #f0c03a;
   --chip: #e6e8e5;
   color-scheme: dark;
 }
@@ -48,9 +39,8 @@
   --color-ink: var(--ink);
   --color-mute: var(--mute);
   --color-rule: var(--rule);
-  --color-pencil: var(--pencil);
+  --color-accent: var(--accent);
   --font-serif: var(--serif);
-  --font-hand: var(--hand);
 }
 
 /* ---------- base ---------- */
@@ -80,7 +70,7 @@ body {
 }
 
 ::selection {
-  background: var(--pencil);
+  background: var(--accent);
   color: var(--paper);
 }
 
@@ -94,11 +84,11 @@ a {
 }
 
 a:hover {
-  text-decoration-color: var(--pencil);
+  text-decoration-color: var(--accent);
 }
 
 :focus-visible {
-  outline: 2px solid var(--pencil);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -108,12 +98,6 @@ a:hover {
   max-width: 74rem;
   margin-inline: auto;
   padding-inline: var(--gutter);
-}
-
-.hand {
-  font-family: var(--hand);
-  font-weight: 450;
-  letter-spacing: 0;
 }
 
 .muted {
@@ -134,68 +118,12 @@ a:hover {
   padding-block: clamp(4rem, 10vw, 7.5rem) 0;
 }
 
-.section-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1.25rem 3rem;
-}
-
-.section-grid > * {
-  min-width: 0;
-}
-
-@media (min-width: 56rem) {
-  .section-grid {
-    grid-template-columns: 13rem minmax(0, 1fr);
-  }
-}
-
 .section-title {
   font-size: clamp(1.75rem, 3.2vw, 2.25rem);
   line-height: 1.1;
   font-weight: 400;
   letter-spacing: -0.015em;
   margin: 0;
-}
-
-.lede {
-  color: var(--mute);
-  max-width: var(--measure);
-  margin: 0.5rem 0 0;
-  font-size: 1.0625rem;
-  line-height: 1.55;
-}
-
-/* ---------- pencil strokes (SVG) ---------- */
-.pencil {
-  fill: none;
-  stroke: var(--pencil);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.draw path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .js .draw path {
-    stroke-dashoffset: 1;
-  }
-  .js .draw.in path {
-    animation: draw var(--draw-dur, 900ms) var(--ease) forwards;
-  }
-  .js .draw.in path:nth-child(2) {
-    animation-delay: calc(var(--draw-dur, 900ms) * 0.7);
-    animation-duration: calc(var(--draw-dur, 900ms) * 0.6);
-  }
-}
-
-@keyframes draw {
-  to {
-    stroke-dashoffset: 0;
-  }
 }
 
 /* ---------- scroll reveal ---------- */
@@ -211,4 +139,27 @@ a:hover {
     opacity: 1;
     transform: none;
   }
+}
+
+kbd {
+  display: inline-block;
+  min-width: 1.4em;
+  padding: 0 0.3em;
+  border: 1px solid var(--rule);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font-family: var(--serif);
+  font-size: 0.9em;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--ink);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

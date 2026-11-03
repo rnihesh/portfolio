@@ -29,8 +29,8 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-/* ---------- reveal + pencil draw-in when scrolled into view ---------- */
-const targets = document.querySelectorAll<HTMLElement>(".reveal, .draw[data-on-view]");
+/* ---------- reveal when scrolled into view ---------- */
+const targets = document.querySelectorAll<HTMLElement>(".reveal");
 if ("IntersectionObserver" in window && targets.length) {
   const io = new IntersectionObserver(
     (entries) => {
@@ -69,7 +69,7 @@ if (dialog && frames.length && typeof dialog.showModal === "function") {
     img.alt = thumb?.alt ?? "";
     img.src = f.href;
     caption.textContent = thumb?.alt ?? "";
-    count.textContent = `Frame ${f.dataset.frame} of ${frames.length}`;
+    count.textContent = `${f.dataset.frame} of ${frames.length}`;
   };
 
   frames.forEach((f, i) => {
