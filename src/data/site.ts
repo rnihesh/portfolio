@@ -8,8 +8,8 @@ export const site = {
   title: "Nihesh Rachakonda | AI Engineer",
   description:
     "Nihesh Rachakonda, AI engineer. Projects, work, achievements and contact.",
-  ogImage: "/nihesh.png",
-  ogImageAlt: "Nihesh Rachakonda portfolio logo and profile image",
+  ogImage: "/og.png",
+  ogImageAlt: "Nihesh Rachakonda, AI Engineer",
   twitter: "@niheshr03",
   alternateNames: ["rnihesh", "niheshr", "niheshr03", "Nihesh R", "R. Nihesh"],
   // From the old site's "What am I" section.
