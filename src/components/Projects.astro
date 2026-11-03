@@ -27,8 +27,8 @@ import { projects } from "../data/projects";
                 <Picture
                   src={p.image}
                   formats={["avif", "webp"]}
-                  widths={[320, 480, 720, 960]}
-                  sizes="(min-width: 56rem) 15rem, (min-width: 40rem) 14rem, 72vw"
+                  widths={[240, 360, 480, 720]}
+                  sizes="(min-width: 56rem) 12rem, (min-width: 40rem) 11rem, 56vw"
                   alt=""
                   loading="lazy"
                   decoding="async"
@@ -191,7 +191,6 @@ import { projects } from "../data/projects";
     margin: 0.6rem 0 0;
     color: var(--mute);
     font-size: 0.98rem;
-    font-style: italic;
   }
   .links {
     display: flex;

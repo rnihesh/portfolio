@@ -3,12 +3,14 @@ import { site } from "../data/site";
 const year = new Date().getFullYear();
 ---
 
-<footer class="foot wrap">
+<footer class="wrap">
+  <div class="foot">
   <svg width="12" height="28" aria-hidden="true"><use href="#nr-mark" /></svg>
   <p>
     {site.name}, {year}. Built with Astro and attention to detail. Press <kbd>R</kbd> any time for my{" "}
     <a href={site.resume} target="_blank" rel="noopener">résumé</a>.
   </p>
+  </div>
 </footer>
 
 <style>

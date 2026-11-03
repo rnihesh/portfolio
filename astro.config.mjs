@@ -24,11 +24,6 @@ export default defineConfig({
             style: "normal",
             src: [`${fs}/newsreader/files/newsreader-latin-wght-normal.woff2`],
           },
-          {
-            weight: "200 800",
-            style: "italic",
-            src: [`${fs}/newsreader/files/newsreader-latin-wght-italic.woff2`],
-          },
         ],
       },
     },
@@ -43,7 +38,8 @@ export default defineConfig({
           {
             weight: "300 800",
             style: "normal",
-            src: [`${fs}/shantell-sans/files/shantell-sans-latin-wght-normal.woff2`],
+            // Basic Latin subset (see README) to keep the handwriting face small.
+            src: ["./src/assets/fonts/shantell-sans-basic-wght.woff2"],
           },
         ],
       },

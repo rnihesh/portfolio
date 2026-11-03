@@ -3,26 +3,31 @@ import { Picture, getImage } from "astro:assets";
 import Icon from "./Icon.astro";
 import { strips, photosUrl } from "../data/photos";
 
-// Pre-build the large lightbox versions at build time.
+// Pre-build the large lightbox versions at build time, and work out each
+// frame's share of its strip so `sizes` matches the rendered width.
 const sheet = await Promise.all(
-  strips.map((strip) =>
-    Promise.all(
+  strips.map(async (strip) => {
+    const total = strip.reduce((n, p) => n + p.image.width / p.image.height, 0);
+    return Promise.all(
       strip.map(async (photo) => {
         const src = photo.full ?? photo.image;
+        const ratio = photo.image.width / photo.image.height;
+        const share = ratio / total;
         const large = await getImage({
           src,
           width: Math.min(src.width, 2000),
           format: "webp",
           quality: 82,
         });
-        return {
-          ...photo,
-          ratio: photo.image.width / photo.image.height,
-          large,
-        };
+        const sizes = [
+          `(min-width: 74rem) ${Math.round(830 * share)}px`,
+          `(min-width: 40rem) ${Math.round(58 * share)}vw`,
+          `${Math.round(216 * ratio)}px`,
+        ].join(", ");
+        return { ...photo, ratio, large, sizes };
       }),
-    ),
-  ),
+    );
+  }),
 );
 
 // Hand-drawn grease-pencil loop. Drawn in a 100x100 box, then stretched
@@ -66,7 +71,7 @@ const loopFor = (ratio: number) => {
                         src={p.image}
                         formats={["avif", "webp"]}
                         widths={[240, 360, 520, 760, 1040]}
-                        sizes="(min-width: 74rem) 22rem, (min-width: 56rem) 28vw, (min-width: 40rem) 30vw, 60vw"
+                        sizes={p.sizes}
                         alt={p.alt}
                         loading="lazy"
                         decoding="async"

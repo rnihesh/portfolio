@@ -60,9 +60,9 @@ export const socials: Social[] = [
 ];
 
 export const nav = [
-  { href: "#projects", label: "Projects" },
-  { href: "#work", label: "Work" },
-  { href: "#photos", label: "Photos" },
-  { href: "#skills", label: "Skills" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/#work", label: "Work" },
+  { href: "/#photos", label: "Photos" },
+  { href: "/#skills", label: "Skills" },
+  { href: "/#contact", label: "Contact" },
 ];
