@@ -25,23 +25,6 @@ export const experience: Job[] = [
   },
 ];
 
-export interface Study {
-  school: string;
-  degree: string;
-  period: string;
-  grade?: string;
-}
-
-// From the resume (public/resume/v7.pdf).
-export const education: Study[] = [
-  {
-    school: "VNR Vignana Jyothi Institute of Technology",
-    degree: "B.Tech in Information Technology",
-    period: "2023 – 2027",
-    grade: "CGPA 9.16 / 10",
-  },
-];
-
 // From the resume. No prize amounts.
 export const achievements: string[] = [
   "Winner, National ACM-KLH HackWithAI 2026 (GST Reconciliation Engine)",

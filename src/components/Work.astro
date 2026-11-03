@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Icon from "./Icon.astro";
-import { experience, education, achievements } from "../data/experience";
+import { experience, achievements } from "../data/experience";
 import { site } from "../data/site";
 ---
 
@@ -36,23 +36,6 @@ import { site } from "../data/site";
     }
   </div>
 
-  <h2 id="education-title" class="section-title small">Education</h2>
-  <div class="rows">
-    {
-      education.map((e) => (
-        <article class="row reveal">
-          <p class="when">{e.period}</p>
-          <div>
-            <h3>{e.school}</h3>
-            <p class="sub">
-              {e.degree}
-              {e.grade && <span class="grade">{e.grade}</span>}
-            </p>
-          </div>
-        </article>
-      ))
-    }
-  </div>
 
   <h2 id="achievements-title" class="section-title small">Achievements</h2>
   <ul class="achievements reveal" role="list">
@@ -125,15 +108,6 @@ import { site } from "../data/site";
   .sub {
     margin: 0.15rem 0 0;
     color: var(--mute);
-  }
-  .grade {
-    display: block;
-  }
-  @media (min-width: 40rem) {
-    .grade {
-      display: inline;
-      margin-left: 1.25rem;
-    }
   }
   .desc {
     margin: 0.6rem 0 0;
