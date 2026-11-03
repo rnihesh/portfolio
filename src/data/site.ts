@@ -1,13 +1,13 @@
 export const site = {
   name: "Nihesh Rachakonda",
-  jobTitle: "Full-stack engineer",
+  jobTitle: "AI Engineer",
   url: "https://niheshr.com",
   email: "niheshr03@gmail.com",
   emailHref: "mailto:niheshr03+portfolio@gmail.com",
   resume: "/resume/v7.pdf",
-  title: "Nihesh Rachakonda | Full-stack engineer",
+  title: "Nihesh Rachakonda | AI Engineer",
   description:
-    "Nihesh Rachakonda, full-stack engineer. Projects, work, achievements and contact.",
+    "Nihesh Rachakonda, AI engineer. Projects, work, achievements and contact.",
   ogImage: "/nihesh.png",
   ogImageAlt: "Nihesh Rachakonda portfolio logo and profile image",
   twitter: "@niheshr03",
