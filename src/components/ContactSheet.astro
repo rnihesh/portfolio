@@ -25,9 +25,14 @@ const sheet = await Promise.all(
   ),
 );
 
-// Hand-drawn grease-pencil loop, scaled to whatever frame it circles.
-const loop =
+// Hand-drawn grease-pencil loop. Drawn in a 100x100 box, then stretched
+// horizontally to the frame's aspect ratio so the stroke stays even.
+const loopPts =
   "M52 4 C 80 2, 97 20, 97 48 C 97 78, 77 97, 49 96 C 21 95, 3 77, 4 49 C 5 23, 23 6, 55 7 C 64 8, 71 11, 77 15";
+const loopFor = (ratio: number) => {
+  let i = 0;
+  return loopPts.replace(/-?\d+(\.\d+)?/g, (n) => (i++ % 2 === 0 ? (Number(n) * ratio).toFixed(1) : n));
+};
 ---
 
 <section id="photos" class="section" aria-labelledby="photos-title">
@@ -35,7 +40,7 @@ const loop =
     <div>
       <h2 id="photos-title" class="section-title">Photographs</h2>
       <p class="lede">
-        Through my lens. Open a frame to see it larger, or find more on
+        Through my lens. Open a frame to see it larger, or find more on{" "}
         <a href={photosUrl} target="_blank" rel="noopener">VSCO</a>.
       </p>
     </div>
@@ -69,8 +74,14 @@ const loop =
                       />
                     </a>
                     {p.pick && (
-                      <svg class="loop draw" data-on-view viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                        <path class="pencil" pathLength="1" d={loop} />
+                      <svg
+                        class="loop draw"
+                        data-on-view
+                        viewBox={`0 0 ${(100 * p.ratio).toFixed(1)} 100`}
+                        preserveAspectRatio="none"
+                        aria-hidden="true"
+                      >
+                        <path class="pencil" pathLength="1" d={loopFor(p.ratio)} />
                       </svg>
                     )}
                     <span class="edge" aria-hidden="true">
@@ -116,6 +127,7 @@ const loop =
   .strip {
     --rebate: 26px;
     --hole: var(--paper);
+    min-width: 0;
     background: var(--film);
     border-radius: 2px;
     transform: rotate(var(--tilt));
@@ -125,7 +137,7 @@ const loop =
   }
   .roll {
     position: relative;
-    padding: var(--rebate) 12px calc(var(--rebate) + 4px);
+    padding: var(--rebate) 12px calc(var(--rebate) + 10px);
   }
   /* Sprocket holes, top and bottom: paper-coloured rounded rects punched through the film. */
   .roll::before,
@@ -190,7 +202,7 @@ const loop =
     position: absolute;
     left: 2px;
     right: 2px;
-    bottom: -21px;
+    bottom: -15px;
     display: flex;
     justify-content: space-between;
     font-family: var(--serif);
@@ -216,8 +228,7 @@ const loop =
     --draw-dur: 1000ms;
   }
   .loop path {
-    stroke-width: 3.2;
-    vector-effect: non-scaling-stroke;
+    stroke-width: 1.4;
   }
 
   .sheet-note {

@@ -26,8 +26,6 @@ export interface Project {
   stack: string[];
   image: ImageMetadata;
   logo: ImageMetadata;
-  /** Invert the logo in dark mode (black-on-transparent logos). */
-  invertLogoInDark?: boolean;
   /** Live site. Omit when the project only lives on GitHub. */
   live?: string;
   github: string;
@@ -117,7 +115,6 @@ export const projects: Project[] = [
     stack: ["React", "Node.js", "WebSockets", "Express", "ws"],
     image: liveCursors,
     logo: cursorLogo,
-    invertLogoInDark: true,
     live: "https://nihesh-cursors.vercel.app/?ref=niheshr.com",
     github: "https://github.com/rnihesh/live-cursors-app/?ref=niheshr.com",
   },

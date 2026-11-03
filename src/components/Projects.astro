@@ -47,7 +47,7 @@ import { projects } from "../data/projects";
                   height={22}
                   densities={[1, 2]}
                   alt=""
-                  class:list={["logo", p.invertLogoInDark && "invert-dark"]}
+                  class="logo"
                   loading="lazy"
                 />
                 {p.title}
@@ -174,14 +174,13 @@ import { projects } from "../data/projects";
     letter-spacing: -0.01em;
   }
   .body :global(.logo) {
-    width: 22px;
-    height: 22px;
-    border-radius: 5px;
+    width: 24px;
+    height: 24px;
+    padding: 2px;
+    border-radius: 6px;
+    background: var(--chip);
     object-fit: contain;
     flex: none;
-  }
-  :global([data-theme="dark"]) .body :global(.invert-dark) {
-    filter: invert(1);
   }
   .summary {
     margin: 0.6rem 0 0;

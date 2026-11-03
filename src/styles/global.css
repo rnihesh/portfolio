@@ -15,6 +15,7 @@
   --edge: #d9a24e;
   --mount: #f6f7f6;
   --mount-edge: #cfd3d3;
+  --chip: #ffffff;
 
   --serif: var(--font-newsreader), Georgia, serif;
   --hand: var(--font-shantell), "Comic Sans MS", cursive;
@@ -38,6 +39,7 @@
   --edge: #c9934a;
   --mount: #2a2e31;
   --mount-edge: #3c4246;
+  --chip: #e6e8e5;
   color-scheme: dark;
 }
 
@@ -134,7 +136,12 @@ a:hover {
 
 .section-grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.25rem 3rem;
+}
+
+.section-grid > * {
+  min-width: 0;
 }
 
 @media (min-width: 56rem) {

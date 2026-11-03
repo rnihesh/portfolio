@@ -118,8 +118,11 @@ import { site } from "../data/site";
     text-decoration-color: var(--pencil);
   }
   .entry :global(.logo) {
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
+    padding: 2px;
+    border-radius: 6px;
+    background: var(--chip);
     object-fit: contain;
   }
   .role {
@@ -140,6 +143,7 @@ import { site } from "../data/site";
   .learning {
     margin: 0.5rem 0 0;
     padding-left: 1.1rem;
+    list-style: disc;
   }
   .learning li::marker {
     color: var(--pencil);
