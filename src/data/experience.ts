@@ -16,7 +16,7 @@ export const experience: Job[] = [
   {
     company: "Dattam Labs",
     role: "Software Engineer Intern",
-    period: "Aug 2025 – Mar 2026",
+    period: "Aug 2025 – Apr 2026",
     logo: dattam,
     description:
       "Built backend services in Python and FastAPI on AWS, and wrote Playwright scrapers to pull data from government portals. Also contributed to a React Native (Expo) mobile app and worked on AI features that processed the collected data.",
