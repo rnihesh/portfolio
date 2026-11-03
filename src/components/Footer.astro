@@ -82,4 +82,20 @@ const year = new Date().getFullYear();
     color: var(--ink);
     margin-right: 0.4rem;
   }
+  /* Phones: centre the icons and the note (the note wraps here) */
+  @media (max-width: 40rem) {
+    .foot {
+      text-align: center;
+    }
+    .links {
+      justify-content: center;
+    }
+    .note {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .note svg {
+      margin-right: 0;
+    }
+  }
 </style>
