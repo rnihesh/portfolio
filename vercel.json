@@ -1,7 +1,0 @@
-{
-  "framework": "astro",
-  "redirects": [
-    { "source": "/minimal", "destination": "/", "permanent": true },
-    { "source": "/gooey", "destination": "/", "permanent": true }
-  ]
-}

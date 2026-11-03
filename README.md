@@ -12,7 +12,7 @@ pnpm preview    # serve dist/ locally
 pnpm check      # astro check
 ```
 
-Deployed on Vercel from `main`. `vercel.json` only sets the framework and redirects the old `/minimal` and `/gooey` routes to `/`. The previous Vite site lives on the `archive/vite-2025` branch.
+Deployed on Vercel from `main` (Framework Preset: Astro, no `vercel.json`). The previous Vite site lives on the `archive/vite-2025` branch.
 
 ## Where to edit content
 
