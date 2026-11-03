@@ -3,50 +3,46 @@ export interface SkillGroup {
   items: string[];
 }
 
-/** Grouped as on the old site. Order here is the order on the page. */
+/** Picked by Nihesh. Order here is the order on the page. */
 export const skills: SkillGroup[] = [
   {
     category: "AI Agents & Agentic Infra",
-    items: ["Model Context Protocol", "A2A Agents", "Google ADK", "LangChain", "Agent Evals", "RAG"],
+    items: ["Model Context Protocol", "A2A Agents", "LangChain", "RAG"],
   },
   {
     category: "LLM Applications",
-    items: ["OpenAI", "Gemini", "DeepSeek", "Ollama", "Hugging Face", "AWS Bedrock", "Vector Search"],
+    items: ["OpenAI", "Gemini", "Ollama", "Vector Search", "Claude"],
   },
   {
     category: "Machine Learning & Audio/CV",
-    items: ["TensorFlow", "PyTorch", "Reinforcement Learning", "NumPy", "Pandas"],
+    items: ["TensorFlow", "NumPy", "Pandas"],
   },
   {
     category: "Languages",
-    items: ["Python", "TypeScript", "JavaScript", "Go", "Swift", "Dart", "Rust", "Kotlin", "Java", "C++"],
+    items: ["Python", "TypeScript", "JavaScript", "Go", "Java", "C++"],
   },
   {
     category: "Backend & APIs",
-    items: ["FastAPI", "Node.js", "Express.js", "WebRTC", "Socket.IO"],
+    items: ["FastAPI", "Node.js", "Express.js", "WebRTC"],
   },
   {
     category: "Frontend",
-    items: ["React.js", "Next.js", "Tailwind CSS", "Framer Motion", "Three.js", "HTML5", "CSS3"],
+    items: ["Next.js", "Tailwind CSS", "Three.js"],
   },
   {
     category: "Mobile & Native",
-    items: ["Flutter", "React Native", "Expo", "SwiftUI", "Tauri"],
+    items: ["Flutter", "Expo", "Tauri"],
   },
   {
     category: "Data & Databases",
-    items: ["PostgreSQL", "Neo4j", "MongoDB", "Redis", "Prisma", "MySQL", "SQLite", "Firebase"],
+    items: ["PostgreSQL", "Neo4j", "MongoDB", "Redis", "MySQL"],
   },
   {
     category: "Infra & DevOps",
-    items: ["Docker", "AWS", "Cloudflare", "Nginx", "Prometheus", "Grafana", "GitHub Actions"],
-  },
-  {
-    category: "Security & Real-time",
-    items: ["AES-256 Encryption", "JWT / OAuth"],
+    items: ["Docker", "AWS", "Cloudflare"],
   },
   {
     category: "Testing & Tooling",
-    items: ["Vitest", "Pytest", "Playwright", "Git", "Vercel"],
+    items: ["Playwright", "Git"],
   },
 ];
