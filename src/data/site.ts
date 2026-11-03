@@ -4,7 +4,7 @@ export const site = {
   url: "https://niheshr.com",
   email: "niheshr03@gmail.com",
   emailHref: "mailto:niheshr03+portfolio@gmail.com",
-  resume: "/resume/v7.pdf",
+  resume: "/resume/v8.pdf",
   title: "Nihesh Rachakonda | AI Engineer",
   description:
     "Nihesh Rachakonda, AI engineer. Projects, work, achievements and contact.",
