@@ -4,19 +4,19 @@ import gstRecon from "../assets/projects/gst-recon.png";
 import secondBrain from "../assets/projects/second-brain.jpeg";
 import capax from "../assets/projects/capax.jpeg";
 import blog from "../assets/projects/niheshr-blog.jpeg";
-import rideshare from "../assets/projects/rideshare.jpeg";
-import habify from "../assets/projects/habify.jpeg";
-import sellerPortal from "../assets/projects/nihesh_s_seller_portal.jpeg";
-import liveCursors from "../assets/projects/live_cursors.jpeg";
+// import rideshare from "../assets/projects/rideshare.jpeg";
+// import habify from "../assets/projects/habify.jpeg";
+// import sellerPortal from "../assets/projects/nihesh_s_seller_portal.jpeg";
+// import liveCursors from "../assets/projects/live_cursors.jpeg";
 
 import gstReconLogo from "../assets/projects/logos/gst-recon.png";
 import secondBrainLogo from "../assets/projects/logos/second-brain.png";
 import capaxLogo from "../assets/projects/logos/capax.png";
 import blogLogo from "../assets/projects/logos/blog.png";
-import rideshareLogo from "../assets/projects/logos/rideshare.png";
-import habifyLogo from "../assets/projects/logos/habify.webp";
-import sellerPortalLogo from "../assets/projects/logos/nihesh_s_seller_portal.png";
-import cursorLogo from "../assets/projects/logos/cursor.png";
+// import rideshareLogo from "../assets/projects/logos/rideshare.png";
+// import habifyLogo from "../assets/projects/logos/habify.webp";
+// import sellerPortalLogo from "../assets/projects/logos/nihesh_s_seller_portal.png";
+// import cursorLogo from "../assets/projects/logos/cursor.png";
 
 export interface Project {
   title: string;
@@ -65,6 +65,7 @@ export const projects: Project[] = [
     live: "https://blog.niheshr.com/?ref=niheshr.com",
     github: "https://github.com/rnihesh/blog/?ref=niheshr.com",
   },
+  /* Hidden for now (uncomment to show again):
   {
     title: "RideShare",
     description: "A Vehicle Pooling App",
@@ -101,4 +102,5 @@ export const projects: Project[] = [
     live: "https://nihesh-cursors.vercel.app/?ref=niheshr.com",
     github: "https://github.com/rnihesh/live-cursors-app/?ref=niheshr.com",
   },
+  */
 ];

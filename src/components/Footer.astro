@@ -13,9 +13,8 @@ const year = new Date().getFullYear();
       {
         socials.map((s) => (
           <li>
-            <a href={s.href} target="_blank" rel="noopener me">
-              <Icon name={s.icon} size={16} />
-              {s.label}
+            <a href={s.href} target="_blank" rel="noopener me" aria-label={s.label} title={s.label} class="icon-link">
+              <Icon name={s.icon} size={18} />
             </a>
           </li>
         ))
@@ -39,7 +38,8 @@ const year = new Date().getFullYear();
   .links {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -55,6 +55,18 @@ const year = new Date().getFullYear();
   .links a :global(svg) {
     flex: none;
     translate: 0 -0.1em;
+  }
+  .links .icon-link {
+    padding: 0.25rem;
+    margin: -0.25rem;
+    color: var(--mute);
+    transition: color 0.15s ease;
+  }
+  .links .icon-link :global(svg) {
+    translate: 0 0.05em;
+  }
+  .links .icon-link:hover {
+    color: var(--ink);
   }
   .links a:hover {
     text-decoration-color: var(--accent);
