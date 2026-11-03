@@ -51,6 +51,11 @@ const year = new Date().getFullYear();
     color: var(--ink);
     text-decoration-color: transparent;
   }
+  /* Newsreader sits high in its line box; lift icons to the text's optical center */
+  .links a :global(svg) {
+    flex: none;
+    translate: 0 -0.1em;
+  }
   .links a:hover {
     text-decoration-color: var(--accent);
   }
