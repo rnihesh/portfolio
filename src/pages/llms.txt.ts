@@ -29,7 +29,7 @@ export const GET: APIRoute = () => {
     "## Work",
     "",
     ...experience.map(
-      (j) => `- ${j.role}, ${j.company} (${j.period}): ${j.description} Stack: ${j.skills.join(", ")}.`,
+      (j) => `- ${j.role}, ${j.company} (${j.period}): ${j.description}${j.skills.length ? ` Stack: ${j.skills.join(", ")}.` : ""}`,
     ),
     "",
     "## Achievements",

@@ -1,5 +1,6 @@
 import type { ImageMetadata } from "astro";
 import dattam from "../assets/work/dattam_in_logo_nobg.png";
+import xlventures from "../assets/work/xlventures_logo_nobg.png";
 
 export interface Job {
   company: string;
@@ -13,6 +14,16 @@ export interface Job {
 
 // Carried over from the old site's src/data/experience.js.
 export const experience: Job[] = [
+  {
+    company: "XL Ventures",
+    role: "Software Engineer",
+    period: "Jul 2026 – Present",
+    logo: xlventures,
+    description:
+      "Shaped how the platform is built and shipped. Turned a single app into a foundation that now powers several products, launched new public-facing sites on top of it, and kept everything fast, secure and reliable as usage grew.",
+    skills: ["Python", "FastAPI", "PostgreSQL", "Redis", "Next.js", "TypeScript", "Docker"],
+    link: "https://xlventures.ai?ref=nihesh",
+  },
   {
     company: "Dattam Labs",
     role: "Software Engineer Intern",

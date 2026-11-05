@@ -29,7 +29,7 @@ import { site } from "../data/site";
             </h3>
             <p class="sub">{job.role}</p>
             <p class="desc">{job.description}</p>
-            <p class="stack">{job.skills.join(", ")}</p>
+            {job.skills.length > 0 && <p class="stack">{job.skills.join(", ")}</p>}
           </div>
         </article>
       ))
