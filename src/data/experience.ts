@@ -21,7 +21,7 @@ export const experience: Job[] = [
     logo: xlventures,
     description:
       "Shaped how the platform is built and shipped. Turned a single app into a foundation that now powers several products, launched new public-facing sites on top of it, and kept everything fast, secure and reliable as usage grew.",
-    skills: ["Python", "FastAPI", "PostgreSQL", "Redis", "Next.js", "TypeScript", "Docker"],
+    skills: ["Python", "FastAPI", "PostgreSQL", "Redis", "Next.js", "TypeScript", "Docker", "GCP"],
     link: "https://xlventures.ai?ref=nihesh",
   },
   {
